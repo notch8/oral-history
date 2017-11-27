@@ -5,18 +5,19 @@ class OralHistoryItem
     @attributes = attr
   end
 
-  def self.import(progress=true)
-    url = "http://digital2.library.ucla.edu/oai2_0.do"
-    set = "oralhistory"
+  def self.import(args)
+    progress = args[:progress] || true
+    limit = args[:limit] || 20000000  # essentially no limit
+    url = args[:url] || "http://digital2.library.ucla.edu/oai2_0.do"
+    set = args[:set] || "oralhistory"
     client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'libxml', metadata_prefix: 'oai_dc'
     response = client.list_records(set: set)
 
     if progress
       bar = ProgressBar.new(response.doc.find(".//resumptionToken").to_a.first.attributes["completeListSize"].to_i)
     end
-
+    total = 0
     records = response.full.each do |record|
-    #records = response.each do |record|
       history = OralHistoryItem.new
       if record.header
        if record.header.identifier
@@ -25,7 +26,7 @@ class OralHistoryItem
         if record.header.datestamp
           history.attributes[:timestamp] = Time.parse(record.header.datestamp)
         end
-     end
+      end
 
       if record.metadata
         record.metadata.children.each do |set|
@@ -79,6 +80,8 @@ class OralHistoryItem
       if progress
         bar.increment!
       end
+      total += 1
+      break if total > limit
     end
   end
 

@@ -1,0 +1,46 @@
+version: '2.1'
+services:
+  postgres:
+    image: postgres
+    env_file:
+      - .env
+      - .env.development
+    ports:
+      - "5432"
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+
+  main:
+    build: .
+    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG:-master}"
+    env_file:
+      - .env
+      - .env.development
+    volumes:
+      - .:/home/app/webapp
+
+  solr:
+    extends:
+      service: main
+    ports:
+      - "8983"
+    command: /sbin/setuser app bash -l -c 'cd /home/app/webapp && bundle exec solr_wrapper'
+    # `sc run -s solr solr_wrapper clean` to clear  
+
+  web:
+    extends:
+      service: main
+    # Keep the stdin open, so we can attach to our app container's process
+    # and do things such as byebug, etc:
+    stdin_open: true
+    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
+    tty: true
+    ports:
+      - "8000:80"
+    depends_on:
+      - postgres
+      - solr
+
+volumes:
+  postgres:
+  solr:
