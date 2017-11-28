@@ -1,7 +1,35 @@
-version: '2.1'
+version: '2'
 services:
+  postgres:
+    image: postgres
+    env_file:
+      - .env
+      - .env.development
+    ports:
+      - "5432"
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+
+  solr:
+    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
+    environment:
+      - RAILS_ENV=production
+      - RACK_ENV=production
+      - PASSENGER_APP_ENV=production
+    restart: unless-stopped
+    command: /sbin/setuser app bash -l -c 'cd /home/app/webapp && bundle exec solr_wrapper'
+    ports:
+      - "8983"
+    labels:
+      rap.host: ${SITE_URI}
+      rap.le_host: ${SITE_URI}
+      rap.le_test: true
+      io.rancher.container.pull_image: always
+    env_file:
+      - .env
+      - .env.production
   web:
-    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG:-master}"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
     environment:
       - RAILS_ENV=production
       - RACK_ENV=production
@@ -17,8 +45,11 @@ services:
     env_file:
       - .env
       - .env.production
+    depends_on:
+      - postgres
+      - solr
+
 
 volumes:
-  uploads:
-    driver: rancher-nfs
-    external: true
+  postgres:
+  solr:
