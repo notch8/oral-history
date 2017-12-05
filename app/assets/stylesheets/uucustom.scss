@@ -51,6 +51,11 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   color: #555;
 }
 
+.input-group select {
+  border: none;
+  background-color: transparent;
+}
+
 /* NAVIGATION */
 
 .navbar {
@@ -110,6 +115,10 @@ section.g-pos-rel.hero-image-block {
   width: 100% !important;
   margin: 0;
   padding: 0;
+}
+
+span.input-group-addon.for-search-field {
+  background-color: white;
 }
 
 /* FOOTER */
