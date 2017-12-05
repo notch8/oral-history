@@ -1,48 +1,62 @@
-<div class="page-header row">
-  <h2 class="col-md-8 page-heading"><%= t('blacklight.welcome') %></h2>
-  
-  <ul class="nav nav-pills col-md-4">
-    <li><a href="https://github.com/projectblacklight/blacklight/">Github</a></li>
-    <li><a href="https://github.com/projectblacklight/blacklight/wiki">Wiki</a></li>
-    <li><a href="https://github.com/projectblacklight/blacklight/releases/tag/v<%= Blacklight::VERSION %>">Release Notes</a></li>
-  </ul>
+  <!-- Our Collections -->
+    <section class="margin-bottom-50">
+      <div class="container">
+        <header class="g-mb-50">
+          <div class="u-heading-v2-3--bottom g-brd-primary g-mb-20">
+            <h2 class="h4 u-heading-v2__title g-color-gray-dark-v2 g-font-weight-600 text-uppercase">View Our Collections</h2>
+          </div>
 
-</div>
+        </header>
 
-<div id="getting-started">
-  <h3 class='section-heading'>Here&rsquo;s how to get started:</h3>
-  
-  <ol>
-    <li>To modify this text, you need to <a href="http://guides.rubyonrails.org/engines.html#improving-engine-functionality">override the Blacklight-provided view</a>.
-You can copy this file, located in the blacklight gem: <br />
-<%= Blacklight.root %>/app/views/catalog/_home_text.html.erb <br />
-to your own application: <br />
- <%= Rails.root %>/app/views/catalog/_home_text.html.erb 
-    </li>
-    <li><a href="https://github.com/projectblacklight/blacklight/wiki/Indexing-your-data-into-solr">Index your own data</a> into Solr</li>
-    <li><a href="https://github.com/projectblacklight/blacklight/wiki#blacklight-configuration">Configure Blacklight</a> to match your data and user-experience needs</li>
-    <li><a href="https://github.com/projectblacklight/blacklight/wiki#support">Get in touch</a> with your comments, questions, and ideas</li>
-  </ol>
-</div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6 g-mb-30 g-mb-0--lg">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                <%= image_tag("asian_american_history.jpg", :alt => "Asian American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+              </figure>
 
-<%# This is the same panel shown in the Rails welcome template %>
-<div id="about">
-  <h3 class='section-heading'><a href="/rails/info/properties">About your application&rsquo;s environment</a></h3>
-  <div id="about-content" class="well" style="display: none"></div>
-</div>
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
+                <h3 class="h4">
+                    <a class="g-color-white" href="#">Asian American History</a>
+                  </h3>
+              </header>
 
-<script>
-  $(function() {
-    $('#about a').on('click', function(e) {
-      e.preventDefault();
 
-      if ($('#about-content').html() == "") {
-        $('#about-content').load($(this).attr("href"), function() {
-          $('#about-content').show();
-        });
-      } else {
-        $('#about-content').toggle();
-      }
-    });
-  });
-</script>
+            </article>
+          </div>
+
+          <div class="col-lg-4 col-md-6 g-mb-30 g-mb-0--lg">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                <%= image_tag("business.jpg", :alt => "Business History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+              </figure>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                    <a class="g-color-white" href="#">Business</a>
+                  </h3>
+              </header>
+
+
+            </article>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                <%= image_tag("community.jpg", :alt => "Community History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+              </figure>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                    <a class="g-color-white" href="#">Community History</a>
+                  </h3>
+              </header>
+
+
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Our Collections -->
