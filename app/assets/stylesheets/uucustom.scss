@@ -1,0 +1,158 @@
+/* GENERAL STYLES */
+body {
+  font-family: Verdana, "Open Sans", Helvetica, Arial, sans-serif !important;
+}
+
+a {
+  color: #3284bf;
+}
+
+.hero-ribbon-gray.g-bg-black-opacity-0_6 {
+  background-color: rgba(102,102,102,.8) !important;
+}
+
+.hero-ribbon-blue.g-bg-primary-dark-v3 {
+  background-color: rgba(30, 75, 135, .8) !important;
+}
+
+.hero-info {
+  margin-top: 50px;
+}
+
+.g-brd-primary {
+  border-color: #3284bf !important;
+}
+
+.g-bg-primary {
+  background-color: #3284bf !important;
+}
+
+.g-bg-black-opacity-0_6 {
+  background-color: rgba(102,102,102,.8) !important;
+}
+
+h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
+  line-height: 1.4;
+}
+
+/* BUTTON STYLES */
+
+.btn-primary {
+  background-color: #3284bf !important;
+  border-color: #3284bf !important;
+}
+.btn-primary:hover, .btn-primary.active {
+  border-color: #ffe800 !important;
+  background-color: #ffe800 !important;
+  color: #555 !important;
+}
+
+.submit-search-text:hover {
+  color: #555;
+}
+
+/* NAVIGATION */
+
+.navbar {
+  margin-bottom: 0 !important;
+}
+
+.navbar + .navbar {
+  margin-top:0 !important;
+}
+
+.g-bg-blue {
+  background-color: #1e4b87 !important;
+}
+
+#header-navbar .navbar-brand {
+  background-image: image-url('logo.svg');
+  background-position: left center;
+  overflow: visible;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+  color: #555;
+  background-color: #ffe800;
+}
+
+.navbar-nav > li > a {
+  color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+  color: #ffe800;
+}
+
+.subhead {
+  color: #fff;
+  padding: 5px;
+  font-size: 16px;
+  font-family: "Times New Roman";
+}
+
+/* HERO SECTION ON HOME PAGE */
+
+section.g-pos-rel.hero-image-block {
+  height: 130%;
+  background-image: image-url('ucla_hero.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+}
+
+#main-container {
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* FOOTER */
+
+.footer-row {
+    background: #ececec;
+    color: #333333;
+    padding: 50px 1.25rem;
+    margin: auto;
+}
+
+.footer-wrapper {
+  padding: 0 1.25rem;
+}
+
+.border-right {
+  border-right: 1px solid #a2a2a2;
+  padding: 0 1.25rem;
+}
+
+a.footer-link {
+  color: #1e4b87;
+  font-weight: bold;
+  line-height: 2.25;
+  padding-left: 20px;
+}
+
+.padding-top {
+  padding-top: 30px;
+}
+
+/* UTILITY STYLES */
+
+.g-mt-50 {
+  padding-top: 50px;
+}
+.margin-bottom-50 {
+  margin-bottom: 50px;
+}
+
+/* SEARCH RESULTS PAGE */
+
+/* SIDEBAR FACETS */
+#sidebar {
+  padding-left: 50px;
+}
