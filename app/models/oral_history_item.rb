@@ -19,6 +19,21 @@ class OralHistoryItem
     total = 0
     records = response.full.each do |record|
       history = OralHistoryItem.new
+      history.attributes["series_facet"] = [
+        '"The Godfather of UCLA": Regent Edward A. Dickson',
+        'African American Architects of Los Angeles',
+        'African American Artists of Los Angeles',
+        'African Americans in Entertainment and Media',
+        'Allensworth Community',
+        'American Indian Relocation Project',
+        'American Indian Studies M200A Student Interviews',
+        'Angela Davis Case',
+        'Art History - Oral Documentation Project',
+        'Baseball Race, and Los Angeles: An Oral History of Negro Leaguers of Southern California',
+        'Beyond Central',
+        'Black Educators in Los Angeles, 1950-2000',
+        'Black Leadership in Los Angeles'
+      ][rand * 13]  # temp series for facet testing
       if record.header
        if record.header.identifier
           history.attributes[:id] = record.header.identifier.split('/').last
@@ -51,7 +66,7 @@ class OralHistoryItem
               history.attributes["pub_date"] = pub_date
               history.attributes["pub_date_sort"] = pub_date
             elsif child.name == "language"
-              history.attributes["language_facet"] = child.content
+              history.attributes["language_facet"] = LanguageList::LanguageInfo.find(child.content).try(:name)
             #elsif child.name == "coverage" # TODO
             #  child_name = child.name + "_t"
             #  history.attributes[child_name] ||= []
@@ -67,6 +82,18 @@ class OralHistoryItem
               history.attributes["author_display"] = child.content
               history.attributes["author_t"] ||= []
               history.attributes["author_t"] << child.content
+            elsif child.name == "format"
+              history.attributes["format"] = child.content
+              history.attributes[child.name + "_display"] = child.content
+              history.attributes[child.name + "_t"] ||= []
+              history.attributes[child.name + "_t"] << child.content
+            elsif child.name == "description"
+              history.attributes[child.name + "_display"] = child.content
+              history.attributes[child.name + "_t"] ||= []
+              history.attributes[child.name + "_t"] << child.content
+              if child.content.match(/BIOGRAPHICAL/)
+                history.attributes["description_facet"] = [child.content.to_s.truncate(10)]
+              end
             else
               history.attributes[child.name + "_display"] = child.content
               history.attributes[child.name + "_t"] ||= []

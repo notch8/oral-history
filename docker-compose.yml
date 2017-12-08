@@ -36,7 +36,7 @@ services:
     # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
     tty: true
     ports:
-      - "8000:80"
+      - "${DOCKER_PORT}"
     depends_on:
       - postgres
       - solr
