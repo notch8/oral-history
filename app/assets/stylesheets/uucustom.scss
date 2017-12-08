@@ -172,7 +172,7 @@ a.footer-link {
   position: relative;
   display: inline-block;
   cursor: pointer;
-  margin: 30px;
+  margin: 0;
 
   &:before {
     position:absolute;
@@ -192,5 +192,6 @@ a.footer-link {
   }
 }
 .wave-box {
-  height: 350px;
+  height: 378px;
+  background-color: #9cbadc;
 }

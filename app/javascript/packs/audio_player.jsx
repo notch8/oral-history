@@ -1,12 +1,3 @@
-// Run this example by adding <%= javascript_pack_tag 'hello_react' %> to the head of your layout file,
-// like app/views/layouts/application.html.erb. All it does is render <div>Hello React</div> at the bottom
-// of the page.
-//require('wavesurfer.js');
-//require('wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js');
-//require('wavesurfer.js/dist/plugin/wavesurfer.regions.min.js');
-//require('wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js');
-
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
@@ -20,7 +11,7 @@ class AudioPlayer extends React.Component {
       audioFile: this.props.url,
       playing: false,
       pos: 0,
-      volume: 0.5,
+      volume: 1,
       audioRate: 1
     };
     this.handleTogglePlay = this.handleTogglePlay.bind(this);
@@ -50,7 +41,7 @@ class AudioPlayer extends React.Component {
 
   handleReady() {
     this.setState({
-      pos: 5
+      pos: 0
     });
   }
 
@@ -66,8 +57,9 @@ class AudioPlayer extends React.Component {
       progressColor: '#ffe800',
       waveColor: '#1e4b87',
       normalize: true,
-      barWidth: 1,
-      audioRate: 1
+      audioRate: 1,
+      height: 378,
+      barWidth: 2,
     };
     return (
       <div className="player col-xs-12">
