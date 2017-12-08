@@ -13,6 +13,7 @@ gem 'byebug', platforms: [:mri, :mingw, :x64_mingw], group: [:development, :test
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
 gem 'devise-guests', '~> 0.6'
+gem 'font-awesome-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'language_list'
@@ -31,4 +32,4 @@ gem 'turbolinks', '~> 5'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'uglifier', '>= 1.3.0'
 gem 'web-console', '>= 3.3.0', group: [:development]
-gem 'webpacker'
+gem 'webpacker', github: 'rails/webpacker'

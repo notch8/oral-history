@@ -1,9 +1,12 @@
 FROM phusion/passenger-ruby23:0.9.20
 
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
     add-apt-repository -y ppa:webupd8team/java && \
     apt-get update -qq && \
-    apt-get install -y build-essential nodejs npm pv libsasl2-dev libpq-dev postgresql-client oracle-java8-installer && \
+    apt-get install -y build-essential nodejs yarn pv libsasl2-dev libpq-dev postgresql-client oracle-java8-installer && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
