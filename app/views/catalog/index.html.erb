@@ -14,9 +14,9 @@
                   <span class="hero-ribbon-blue g-bg-primary-dark-v3 g-px-5">Oral History Research</span>
                 </h2>
               <h3 class="h4 g-color-white">
-                  <span class="hero-ribbon-gray g-bg-black-opacity-0_6 g-px-5">Oral history interviews related primarily</span><br>
-                  <span class="hero-ribbon-gray g-bg-black-opacity-0_6 g-px-5">to the history of Southern California</span><br>
-                  <span class="hero-ribbon-gray g-bg-black-opacity-0_6 g-px-5">and the Los Angeles metropolitan region</span>
+                  <span class="hero-ribbon-gray g-bg-black-opacity-0_6 g-px-5">Documenting the histories of Los Angeles</span><br>
+                  <span class="hero-ribbon-gray g-bg-black-opacity-0_6 g-px-5"></span><br>
+
                 </h3>
             </div>
             <div class="col-lg-6 g-mt-50">
@@ -31,41 +31,50 @@
     <!-- End Promo Block -->
 
     <!--  Hero Info Block -->
-      <div class="hero-info">
-        <!-- Hero Info #01 -->
-        <section class="text-center ">
-          <div class="container">
-            <div class="u-heading-v2-5--bottom g-brd-primary ">
-              <h2 class="u-heading-v2__title text-uppercase g-font-weight-300 mb-0">About the Center</h2>
-            </div>
+  <div class="hero-info">
+    <!-- Hero Info #01 -->
+    <section class="text-center ">
+      <div class="container">
+        <div class="u-heading-v2-5--bottom g-brd-primary ">
+          <h2 class="u-heading-v2__title text-uppercase g-font-weight-300 mb-0">About the Center</h2>
+        </div>
 
-            <p class="lead g-px-60--md g-mb-40">UCLA’s Center for Oral History Research collects oral history interviews related primarily to the history of Southern California and the Los Angeles metropolitan region.
-            </p>
+        <p class="lead g-px-60--md g-mb-40">UCLA’s Center for Oral History Research collects oral history interviews related primarily to the history of Southern California and the Los Angeles metropolitan region.
+        </p>
 
-            <p class="lead g-px-60--md g-mb-40">Interview transcripts and recordings not available through this website can be accessed in person at UCLA Library Special Collections. To have materials paged to the Special Collections reading room, please register with the UCLA Library Special Collections Request System (Aeon) and click on "Request an Item." The "Call Number/Collection Number" that the form asks for can be found in the entry for the interview in the UCLA Library Catalog.
-            </p>
+        <p class="lead g-px-60--md g-mb-40">Interview transcripts and recordings not available through this website can be accessed in person at UCLA Library Special Collections. To have materials paged to the Special Collections reading room, please register with the UCLA Library Special Collections Request System (Aeon) and click on "Request an Item." The "Call Number/Collection Number" that the form asks for can be found in the entry for the interview in the UCLA Library Catalog.
+        </p>
 
-            <p class="lead g-px-60--md g-mb-40">If donation agreements allow, interview transcripts not available through this website can be provided to users as PDFs. To request a PDF, please register with the UCLA Library Special Collections Request System (Aeon) and request "Photoduplication."
-            </p>
+        <p class="lead g-px-60--md g-mb-40">If donation agreements allow, interview transcripts not available through this website can be provided to users as PDFs. To request a PDF, please register with the UCLA Library Special Collections Request System (Aeon) and request "Photoduplication."
+        </p>
 
-          </div>
-        </section>
-        <!-- End Hero Info #01 -->
       </div>
+    </section>
+    <!-- End Hero Info #01 -->
+  </div>
     <!-- End hero info block -->
 
 <% end %>
-<div id="sidebar" class="<%= sidebar_classes %>">
-  <%= render 'search_sidebar' %>
-</div>
+<% unless has_search_parameters? %>
+  <div class="container-fluid">
+    <div id="sidebar" class="<%= sidebar_classes %> padding-left-50">
+    <%= render 'search_sidebar' %>
+  </div>
+<% else %>
+  <div class="container">
+    <div id="sidebar" class="<%= sidebar_classes %>">
+    <%= render 'search_sidebar' %>
+  </div>
+<% end %>
 
-<div id="content" class="<%= main_content_classes %>">
-  <% unless has_search_parameters? %>
-    <%# if there are no input/search related params, display the "home" partial -%>
-    <%= render 'home' %>
-    <%= render 'shared/sitelinks_search_box' %>
-  <% else %>
-    <%= render 'search_results' %>
-  <% end %>
+  <div id="content" class="<%= main_content_classes %>">
+    <% unless has_search_parameters? %>
+      <%# if there are no input/search related params, display the "home" partial -%>
+      <%= render 'home' %>
+      <%= render 'shared/sitelinks_search_box' %>
+    <% else %>
+      <%= render 'search_results' %>
+    <% end %>
+  </div>
 </div>
 

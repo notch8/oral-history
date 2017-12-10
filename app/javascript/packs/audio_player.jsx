@@ -58,7 +58,7 @@ class AudioPlayer extends React.Component {
       waveColor: '#1e4b87',
       normalize: true,
       audioRate: 1,
-      height: 378,
+      height: 340,
       barWidth: 2,
     };
     return (
