@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   get 'pages/contact', to: 'pages#contact', as: 'contact'
 
+  get 'pages/permissions', to: 'pages#permissions', as: 'permissions'
+
   get 'pages/copyrightinformation', to: 'pages#copyrightinformation', as: 'copyrightinformation'
 
   get 'pages/interviewguidelines', to: 'pages#interviewguidelines', as: 'interviewguidelines'

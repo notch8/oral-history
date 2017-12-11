@@ -12,6 +12,9 @@ class PagesController < ApplicationController
   def contact
   end
 
+  def permissions
+  end
+
   def copyrightinformation
   end
 
