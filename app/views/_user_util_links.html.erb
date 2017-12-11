@@ -1,5 +1,32 @@
 <div class="navbar-right">
+
   <ul class="nav navbar-nav">
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Home <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><%= link_to 'About Center', about_path %></li>
+        <li><%= link_to 'Conferences', conferences_path %></li>
+        <li><%= link_to 'Contact', contact_path %></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Permissions <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><%= link_to 'Copyright Information', copyrightinformation_path %></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Resources <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><%= link_to 'Interviewing Guidelines', interviewguidelines_path %></li>
+        <li><%= link_to 'sample Legal Agreement', about_path %></li>
+        <li><%= link_to 'Family History Sample Outline', familyhistory_path %></li>
+        <li><%= link_to 'Selected Oral History Programs', programs_path %><a href="#">Selected Oral History Programs</a></li>
+        <li><%= link_to 'Selected Oral History Organizations', organizations_path %></li>
+        <li><%= link_to 'Oral History Training', training_path %></li>
+        <li><%= link_to 'Bibliography', bibliography_path %></li>
+      </ul>
+    </li>
     <%= render_nav_actions do |config, action|%>
       <li><%= action %></li>
     <% end %>

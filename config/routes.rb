@@ -1,5 +1,25 @@
 Rails.application.routes.draw do
-  
+
+  get 'pages/about', to: 'pages#about', as: 'about'
+
+  get 'pages/conferences', to: 'pages#conferences', as: 'conferences'
+
+  get 'pages/contact', to: 'pages#contact', as: 'contact'
+
+  get 'pages/copyrightinformation', to: 'pages#copyrightinformation', as: 'copyrightinformation'
+
+  get 'pages/interviewguidelines', to: 'pages#interviewguidelines', as: 'interviewguidelines'
+
+  get 'pages/familyhistory', to: 'pages#familyhistory', as: 'familyhistory'
+
+  get 'pages/programs', to: 'pages#programs', as: 'programs'
+
+  get 'pages/organizations', to: 'pages#organizations', as: 'organizations'
+
+  get 'pages/training', to: 'pages#training', as: 'training'
+
+  get 'pages/bibliography', to: 'pages#bibliography', as: 'bibliography'
+
   mount Blacklight::Engine => '/'
   Blacklight::Marc.add_routes(self)
   root to: "catalog#index"
