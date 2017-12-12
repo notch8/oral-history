@@ -20,3 +20,6 @@
 .env.*/public/packs
 /public/packs-test
 /node_modules
+public/packs/*
+.DS_Store
+.env.*

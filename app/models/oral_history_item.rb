@@ -10,11 +10,11 @@ class OralHistoryItem
     limit = args[:limit] || 20000000  # essentially no limit
     url = args[:url] || "http://digital2.library.ucla.edu/oai2_0.do"
     set = args[:set] || "oralhistory"
-    client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'libxml', metadata_prefix: 'oai_dc'
-    response = client.list_records(set: set)
+    client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
+    response = client.list_records(set: set, metadata_prefix: 'mods')
 
     if progress
-      bar = ProgressBar.new(response.doc.find(".//resumptionToken").to_a.first.attributes["completeListSize"].to_i)
+      bar = ProgressBar.new(response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i)
     end
     total = 0
     records = response.full.each do |record|
@@ -34,6 +34,8 @@ class OralHistoryItem
         'Black Educators in Los Angeles, 1950-2000',
         'Black Leadership in Los Angeles'
       ][rand * 13]  # temp series for facet testing
+
+
       if record.header
        if record.header.identifier
           history.attributes[:id] = record.header.identifier.split('/').last
@@ -45,64 +47,84 @@ class OralHistoryItem
 
       if record.metadata
         record.metadata.children.each do |set|
+          next if set.class == REXML::Text
           set.children.each do |child|
-            next if child.name == "text"
-            if child.name == "title"
-              if child.content.match(/alternative title/)
-                history.attributes["subtitle_display"] ||= child.content
-                history.attributes["subtitle_t"] ||= []
-                history.attributes["subtitle_t"] << child.content
-              else
-                history.attributes["title_display"] ||= child.content
-                history.attributes["title_t"] ||= []
-                history.attributes["title_t"] << child.content
+            next if child.class == REXML::Text
+
+            if child.name == "titleInfo"
+              child.elements.each('mods:title') do |title|
+                if(child.attributes["type"] == "alternative")
+                  history.attributes["subtitle_display"] ||= child.text
+                  history.attributes["subtitle_t"] ||= []
+                  history.attributes["subtitle_t"] << child.text
+                else
+                  history.attributes["title_display"] ||= child.text
+                  history.attributes["title_t"] ||= []
+                  history.attributes["title_t"] << child.text
+                end
               end
-           elsif child.name == "date"
-              if child.content.length == 4
-                pub_date = child.content.to_i
-              else
-                pub_date = Time.parse(child.content).year rescue nil
+            elsif child.name == "abstract" || child.name == "accessCondition"
+              history.attributes[child.name + "_display"] = child.text
+              history.attributes[child.name + "_t"] ||= []
+              history.attributes[child.name + "_t"] << child.text
+            elsif child.name == "typeOfResource"
+              history.attributes[child.name + "_display"] = child.text
+              history.attributes[child.name + "_t"] ||= []
+              history.attributes[child.name + "_t"] << child.text
+              history.attributes[child.name + "_facet"] ||= []
+              history.attributes[child.name + "_facet"] << child.text
+            elsif child.name == 'language'
+              child.elements.each('mods:languageTerm') do |e|
+                history.attributes["language_facet"] = LanguageList::LanguageInfo.find(e.text).try(:name)
               end
-              history.attributes["pub_date"] = pub_date
-              history.attributes["pub_date_sort"] = pub_date
-            elsif child.name == "language"
-              history.attributes["language_facet"] = LanguageList::LanguageInfo.find(child.content).try(:name)
+            elsif child.name == "subject"
+              child.elements.each('mods:topic') do |e|
+                history.attributes["subject_topic_facet"] ||= []
+                history.attributes["subject_topic_facet"] << e.text
+                history.attributes["subject_t"] ||= []
+                history.attributes["subject_t"] << e.text
+              end
+            elsif child.name == "role"
+              if child.elements['mods:role/mods:roleTerm'].text == "interviewer"
+                history.attributes["author_display"] = child.elements['mods:namePart'].text
+                history.attributes["author_t"] ||= []
+                history.attributes["author_t"] << child.elements['mods:namePart'].text
+              end
+
+#           elsif child.name == "date"
+#              if child.content.length == 4
+#                pub_date = child.content.to_i
+#              else
+#                pub_date = Time.parse(child.content).year rescue nil
+#              end
+#              history.attributes["pub_date"] = pub_date
+#              history.attributes["pub_date_sort"] = pub_date
+#            elsif child.name == "language"
+#              history.attributes["language_facet"] = LanguageList::LanguageInfo.find(child.content).try(:name)
             #elsif child.name == "coverage" # TODO
             #  child_name = child.name + "_t"
             #  history.attributes[child_name] ||= []
-            #  history.attributes[child_name] << child.content
-            elsif child.name == "subject"
-              history.attributes["subject_topic_facet"] ||= []
-              history.attributes["subject_topic_facet"] << child.content
-              history.attributes["subject_t"] ||= []
-              history.attributes["subject_t"] << child.content
-            #elsif child.name == "contributor" # TODO
-
-            elsif child.name == "creator"
-              history.attributes["author_display"] = child.content
-              history.attributes["author_t"] ||= []
-              history.attributes["author_t"] << child.content
-            elsif child.name == "format"
-              history.attributes["format"] = child.content
-              history.attributes[child.name + "_display"] = child.content
-              history.attributes[child.name + "_t"] ||= []
-              history.attributes[child.name + "_t"] << child.content
-            elsif child.name == "description"
-              history.attributes[child.name + "_display"] = child.content
-              history.attributes[child.name + "_t"] ||= []
-              history.attributes[child.name + "_t"] << child.content
-              if child.content.match(/BIOGRAPHICAL/)
-                history.attributes["description_facet"] = [child.content.to_s.truncate(10)]
-              end
-            else
-              history.attributes[child.name + "_display"] = child.content
-              history.attributes[child.name + "_t"] ||= []
-              history.attributes[child.name + "_t"] << child.content
+            #  history.attributes[child_name] << child.content####
+#          elsif child.name == "format"
+#              history.attributes["format"] = child.content
+#              history.attributes[child.name + "_display"] = child.content
+#              history.attributes[child.name + "_t"] ||= []
+#              history.attributes[child.name + "_t"] << child.content
+#            elsif child.name == "description"
+#              history.attributes[child.name + "_display"] = child.content
+#              history.attributes[child.name + "_t"] ||= []
+#              history.attributes[child.name + "_t"] << child.content
+#              if child.content.match(/BIOGRAPHICAL/)
+#                history.attributes["description_facet"] = [child.content.to_s.truncate(10)]
+#              end
+#            else
+#              history.attributes[child.name + "_display"] = child.content
+#              history.attributes[child.name + "_t"] ||= []
+#              history.attributes[child.name + "_t"] << child.content
             end
           end
         end
       end
-      puts history.to_solr.inspect
       history.index_record
       if progress
         bar.increment!

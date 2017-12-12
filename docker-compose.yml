@@ -10,6 +10,14 @@ services:
     volumes:
       - 'postgres:/var/lib/postgresql/data'
 
+  solr:
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/solr:${TAG}"
+    build: solr/
+    ports:
+      - '8983:8983'
+    volumes:
+      - solr:/solr_home
+
   main:
     build: .
     image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
@@ -18,14 +26,6 @@ services:
       - .env.development
     volumes:
       - .:/home/app/webapp
-
-  solr:
-    extends:
-      service: main
-    ports:
-      - "8983"
-    command: /sbin/setuser app bash -l -c 'cd /home/app/webapp && bundle exec solr_wrapper'
-    # `sc run -s solr solr_wrapper clean` to clear  
 
   web:
     extends:
