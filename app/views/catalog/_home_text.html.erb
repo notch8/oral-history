@@ -1,7 +1,7 @@
   <!-- Our Collections -->
-  <div class="container-fluid">
+
     <section class="margin-bottom-50">
-      <div class="container">
+      <!-- <div class="container"> -->
         <header class="g-mb-50">
           <div class="u-heading-v2-3--bottom g-brd-primary g-mb-20">
             <h2 class="h4 u-heading-v2__title g-color-gray-dark-v2 g-font-weight-600 text-uppercase">View Our Collections</h2>
@@ -10,53 +10,60 @@
         </header>
 
         <div class="row">
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("african_american_history.jpg", :alt => "African American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
-
+              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=African+American+History&q=African+American+History&search_field=all_fields">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("african_american_history.jpg", :alt => "African American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
                 <h3 class="h4">
-                    <a class="g-color-white" href="#">African American History</a>
+                    <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=African+American+History&q=African+American+History&search_field=all_fields">African American History</a>
                   </h3>
               </header>
             </article>
           </div>
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("asian_american_history.jpg", :alt => "American Indian History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=American+Indian+History" >
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("native_american.jpg", :alt => "American Indian History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
                 <h3 class="h4">
-                    <a class="g-color-white" href="#">American Indian History</a>
+                    <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=American+Indian+History">American Indian History</a>
                   </h3>
               </header>
             </article>
           </div>
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("asian_american_history.jpg", :alt => "Arts, Literature, Music, and Film History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=Arts%2C+Literature%2C+Music%2C+and+Film">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("arts.jpg", :alt => "Arts, Literature, Music, and Film History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
                 <h3 class="h4">
-                    <a class="g-color-white" href="#">Arts, Literature, Music, and Film</a>
+                    <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=Arts%2C+Literature%2C+Music%2C+and+Film">Arts, Literature, Music, and Film</a>
                   </h3>
               </header>
             </article>
           </div>
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <!-- <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("asian_american_history.jpg", :alt => "Asian American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("asian_american_history.jpg", :alt => "Asian American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
                 <h3 class="h4">
@@ -64,17 +71,19 @@
                   </h3>
               </header>
             </article>
-          </div>
+          </div> -->
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("business.jpg", :alt => "Business History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=Business">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("business.jpg", :alt => "Business History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                    <a class="g-color-white" href="#">Business</a>
+                    <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=Business">Business</a>
                   </h3>
               </header>
 
@@ -82,25 +91,29 @@
             </article>
           </div>
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "Community History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=Community+History">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("community.jpg", :alt => "Community History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                    <a class="g-color-white" href="#">Community History</a>
+                    <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=Community+History">Community History</a>
                   </h3>
               </header>
             </article>
           </div>
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <!-- <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "Education Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("community.jpg", :alt => "Education Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
@@ -108,13 +121,15 @@
                   </h3>
               </header>
             </article>
-          </div>
+          </div> -->
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <!-- <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "German Émigrés Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("community.jpg", :alt => "German Émigrés Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
@@ -122,13 +137,15 @@
                   </h3>
               </header>
             </article>
-          </div>
+          </div> -->
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <!-- <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "Iranian Americans Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("community.jpg", :alt => "Iranian Americans Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
@@ -136,13 +153,15 @@
                   </h3>
               </header>
             </article>
-          </div>
+          </div> -->
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <!-- <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "Journalism Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("community.jpg", :alt => "Journalism Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+                <a href="">
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
@@ -150,13 +169,15 @@
                   </h3>
               </header>
             </article>
-          </div>
+          </div> -->
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <!-- <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "Latina and Latino History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("community.jpg", :alt => "Latina and Latino History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
@@ -164,13 +185,15 @@
                   </h3>
               </header>
             </article>
-          </div>
+          </div> -->
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <!-- <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "Military History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("community.jpg", :alt => "Military History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
@@ -178,80 +201,90 @@
                   </h3>
               </header>
             </article>
-          </div>
+          </div> -->
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "Politics and Government Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=Politics+and+Government">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("government.jpg", :alt => "Politics and Government Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                    <a class="g-color-white" href="#">Politics and Government</a>
+                    <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=Politics+and+Government">Politics and Government</a>
                   </h3>
               </header>
             </article>
           </div>
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("sports.jpg", :alt => "Sports Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=Sports">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("sports.jpg", :alt => "Sports Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                    <a class="g-color-white" href="#">Sports</a>
+                  <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=Sports">Sports</a>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=UCLA+and+University+of+California+History">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("UCLA.jpg", :alt => "UCLA and University of California History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                    <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=UCLA+and+University+of+California+History">UCLA and University of California History</a>
                   </h3>
               </header>
             </article>
           </div>
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "UCLA and University of California History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=Urban+Planning+and+Land+Use">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("planning.jpg", :alt => "Urban Planning and Land Use Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                    <a class="g-color-white" href="#">UCLA and University of California History</a>
+                    <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=Urban+Planning+and+Land+Use">Urban Planning and Land Use</a>
                   </h3>
               </header>
             </article>
           </div>
 
-          <div class="col-lg-4 col-md-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "Urban Planning and Land Use Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
+              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=Donated+Oral+Histories">
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("donated.jpg", :alt => "Donated Oral Histories Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              </a>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                    <a class="g-color-white" href="#">Urban Planning and Land Use</a>
-                  </h3>
-              </header>
-            </article>
-          </div>
-
-          <div class="col-lg-4 col-md-6 g-mb-30">
-            <article class="u-block-hover u-shadow-v21 rounded">
-              <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                <%= image_tag("community.jpg", :alt => "Donated Oral Histories Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-              </figure>
-
-              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
-                <h3 class="h4">
-                    <a class="g-color-white" href="#">Donated Oral Histories</a>
+                    <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=Donated+Oral+Histories">Donated Oral Histories</a>
                   </h3>
               </header>
             </article>
           </div>
 
         </div>
-      </div>
+      <!-- </div> -->
     </section>
-  </div>
+
     <!-- End Our Collections -->
