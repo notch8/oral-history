@@ -3,9 +3,23 @@ body {
   font-family: Verdana, "Open Sans", Helvetica, Arial, sans-serif !important;
 }
 
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('glyphicons-halflings-regular.eot');
+  src: url('glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('glyphicons-halflings-regular.woff') format('woff'), url('glyphicons-halflings-regular.ttf') format('truetype'), url('glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.dropdown-toggle::after {
+  content: '';
+}
+
 a {
   color: #3284bf;
 }
+a:hover, a:focus {
+  color: #1c6897;
+}
+
 
 .hero-ribbon-gray.g-bg-black-opacity-0_6 {
   background-color: rgba(102,102,102,.8) !important;
@@ -56,14 +70,27 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   background-color: transparent;
 }
 
+.pagination > li > a, .pagination > li > span {
+  color: #3284bf;
+}
+
+.pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus, .pagination > .active > span, .pagination > .active > span:hover, .pagination > .active > span:focus {
+  background-color: #3284bf;
+  border-color: #3284bf;
+}
+
 /* NAVIGATION */
 
 .navbar {
-  margin-bottom: 0 !important;
+  margin-bottom: 0;
+  border: 1px solid #1e4b87;
+
 }
 
 .navbar + .navbar {
-  margin-top:0 !important;
+  margin-top:0;
+  margin-bottom: 10px;
+  border: none;
 }
 
 .g-bg-blue {
@@ -115,10 +142,19 @@ section.g-pos-rel.hero-image-block {
   width: 100% !important;
   margin: 0;
   padding: 0;
+  min-height: 840px;
 }
 
 span.input-group-addon.for-search-field {
   background-color: white;
+}
+
+.input-group .form-control:active, .input-group .form-control:focus, .input-group .form-control:hover {
+  z-index: 2;
+}
+
+.form-control:focus, .custom-select:focus {
+    border-color: #3284bf;
 }
 
 /* FOOTER */
@@ -127,27 +163,33 @@ span.input-group-addon.for-search-field {
     background: #ececec;
     color: #333333;
     padding: 50px 1.25rem;
-    margin: auto;
 }
 
-.footer-wrapper {
-  padding: 0 1.25rem;
+.footer-logo {
+  height: 35px;
+  margin-top:30px;
 }
 
 .border-right {
-  border-right: 1px solid #a2a2a2;
-  padding: 0 1.25rem;
+  padding-right: 1.5rem;
+  padding-left: 0;
+}
+
+.border-left {
+  border-left: 1px solid #a2a2a2;
+  margin-left: -20px;
 }
 
 a.footer-link {
   color: #1e4b87;
   font-weight: bold;
   line-height: 2.25;
-  padding-left: 20px;
+  font-size: 12px;
 }
 
 .padding-top {
-  padding-top: 30px;
+  padding-top: 80px;
+  padding-bottom: 20px;
 }
 
 /* UTILITY STYLES */
@@ -159,15 +201,87 @@ a.footer-link {
   margin-bottom: 50px;
 }
 
+.padding-left-50 {
+  padding-left: 50px;
+}
+
 /* SEARCH RESULTS PAGE */
 
 /* SIDEBAR FACETS */
+// #sidebar {
+//   padding-left: 50px;
+// }
+
+
+
+/* HIGHLIGHT COLORS */
+
+::-moz-selection {
+  color: #fff;
+  background-color: #ffe800; }
+
+::selection {
+  color: #fff;
+  background-color: #ffe800; }
+
+  /* FACETS */
+
+.panel-success > .panel-heading, .facet_limit-active > .panel-heading {
+    color: #fff;
+    background-color: #3284bf;
+    border-color: #3284bf;
+}
+
+.panel-success, .facet_limit-active {
+    border-color: #3284bf;
+}
+
+.text-success, .facet-values li .selected {
+    color: #ffe800;
+}
+
+.panel-success > .panel-heading + .panel-collapse > .panel-body, .facet_limit-active > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #3284bf;
+}
+
+.facet_limit-active > .panel-heading.collapse-toggle .panel-title:after {
+  color: #fff
+}
+
+.text-muted, .appliedFilter .filterName:after, .facet-values .remove, .search_history .filterName, .search_history .filterSeparator {
+    color: #ffe800 !important;
+}
+
+/* SHOW PAGE */
+#document.document h1{
+  margin-top: 50px;
+  padding-bottom: 20px;
+}
+
 #sidebar {
-  padding-left: 50px;
+  .panel-body {
+    padding: 0 15px;
+
+    .bookmark_toggle {
+      padding: 0 15px;
+    }
+    .nav > li > a {
+      padding:5px 15px;
+    }
+  }
+}
+
+.dl-invert dt {
+  font-weight: 700;
+}
+
+dl.dl-invert.dl-horizontal.show-page {
+  margin-top: 380px;
 }
 
 
 /* PLAYER */
+
 .play-button {
   position: relative;
   display: inline-block;
@@ -192,6 +306,15 @@ a.footer-link {
   }
 }
 .wave-box {
-  height: 378px;
-  background-color: #9cbadc;
+  height: 340px;
+  background-image: image-url('ucla_media_background.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* STATIC PAGES */
+
+.u-heading-v1-4::before {
+  top:70%;
 }
