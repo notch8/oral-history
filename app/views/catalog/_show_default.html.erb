@@ -7,6 +7,8 @@
   <% parsed_children.each do |child| %>
     <%= child %>
   <% end %>
+
+  <%= react_component('PlayButton', url: "/lastdance.mp3", image: "/avatar.png") %>
   <% doc_presenter = show_presenter(document) %>
   <%# default partial to display solr document fields in catalog show view -%>
   <dl class="dl-horizontal  dl-invert show-page">
