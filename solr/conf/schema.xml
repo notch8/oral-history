@@ -636,5 +636,5 @@
  </similarity>
  -->
 
-
+ <field name="_root_" type="int" indexed="true" stored="true" multiValued="false" required="false"/>
 </schema>

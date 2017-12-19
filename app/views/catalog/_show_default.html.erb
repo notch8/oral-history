@@ -2,7 +2,11 @@
   <%= javascript_pack_tag "audio_player" %>
 <% end %>
 <div class="container">
-  <div id='player'></div>
+  <% parsed_children = children_from(document) %>
+  <%= react_component('AudioPlayer', url: parsed_children.try(:first).try(:[], "url_t"), image: "/avatar.png") %>
+  <% parsed_children.each do |child| %>
+    <%= child %>
+  <% end %>
   <% doc_presenter = show_presenter(document) %>
   <%# default partial to display solr document fields in catalog show view -%>
   <dl class="dl-horizontal  dl-invert show-page">

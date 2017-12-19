@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import Wavesurfer from 'react-wavesurfer';
+import WebpackerReact from 'webpacker-react'
 
 class AudioPlayer extends React.Component {
   constructor(props) {
@@ -61,10 +62,11 @@ class AudioPlayer extends React.Component {
       height: 340,
       barWidth: 2,
     };
+    var playPause = (this.state.playing ? 'pause-button' : 'play-button')
     return (
       <div className="player col-xs-12">
         <div className="col-xs-4">
-          <a onClick={this.handleTogglePlay} className="play-button">
+          <a onClick={this.handleTogglePlay} className={playPause}>
             <img src={this.props.image} className='img-responsive' />
           </a>
         </div>
@@ -84,9 +86,10 @@ class AudioPlayer extends React.Component {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(
-    <AudioPlayer url="/lastdance.mp3" image="/avatar.png" />,
-    document.getElementById('player'),
-  )
-})
+WebpackerReact.setup({AudioPlayer})
+//document.addEventListener('DOMContentLoaded', () => {
+//  ReactDOM.render(
+//    <AudioPlayer url="/lastdance.mp3" image="/avatar.png" />,
+//    document.getElementById('player'),
+//  )
+//})
