@@ -15,6 +15,7 @@
 //
 // Required by Blacklight
 //= require jquery
+//= require bootstrap-sprockets
 //= require blacklight/blacklight
 
-//= require_tree .
+//= require_tree ./main
