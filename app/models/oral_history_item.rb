@@ -65,16 +65,20 @@ class OralHistoryItem
                   history.attributes["title_t"] << title_text
                 end
               end
-            elsif child.name == "abstract" || child.name == "accessCondition"
+            elsif child.name == "abstract" ||
+                  child.name == "extent"
               history.attributes[child.name + "_display"] = child.text
               history.attributes[child.name + "_t"] ||= []
               history.attributes[child.name + "_t"] << child.text
             elsif child.name == "typeOfResource"
-              history.attributes[child.name + "_display"] = child.text
-              history.attributes[child.name + "_t"] ||= []
-              history.attributes[child.name + "_t"] << child.text
-              history.attributes[child.name + "_facet"] ||= []
-              history.attributes[child.name + "_facet"] << child.text
+              history.attributes["type_of_resource_display"] = child.text
+              history.attributes["type_of_resource_t"] ||= []
+              history.attributes["type_of_resource_t"] << child.text
+              history.attributes["type_of_resource_facet"] ||= []
+              history.attributes["type_of_resource_facet"] << child.text
+            elsif child.name == "accessCondition"
+              history.attributes["rights_t"] ||= []
+              history.attributes["rights_t"] << child.text
             elsif child.name == 'language'
               child.elements.each('mods:languageTerm') do |e|
                 history.attributes["language_facet"] = LanguageList::LanguageInfo.find(e.text).try(:name)
@@ -91,6 +95,10 @@ class OralHistoryItem
                 history.attributes["author_display"] = child.elements['mods:namePart'].text
                 history.attributes["author_t"] ||= []
                 history.attributes["author_t"] << child.elements['mods:namePart'].text
+              elsif child.elements['mods:role/mods:roleTerm'].text == "interviewee"
+                history.attributes["interviewee_display"] = child.elements['mods:namePart'].text
+                history.attributes["interviewee_t"] ||= []
+                history.attributes["interviewee_t"] << child.elements['mods:namePart'].text
               end
             elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
               history.attributes["children_t"] ||= []
@@ -103,7 +111,14 @@ class OralHistoryItem
                 "description_t": child.elements['mods:tableOfContents'].text
               }
               history.attributes["children_t"] << child_document.to_json
-
+            elsif child.name == "note"
+              if child.attributes['biographical']
+                history.attributes["biographical_display"] = child.text
+                history.attributes["biographical_t"] ||= []
+                history.attributes["biographical_t"] << child.text
+              end
+              history.attributes["description_t"] ||= []
+              history.attributes["description_t"] << child.text
 #           elsif child.name == "date"
 #              if child.content.length == 4
 #                pub_date = child.content.to_i
