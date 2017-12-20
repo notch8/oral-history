@@ -283,6 +283,8 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
+    webpacker-react (0.3.2)
+      webpacker
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
@@ -320,6 +322,7 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   web-console (>= 3.3.0)
   webpacker!
+  webpacker-react (~> 0.3.2)
 
 BUNDLED WITH
    1.16.0

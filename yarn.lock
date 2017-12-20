@@ -4396,9 +4396,9 @@ react-dom@^16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-wavesurfer@^0.8.6:
+"react-wavesurfer@git+https://github.com/notch8/react-wavesurfer.git":
   version "0.8.6"
-  resolved "https://registry.yarnpkg.com/react-wavesurfer/-/react-wavesurfer-0.8.6.tgz#da05f3f501e566a63853f9babec45a5251111538"
+  resolved "git+https://github.com/notch8/react-wavesurfer.git#3e3e01c336fc81c10df8c3d89cb7e2aa6a41310b"
 
 react@^16.2.0:
   version "16.2.0"
@@ -5495,6 +5495,10 @@ webpack@^3.5.5:
     watchpack "^1.4.0"
     webpack-sources "^1.0.1"
     yargs "^8.0.2"
+
+webpacker-react@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/webpacker-react/-/webpacker-react-0.3.2.tgz#18c417a3fd51978d0ca98b62a47454d800754e09"
 
 websocket-driver@>=0.5.1:
   version "0.7.0"

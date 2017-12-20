@@ -8,7 +8,7 @@ class OralHistoryItem
   def self.import(args)
     progress = args[:progress] || true
     limit = args[:limit] || 20000000  # essentially no limit
-    url = args[:url] || "http://digital2.library.ucla.edu/oai2_0.do"
+    url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
     set = args[:set] || "oralhistory"
     client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
     response = client.list_records(set: set, metadata_prefix: 'mods')
@@ -37,8 +37,9 @@ class OralHistoryItem
 
 
       if record.header
-       if record.header.identifier
-          history.attributes[:id] = record.header.identifier.split('/').last
+        if record.header.identifier
+          history.attributes['id_t'] = record.header.identifier.split('/').last
+          history.attributes['id'] = total # Digest::MD5.hexdigest(record.header.identifier).to_i(16)
         end
         if record.header.datestamp
           history.attributes[:timestamp] = Time.parse(record.header.datestamp)
@@ -53,14 +54,15 @@ class OralHistoryItem
 
             if child.name == "titleInfo"
               child.elements.each('mods:title') do |title|
-                if(child.attributes["type"] == "alternative")
-                  history.attributes["subtitle_display"] ||= child.text
+                title_text = title.text.to_s.strip
+                if(child.attributes["type"] == "alternative") && title_text.size > 0
+                  history.attributes["subtitle_display"] ||= title_text
                   history.attributes["subtitle_t"] ||= []
-                  history.attributes["subtitle_t"] << child.text
-                else
-                  history.attributes["title_display"] ||= child.text
+                  history.attributes["subtitle_t"] << title_text
+                elsif title_text.size > 0
+                  history.attributes["title_display"] ||= title_text
                   history.attributes["title_t"] ||= []
-                  history.attributes["title_t"] << child.text
+                  history.attributes["title_t"] << title_text
                 end
               end
             elsif child.name == "abstract" || child.name == "accessCondition"
@@ -90,6 +92,17 @@ class OralHistoryItem
                 history.attributes["author_t"] ||= []
                 history.attributes["author_t"] << child.elements['mods:namePart'].text
               end
+            elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
+              history.attributes["children_t"] ||= []
+              child_document = {
+                'id': Digest::MD5.hexdigest(child.elements['mods:identifier'].text).to_i(16),
+                "id_t": child.elements['mods:identifier'].text,
+                "url_t": child.attributes['href'],
+                "title_t": child.elements['mods:titleInfo/mods:title'].text,
+                "order_i": child.elements['mods:part'].attributes['order'],
+                "description_t": child.elements['mods:tableOfContents'].text
+              }
+              history.attributes["children_t"] << child_document.to_json
 
 #           elsif child.name == "date"
 #              if child.content.length == 4
@@ -99,8 +112,6 @@ class OralHistoryItem
 #              end
 #              history.attributes["pub_date"] = pub_date
 #              history.attributes["pub_date_sort"] = pub_date
-#            elsif child.name == "language"
-#              history.attributes["language_facet"] = LanguageList::LanguageInfo.find(child.content).try(:name)
             #elsif child.name == "coverage" # TODO
             #  child_name = child.name + "_t"
             #  history.attributes[child_name] ||= []
