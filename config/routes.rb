@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'pages/about', to: 'pages#about', as: 'about'
-
-  get 'pages/conferences', to: 'pages#conferences', as: 'conferences'
-
   get 'pages/contact', to: 'pages#contact', as: 'contact'
 
   get 'pages/permissions', to: 'pages#permissions', as: 'permissions'

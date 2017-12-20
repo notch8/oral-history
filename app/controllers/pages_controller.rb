@@ -3,12 +3,6 @@ class PagesController < ApplicationController
   include Blacklight::Catalog
   include Blacklight::Marc::Catalog
 
-  def about
-  end
-
-  def conferences
-  end
-
   def contact
   end
 

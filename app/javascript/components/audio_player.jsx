@@ -53,16 +53,21 @@ export default class AudioPlayer extends React.Component {
 
   handleNewUrl(e) {
     this.setState({
-      audioFile: e.detail.url
+      audioFile: e.detail.url,
+      pos: 0,
+      playing: false
     })
+    setTimeout(function() {
+      this.handleTogglePlay() // TODO is this timeout long enough? is there a better way??
+    }.bind(this), 3000)
   }
 
   componentDidMount() {
-    window.addEventListener('newurl', this.handleNewUrl)
+    window.addEventListener('newurl', this.handleNewUrl.bind(this))
   }
 
   componentWillUnmount() {
-    window.removeEventListener('newurl', this.handleNewUrl)
+    window.removeEventListener('newurl', this.handleNewUrl.bind(this))
   }
 
   render() {
