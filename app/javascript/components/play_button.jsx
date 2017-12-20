@@ -15,13 +15,10 @@ export default class PlayButton extends React.Component {
 
   render(){
     return(
-      <div className="player col-xs-4">
-        <div className="col-xs-4">
-          <a onClick={this.handleOnClick.bind(this)}>
-            <img src={this.props.image} className='img-responsive' />
-            PLAY
-          </a>
-        </div>
+      <div className="player">
+        <a className="play-icon" onClick={this.handleOnClick.bind(this)}>
+          <i className="fa fa-play-circle-o g-font-size-18"></i>
+        </a>
       </div>
     )
   }

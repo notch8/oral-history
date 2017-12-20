@@ -237,7 +237,7 @@ a.footer-link {
 }
 
 .text-success, .facet-values li .selected {
-    color: #ffe800;
+    color: #1e4b87;
 }
 
 .panel-success > .panel-heading + .panel-collapse > .panel-body, .facet_limit-active > .panel-heading + .panel-collapse > .panel-body {
@@ -275,9 +275,29 @@ a.footer-link {
   font-weight: 700;
 }
 
-dl.dl-invert.dl-horizontal.show-page {
-  margin-top: 380px;
+.d-block {
+    display: block!important;
 }
+
+.u-accordion-brd-primary .u-accordion__header [aria-expanded="true"] {
+  border-color: #3284bf !important;
+}
+
+.u-accordion-color-primary .u-accordion__header [aria-expanded="true"] {
+  color: #3284bf !important;
+}
+
+.u-accordion__control-icon i:nth-child(1) {
+  display: none; }
+
+.collapsed .u-accordion__control-icon i:nth-child(1) {
+  display: inline; }
+
+.u-accordion__control-icon i:nth-child(2) {
+  display: inline; }
+
+.collapsed .u-accordion__control-icon i:nth-child(2) {
+  display: none; }
 
 
 /* PLAYER */
@@ -289,13 +309,13 @@ dl.dl-invert.dl-horizontal.show-page {
 
   &:before {
     position:absolute;
-    top: 50%;
-    left: 50%;
+    top: 85%;
+    left: 85%;
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
     content: "\f28c";
     font-family: FontAwesome;
-    font-size: 100px;
+    font-size: 80px;
     color: #fff;
     opacity: .8;
     text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
@@ -313,13 +333,13 @@ dl.dl-invert.dl-horizontal.show-page {
 
   &:before {
     position:absolute;
-    top: 50%;
-    left: 50%;
+    top: 85%;
+    left: 85%;
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
     content: "\f01d";
     font-family: FontAwesome;
-    font-size: 100px;
+    font-size: 80px;
     color: #fff;
     opacity: .8;
     text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
@@ -334,6 +354,12 @@ dl.dl-invert.dl-horizontal.show-page {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+.play-icon {
+  float: right;
+  padding-right: 20px;
+  margin-top: -1.2rem;
 }
 
 /* STATIC PAGES */
