@@ -106,18 +106,19 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'subtitle_display', label: 'Subtitle'
-    config.add_show_field 'subject_topic_facet', label: 'Subject', helper_method: :split_multiple
+    config.add_show_field 'series_facet', label: 'Series'
+    config.add_show_field 'subject_topic_facet', label: 'Topic', helper_method: :split_multiple
     config.add_show_field 'contributor_display', label: 'Interviewer'
     config.add_show_field 'author_display', label: 'Interviewer'
     config.add_show_field 'interviewee_display', label: 'Interviewee'
     config.add_show_field 'description_t', label: 'Description', helper_method: :split_multiple
     config.add_show_field 'publisher_display', label: 'Publisher'
     config.add_show_field 'pub_date', label: 'Date'
-    config.add_show_field 'type_of_resource_display', label: 'Type of Resource / Collection'
+    config.add_show_field 'type_of_resource_display', label: 'Type of Resource'
     config.add_show_field 'extent_display', label: 'Length / Pages'
     config.add_show_field 'language_facet', label: 'Language'
-    config.add_show_field 'coverage_display', label: 'Chronological Period Covered'
-    config.add_show_field 'rights_t', label: 'Copyright'
+    config.add_show_field 'coverage_display', label: 'Period Covered'
+    config.add_show_field 'rights_display', label: 'Copyright'
 
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'
