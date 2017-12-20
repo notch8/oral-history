@@ -40,7 +40,7 @@
       <div class="card rounded-0 g-brd-none">
         <div id="accordion-10-heading-last" class="u-accordion__header g-pa-0" role="tab">
           <h5 class="mb-0 g-font-weight-600 g-font-size-default g-brd-bottom g-brd-gray-light-v4 g-pa-15-0">
-            <a class="d-block g-color-main g-text-underline--none--hover" href="#accordion-10-body-last" data-toggle="collapse" data-parent="#accordion-10" aria-expanded="true" aria-controls="accordion-10-body-last">
+            <a class="d-block g-color-main g-text-underline--none--hover collapsed" href="#accordion-10-body-last" data-toggle="collapse" data-parent="#accordion-10" aria-expanded="false" aria-controls="accordion-10-body-last">
               <span class="u-accordion__control-icon g-ml-10">
                 <i class="fa fa-angle-right"></i>
                 <i class="fa fa-angle-down"></i>
@@ -51,7 +51,7 @@
             </a>
           </h5>
         </div>
-        <div id="accordion-10-body-last" role="tabpanel" aria-labelledby="accordion-10-heading-last">
+        <div id="accordion-10-body-last" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-last">
           <div class="u-accordion__body g-color-gray-dark-v5 g-pa-15-0">
             <% doc_presenter = show_presenter(document) %>
             <%# default partial to display solr document fields in catalog show view -%>
