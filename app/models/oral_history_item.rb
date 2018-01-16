@@ -19,23 +19,6 @@ class OralHistoryItem
     total = 0
     records = response.full.each do |record|
       history = OralHistoryItem.new
-      history.attributes["series_facet"] = [
-        '"The Godfather of UCLA": Regent Edward A. Dickson',
-        'African American Architects of Los Angeles',
-        'African American Artists of Los Angeles',
-        'African Americans in Entertainment and Media',
-        'Allensworth Community',
-        'American Indian Relocation Project',
-        'American Indian Studies M200A Student Interviews',
-        'Angela Davis Case',
-        'Art History - Oral Documentation Project',
-        'Baseball Race, and Los Angeles: An Oral History of Negro Leaguers of Southern California',
-        'Beyond Central',
-        'Black Educators in Los Angeles, 1950-2000',
-        'Black Leadership in Los Angeles'
-      ][rand * 13]  # temp series for facet testing
-
-
       if record.header
         if record.header.identifier
           history.attributes['id_t'] = record.header.identifier.split('/').last
@@ -81,6 +64,7 @@ class OralHistoryItem
             elsif child.name == 'language'
               child.elements.each('mods:languageTerm') do |e|
                 history.attributes["language_facet"] = LanguageList::LanguageInfo.find(e.text).try(:name)
+                history.attributes["language_sort"] = LanguageList::LanguageInfo.find(e.text).try(:name)
               end
             elsif child.name == "subject"
               child.elements.each('mods:topic') do |e|
@@ -89,7 +73,7 @@ class OralHistoryItem
                 history.attributes["subject_t"] ||= []
                 history.attributes["subject_t"] << e.text
               end
-            elsif child.name == "role"
+            elsif child.name == "name"
               if child.elements['mods:role/mods:roleTerm'].text == "interviewer"
                 history.attributes["author_display"] = child.elements['mods:namePart'].text
                 history.attributes["author_t"] ||= []
@@ -98,6 +82,7 @@ class OralHistoryItem
                 history.attributes["interviewee_display"] = child.elements['mods:namePart'].text
                 history.attributes["interviewee_t"] ||= []
                 history.attributes["interviewee_t"] << child.elements['mods:namePart'].text
+                history.attributes["interviewee_sort"] = child.elements['mods:namePart'].text
               end
             elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
               history.attributes["children_t"] ||= []
@@ -110,6 +95,9 @@ class OralHistoryItem
                 "description_t": child.elements['mods:tableOfContents'].text
               }
               history.attributes["children_t"] << child_document.to_json
+            elsif child.name == "relatedItem" && child.attributes['type'] == "series"
+              history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
+              history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text
             elsif child.name == "note"
               if child.attributes['biographical']
                 history.attributes["biographical_display"] = child.text
