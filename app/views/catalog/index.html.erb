@@ -12,24 +12,25 @@
                   <span class="hero-ribbon-blue g-bg-primary-dark-v3 g-px-5">UCLA Library</span><br>
                   <span class="hero-ribbon-blue g-bg-primary-dark-v3 g-px-5">Center for </span><br>
                   <span class="hero-ribbon-blue g-bg-primary-dark-v3 g-px-5">Oral History Research</span>
-              </h2>
+                </h2>
               <h3 class="h4 g-color-white">
                   <span class="hero-ribbon-gray g-bg-black-opacity-0_6 g-px-5">Documenting the histories of Los Angeles</span><br>
                   <span class="hero-ribbon-gray g-bg-black-opacity-0_6 g-px-5"></span><br>
 
-              </h3>
+                </h3>
             </div>
             <div class="col-lg-6 g-mt-50">
               <%= render_search_bar  %>
+
             </div>
           </div>
         </div>
       </div>
     </section>
   </div>
-  <!-- End Promo Block -->
+    <!-- End Promo Block -->
 
-  <!--  Hero Info Block -->
+    <!--  Hero Info Block -->
   <div class="hero-info">
     <!-- Hero Info #01 -->
     <section class="text-center ">
@@ -51,44 +52,57 @@
     </section>
     <!-- End Hero Info #01 -->
   </div>
-  <!-- End hero info block -->
+    <!-- End hero info block -->
+
 <% end %>
 <% unless has_search_parameters? %>
   <div class="container-fluid">
     <div id="sidebar" class="<%= sidebar_classes %> padding-left-50">
-      <%= render 'search_sidebar' %>
-    </div>
+    <%= render 'search_sidebar' %>
   </div>
 <% else %>
   <div class="container">
     <div id="sidebar" class="<%= sidebar_classes %>">
-      <%= render 'search_sidebar' %>
-    </div>
+    <%= render 'search_sidebar' %>
   </div>
 <% end %>
 
-<div id="content" class="<%= main_content_classes %>">
-  <% unless has_search_parameters? %>
-    <%# if there are no input/search related params, display the "home" partial -%>
-    <%= render 'home' %>
-    <%= render 'shared/sitelinks_search_box' %>
-  <% else %>
-    <%= render 'search_results' %>
-  <% end %>
+  <div id="content" class="<%= main_content_classes %>">
+    <% unless has_search_parameters? %>
+      <%# if there are no input/search related params, display the "home" partial -%>
+      <%= render 'home' %>
+      <%= render 'shared/sitelinks_search_box' %>
+    <% else %>
+      <%= render 'search_results' %>
+    <% end %>
+  </div>
 </div>
 
-<div class="<%= main_content_classes %>">
-  <h3>ACCESSING INTERVIEWS</h3>
-  <p>
-    The transcripts and recordings for many of COHR’s interviews are available on this website under the individual interview entries.
-  </p>
-  <p>
-    Transcripts and recordings not available here can be accessed in person at UCLA Library Special Collections. To have materials paged to the Special Collections reading room, users can register with the UCLA Library Special Collections Request System and then click on "Request an Item." The "Call Number/Collection Number" that the form asks for can be found in the entry for the interview in the UCLA Library Catalog.
-  </p>
-  <p>
-    If donation agreements allow, interview transcripts not available through this website can be provided to users as PDFs. To request a PDF, please register with the UCLA Library Special Collections Request System and request "Photoduplication."
-  </p>
-  <p>
-    All transcripts and recordings on this site are protected under the copyright law of the United States (Title 17, United States Code) and are being made available for private study, scholarship, and research purposes only. Reproduction, dissemination, or quotation of the materials beyond that allowed by fair use requires the written permission of the head of UCLA Library’s Center for Oral History Research. Requests to use should be submitted through UCLA Library Special Collections Request System under  "Photoduplication."
-  </p>
+<div class='container-fluid'>
+  <div class="col-md-7 col-sm-6 col-md-offset-1 col-sm-offset-1">
+    <div class="u-heading-v2-5--bottom g-brd-primary text-center ">
+      <h3>ACCESSING INTERVIEWS</h3>
+    </div>
+    <p>
+      The transcripts and recordings for many of COHR’s interviews are available on this website under the individual interview entries.
+    </p>
+    <p>
+      Transcripts and recordings not available here can be accessed in person at UCLA Library Special Collections. To have materials paged to the Special Collections reading room, users can register with the <a href="https://speccoll.library.ucla.edu/">UCLA Library Special Collections Request System</a> and then click on "Request an Item." The "Call Number/Collection Number" that the form asks for can be found in the entry for the interview in the <a href="https://catalog.library.ucla.edu/vwebv/searchBasic">UCLA Library Catalog</a>.
+    </p>
+    <p>
+      If donation agreements allow, interview transcripts not available through this website can be provided to users as PDFs. To request a PDF, please register with the <a href="https://speccoll.library.ucla.edu/">UCLA Library Special Collections Request System</a> and request "Photoduplication."
+    </p>
+    <p>
+      All transcripts and recordings on this site are protected under the copyright law of the United States (Title 17, United States Code) and are being made available for private study, scholarship, and research purposes only. Reproduction, dissemination, or quotation of the materials beyond that allowed by fair use requires the written permission of the head of UCLA Library’s Center for Oral History Research. Requests to use should be submitted through <a href="https://speccoll.library.ucla.edu/">UCLA Library Special Collections Request System</a> under  "Photoduplication."
+    </p>
+  </div>
+
+  <div class="col-md-3 col-sm-4">
+    <div class="u-heading-v2-5--bottom g-brd-primary text-center ">
+      <h3>ORAL HISTORY TRAINING</h3>
+    </div>
+    <p>
+Interested in doing an oral history project? The Center for Oral History Research offers a biannual workshop that provides an introduction to the basics of oral history methodology. 
+Find further information <a href="/pages/training">here</a>
+    </p>
 </div>
