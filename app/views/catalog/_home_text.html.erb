@@ -12,11 +12,11 @@
         <div class="row">
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <a href="/?f%5Bsubject_topic_facet%5D%5B%5D=African+American+History&q=African+American+History&search_field=all_fields">
+              <%= link_to root_path(subject_topic_facet: 'African American History') do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
                   <%= image_tag("african_american_history.jpg", :alt => "African American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
-              </a>
+              <% end %>
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
                 <h3 class="h4">
                     <a class="g-color-white" href="/?f%5Bsubject_topic_facet%5D%5B%5D=African+American+History&q=African+American+History&search_field=all_fields">African American History</a>
