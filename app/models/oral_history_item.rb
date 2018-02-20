@@ -28,7 +28,7 @@ class OralHistoryItem
           history.attributes[:timestamp] = Time.parse(record.header.datestamp)
         end
       end
-
+      history.attributes["audio_b"] = false
       if record.metadata
         record.metadata.children.each do |set|
           next if set.class == REXML::Text
@@ -94,12 +94,15 @@ class OralHistoryItem
                 "order_i": child.elements['mods:part'].attributes['order'],
                 "description_t": child.elements['mods:tableOfContents'].text
               }
+              if child_document["url_t"].present?
+                history.attributes["audio_b"] = true
+              end
               history.attributes["children_t"] << child_document.to_json
             elsif child.name == "relatedItem" && child.attributes['type'] == "series"
               history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
               history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text
             elsif child.name == "note"
-              if child.attributes['biographical']
+              if child.attributes['type'] == 'biographical'
                 history.attributes["biographical_display"] = child.text
                 history.attributes["biographical_t"] ||= []
                 history.attributes["biographical_t"] << child.text

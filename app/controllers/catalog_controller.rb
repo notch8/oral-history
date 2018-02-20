@@ -79,8 +79,8 @@ class CatalogController < ApplicationController
     #config.add_facet_field 'subject_geo_facet', label: 'Region'
 #    config.add_facet_field 'subject_era_facet', label: 'Era'
     config.add_facet_field 'series_facet', label: "Series"
-    config.add_facet_field 'type_of_resource_facet', label: 'Type of Resource'
-
+    #config.add_facet_field 'type_of_resource_facet', label: 'Type of Resource'
+    config.add_facet_field 'audio_b', label: 'Has Audio'
     #config.add_facet_field 'example_pivot_field', label: 'Pivot Field', :pivot => ['format', 'language_facet']
 
 #    config.add_facet_field 'example_query_facet_field', label: 'Publish Date', :query => {
@@ -106,7 +106,7 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'subtitle_display', label: 'Subtitle'
-    config.add_show_field 'series_facet', label: 'Series'
+    config.add_show_field 'series_facet', label: 'Series', link_to_search: "series_facet"
     config.add_show_field 'subject_topic_facet', label: 'Topic', helper_method: :split_multiple
     config.add_show_field 'contributor_display', label: 'Interviewer'
     config.add_show_field 'author_display', label: 'Interviewer'
@@ -119,7 +119,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'language_facet', label: 'Language'
     config.add_show_field 'coverage_display', label: 'Period Covered'
     config.add_show_field 'rights_display', label: 'Copyright'
-
+    config.add_show_field 'audio_b', label: 'Audio'
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'
  #   config.add_show_field 'url_fulltext_display', label: 'URL'
