@@ -25,9 +25,6 @@ ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
 
 ADD Gemfile* $APP_HOME/
 RUN bundle check || bundle install
-ADD package.json* $APP_HOME/
-ADD yarn.lock $APP_HOME/
-RUN /sbin/setuser app yarn install
 
 RUN touch /var/log/worker.log && chmod 666 /var/log/worker.log
 RUN mkdir /etc/service/worker
@@ -37,6 +34,7 @@ RUN chmod +x /etc/service/worker/run
 
 COPY . $APP_HOME
 RUN chown -R app $APP_HOME
+RUN /sbin/setuser app yarn install
 
 # Asset complie and migrate if prod, otherwise just start nginx
 ADD ops/nginx.sh /etc/service/nginx/run
