@@ -94,7 +94,7 @@ class OralHistoryItem
                 "order_i": child.elements['mods:part'].attributes['order'],
                 "description_t": child.elements['mods:tableOfContents'].text
               }
-              if child_document["url_t"].present?
+              if child.attributes['href'].present?
                 history.attributes["audio_b"] = true
               end
               history.attributes["children_t"] << child_document.to_json

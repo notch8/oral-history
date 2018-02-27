@@ -25,7 +25,9 @@ ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
 
 ADD Gemfile* $APP_HOME/
 RUN bundle check || bundle install
-RUN yarn install
+ADD package.json* $APP_HOME/
+ADD yarn.lock $APP_HOME/
+RUN /sbin/setuser app yarn install
 
 RUN touch /var/log/worker.log && chmod 666 /var/log/worker.log
 RUN mkdir /etc/service/worker
