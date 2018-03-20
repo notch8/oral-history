@@ -37,6 +37,9 @@ services:
     tty: true
     ports:
       - "${DOCKER_PORT}"
+    environment:
+      - VIRTUAL_HOST=oralhistory.docker
+      - VIRTUAL_PORT=80
     depends_on:
       - postgres
       - solr
