@@ -12,9 +12,43 @@
         <div class="row">
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Agriculture']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("agriculture.jpg", :alt => "Agriculture", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Agriculture']}), :class=> "g-color-white" do %>
+                      Agriculture
+                    <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Architecture, Landscape Architecture, and Design']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("architecture.jpg", :alt => "Architecture, Lanscape Architecture, and Design", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Architecture, Landscape Architecture, and Design']}), :class=> "g-color-white" do %>
+                      Architecture, Landscape Architecture, and Design
+                    <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+          
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['African American History']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("african_american_history.jpg", :alt => "African American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("african-american-history.jpg", :alt => "African American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
@@ -31,7 +65,7 @@
             <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['American Indian History']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("native_american.jpg", :alt => "American Indian History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("american-indian-history.jpg", :alt => "American Indian History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
@@ -47,16 +81,16 @@
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <%= link_to root_path(f:{subject_topic_facet: ['Arts Literature Music and Film']}) do %>
+              <%= link_to root_path(f:{subject_topic_facet: ['Art']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("arts.jpg", :alt => "Arts, Literature, Music, and Film History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("art.jpg", :alt => "Art Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
                 <h3 class="h4">
-                  <%= link_to root_path(f:{subject_topic_facet: ['Arts Literature Music and Film']}), :class=> "g-color-white" do %>
-                    Arts, Literature, Music, and Film
+                  <%= link_to root_path(f:{subject_topic_facet: ['Art']}), :class=> "g-color-white" do %>
+                    Art
                   <% end %>
                 </h3>
               </header>
@@ -67,7 +101,7 @@
             <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['Asian American History']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("asian_american_history.jpg", :alt => "Asian American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("asian-american-history.jpg", :alt => "Asian American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
@@ -83,6 +117,24 @@
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Books and Fine Printing']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("books.jpg", :alt => "Books and Fine Printing Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Books and Fine Printing']}), :class=> "g-color-white" do %>
+                    Books and Fine Printing
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+          
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['Business']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
                   <%= image_tag("business.jpg", :alt => "Business History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
@@ -96,16 +148,104 @@
                   <% end %>
                 </h3>
               </header>
-
-
             </article>
           </div>
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Chicano Movement']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("chicano-movement.jpg", :alt => "Chicano Movement Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Chicano Movement']}), :class=> "g-color-white" do %>
+                    Chicano Movement
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+          
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Civil Liberties']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("civil-liberties.jpg", :alt => "Civil Liberties Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Civil Liberties']}), :class=> "g-color-white" do %>
+                    Civil Liberties
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+          
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Civil Rights Movement']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("civil-rights.jpg", :alt => "Civil Rights Movement Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Civil Rights Movement']}), :class=> "g-color-white" do %>
+                    Civil Rights Movement
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+          
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Communist Party']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("communist-party.jpg", :alt => "Communist Party Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Communist Party']}), :class=> "g-color-white" do %>
+                    Communist Party
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+          
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Community Activism']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("community-activism.jpg", :alt => "Community Activism Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Community Activism']}), :class=> "g-color-white" do %>
+                    Community Activism
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+          
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['Community History']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("community.jpg", :alt => "Community History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("community-history.jpg", :alt => "Community History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
@@ -119,6 +259,24 @@
             </article>
           </div>
 
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Dance']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("dance.jpg", :alt => "Dance Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Dance']}), :class=> "g-color-white" do %>
+                    Dance
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+          
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['Education']}) do %>
@@ -137,11 +295,47 @@
             </article>
           </div>
 
-          <!-- <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Environmental Movement']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("environment.jpg", :alt => "Environmental Movement Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Environmental Movement']}), :class=> "g-color-white" do %>
+                    Environmental Movement
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Film and Television']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("film.jpg", :alt => "Film and Television Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Film and Television']}), :class=> "g-color-white" do %>
+                    Film and Television
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(subject_topic_facet: 'German Émigrés') do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("community.jpg", :alt => "German Émigrés Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("german-emigres.jpg", :alt => "German Émigrés Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
@@ -153,13 +347,13 @@
                 </h3>
               </header>
             </article>
-          </div> -->
+          </div>
 
-          <!-- <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(subject_topic_facet: 'Iranian Americans') do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("community.jpg", :alt => "Iranian Americans Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("iranian-americans.jpg", :alt => "Iranian Americans Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
@@ -171,7 +365,7 @@
                 </h3>
               </header>
             </article>
-          </div> -->
+          </div>
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
@@ -193,9 +387,27 @@
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Labor Movement']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("labor-movement.jpg", :alt => "Labor Movement Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Labor Movement']}), :class=> "g-color-white" do %>
+                    Labor Movement
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['Latina and Latino History']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("latino.jpg", :alt => "Latina and Latino History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("latina-history.jpg", :alt => "Latina and Latino History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
@@ -203,6 +415,24 @@
                 <h3 class="h4">
                   <%= link_to root_path(f:{subject_topic_facet: ['Latina and Latino History']}), :class=> "g-color-white" do %>
                     Latina and Latino History
+                  <% end %>
+                  </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Literature']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("literature.jpg", :alt => "Literature Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Literature']}), :class=> "g-color-white" do %>
+                    Literature
                   <% end %>
                   </h3>
               </header>
@@ -229,9 +459,45 @@
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Music']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("music.jpg", :alt => "Music Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Music']}), :class=> "g-color-white" do %>
+                    Music
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Photography']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("photography.jpg", :alt => "Photography Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Photography']}), :class=> "g-color-white" do %>
+                    Photography
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['Politics and Government']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("government.jpg", :alt => "Politics and Government Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("politics.jpg", :alt => "Politics and Government Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
@@ -247,16 +513,16 @@
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <%= link_to root_path(f:{subject_topic_facet: ['Science Medicine and Technology']}) do %>
+              <%= link_to root_path(f:{subject_topic_facet: ['Science and Medicine']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("science.jpg", :alt => "Science, Medicine, and Technology Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("science.jpg", :alt => "Science and Medicine Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                  <%= link_to root_path(f:{subject_topic_facet: ['Science Medicine and Technology']}), :class=> "g-color-white" do %>
-                    Science, Medicine, and Technology
+                  <%= link_to root_path(f:{subject_topic_facet: ['Science and Medicine']}), :class=> "g-color-white" do %>
+                    Science and Medicine
                   <% end %>
                 </h3>
               </header>
@@ -267,7 +533,7 @@
             <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['Social Movements']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("social_movement.jpg", :alt => "Social Movements Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("social-movements.jpg", :alt => "Social Movements Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
@@ -301,16 +567,34 @@
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <%= link_to root_path(f:{subject_topic_facet: ['UCLA and University of California History']}) do %>
+              <%= link_to root_path(f:{subject_topic_facet: ['Theater']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("UCLA.jpg", :alt => "UCLA and University of California History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("theater.jpg", :alt => "Theater Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                  <%= link_to root_path(f:{subject_topic_facet: ['UCLA and University of California History']}), :class=> "g-color-white" do %>
-                    UCLA and University of California History
+                  <%= link_to root_path(f:{subject_topic_facet: ['Theater']}), :class=> "g-color-white" do %>
+                    Theater
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+          
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['UCLA History']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("ucla.jpg", :alt => "UCLA History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['UCLA History']}), :class=> "g-color-white" do %>
+                    UCLA History
                   <% end %>
                 </h3>
               </header>
@@ -319,16 +603,16 @@
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <%= link_to root_path(f:{subject_topic_facet: ['Urban Planning and Land Use']}) do %>
+              <%= link_to root_path(f:{subject_topic_facet: ['University of California History']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("planning.jpg", :alt => "Urban Planning and Land Use Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("uc-history.jpg", :alt => "University of California History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                  <%= link_to root_path(f:{subject_topic_facet: ['Urban Planning and Land Use']}), :class=> "g-color-white" do %>
-                    Urban Planning and Land Use
+                  <%= link_to root_path(f:{subject_topic_facet: ['University of California History']}), :class=> "g-color-white" do %>
+                    University of California History
                   <% end %>
                 </h3>
               </header>
@@ -337,16 +621,52 @@
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <%= link_to root_path(f:{subject_topic_facet: ['Donated Oral Histories']}) do %>
+              <%= link_to root_path(f:{subject_topic_facet: ['Urban Planning']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("donated.jpg", :alt => "Donated Oral Histories Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("urban-planning.jpg", :alt => "Urban Planning Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                  <%= link_to root_path(f:{subject_topic_facet: ['Donated Oral Histories']}), :class=> "g-color-white" do %>
-                    Donated Oral Histories
+                  <%= link_to root_path(f:{subject_topic_facet: ['Urban Planning']}), :class=> "g-color-white" do %>
+                    Urban Planning
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Water Resources']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("water.jpg", :alt => "Water Resources Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Water Resources']}), :class=> "g-color-white" do %>
+                    Water Resources
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Womens Issues']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("women.jpg", :alt => "Womens Issues Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Womens Issues']}), :class=> "g-color-white" do %>
+                    Women's Issues
                   <% end %>
                 </h3>
               </header>
