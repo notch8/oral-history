@@ -107,6 +107,14 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   overflow: visible;
 }
 
+.navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+
+.facets-toggle .icon-bar {
+  background-color: #888;
+}
+
 .nav > li > a:hover, .nav > li > a:focus {
   color: #555;
   background-color: #ffe800;
@@ -129,6 +137,42 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   padding: 5px;
   font-size: 16px;
   font-family: "Times New Roman";
+}
+
+@media screen and (min-width: 769px) and (max-width: 991px) {
+  #header-navbar .navbar-brand {
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    // position: absolute;
+  }
+
+  #header-navbar .navbar-brand {
+    background-position: left 5px center;
+    width: 160px;
+    overflow:hidden;
+  }
+
+  /* HOME PAGE COLLECTION IMAGES */
+  #content {
+    #collections {
+      article.u-block-hover.u-shadow-v21 {
+        max-width: 400px;
+      }
+    }
+  }
+
+  footer {
+    .footer-row {
+      .padding-top {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+    }
+  }
 }
 
 /* HERO SECTION ON HOME PAGE */
