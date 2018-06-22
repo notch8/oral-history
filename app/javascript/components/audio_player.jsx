@@ -30,13 +30,13 @@ export default class AudioPlayer extends Component {
   }
 
   render() {
-    const { volume, pos, source, playing, sliderPos } = this.state
+    const { volume, source, playing, sliderPos } = this.state
 
     var playPause = (playing ? 'pause-button' : 'play-button')
 
     return (
       <div className="player col-xs-12">
-        <audio id="audio" ref="audio" src={source} style={{display: 'none'}}></audio>
+        <audio id="audio" ref="audio" volume={volume} src={source} style={{display: 'none'}}></audio>
         <div className="col-xs-4">
           <img src={this.props.image} className='img-responsive' />
           <a onClick={this.handleTogglePlay} className={playPause}></a>
@@ -104,6 +104,7 @@ export default class AudioPlayer extends Component {
       })
 
       audio.oncanplay = () => {
+        audio.volume = this.state.volume
         audio.play()
 
         this.setState({
