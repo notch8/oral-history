@@ -17,7 +17,15 @@ class CatalogController < ApplicationController
 
     ## Default parameters to send to solr for all search-like requests. See also SearchBuilder#processed_parameters
     config.default_solr_params = {
-      rows: 10
+      rows: 10,
+      :"hl" => true,
+      :"hl.fl" => "subject_t, title_t, author_t, interviewee_t, extent_display, language_t, biographical_display",
+      :"hl.simple.pre" => "<span class='label label-warning'>",
+      :"hl.simple.post" => "</span>",
+      :"hl.alternateField" => "dd",
+      # :"hl.usePhraseHighlighter" => true,
+      # :"hl.maxAnalyzedChars"=> -1
+      
     }
 
     # solr path which will be added to solr base url before the other solr params.
@@ -29,13 +37,18 @@ class CatalogController < ApplicationController
     ## Default parameters to send on single-document requests to Solr. These settings are the Blackligt defaults (see SearchHelper#solr_doc_params) or
     ## parameters included in the Blacklight-jetty document requestHandler.
     #
-    #config.default_document_solr_params = {
-    #  qt: 'document',
-    #  ## These are hard-coded in the blacklight 'document' requestHandler
-    #  # fl: '*',
-    #  # rows: 1,
-    #  # q: '{!term f=id v=$id}'
-    #}
+    config.default_document_solr_params = {
+     #  qt: 'document',
+     ## These are hard-coded in the blacklight 'document' requestHandler
+     # fl: '*',
+     # rows: 1,
+     # q: '{!term f=id v=$id}'
+      :"hl" => true,
+      :"hl.fl" => "subject_t, title_t, author_t, interviewee_t, extent_display, language_t, biographical_display",
+      :"hl.simple.pre" => "<span class='label label-warning'>",
+      :"hl.simple.post" => "</span>",
+      :"hl.alternateField" => "dd",
+    }
 
     # solr field configuration for search results/index views
     config.index.title_field = 'title_display'
@@ -98,10 +111,13 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     #config.add_index_field 'subtitle_display', label: 'Subtitle'
-    config.add_index_field 'subject_topic_facet', label: 'Topic', helper_method: :split_multiple
-    config.add_index_field 'biographical_display', label: 'Biographical Note'
-    config.add_index_field 'extent_display', label: 'Length'
-    config.add_index_field 'language_facet', label: 'Language'
+    config.add_index_field 'subject_t', label: 'Topic', helper_method: :split_multiple, highlight: true
+    config.add_index_field 'biographical_display', label: 'Biographical Note', highlight: true
+    config.add_index_field 'extent_display', label: 'Length', highlight: true
+    config.add_index_field 'language_facet', label: 'Language', hightlight: true
+    config.add_index_field 'author_t', label: 'Interviewer', highlight: true
+    config.add_index_field 'interviewee_t', label: 'Interviewee', highlight: true
+    config.add_index_field 'title_t', label: 'Title', highlight: true
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
@@ -205,5 +221,8 @@ class CatalogController < ApplicationController
     # Configuration for autocomplete suggestor
     config.autocomplete_enabled = true
     config.autocomplete_path = 'suggest'
+
+    config.add_field_configuration_to_solr_request!
+
   end
 end
