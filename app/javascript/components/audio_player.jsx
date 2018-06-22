@@ -27,22 +27,26 @@ export default class AudioPlayer extends Component {
 
     this.handleTogglePlay = this.handleTogglePlay.bind(this)
     this.changeVol = this.changeVol.bind(this)
+    this.changeSource = changeSource.bind(this)
   }
 
   render() {
     const { volume, source, playing, sliderPos } = this.state
+    const { image } = this.props
 
-    var playPause = (playing ? 'pause-button' : 'play-button')
+    const width = `${(volume * 100)}%` || '50%'
+    const left = sliderPos || '96%'
+    const playPause = (playing ? 'pause-button' : 'play-button')
 
     return (
       <div className="player col-xs-12">
-        <audio id="audio" ref="audio" volume={volume} src={source} style={{display: 'none'}}></audio>
+        <audio id="audio" ref="audio" src={source} style={{display: 'none'}}></audio>
         <div className="col-xs-4">
-          <img src={this.props.image} className='img-responsive' />
+          <img src={image} className='img-responsive' />
           <a onClick={this.handleTogglePlay} className={playPause}></a>
           <div id="volume-slider" className="volume-slider" onClick={this.changeVol} onDrag={this.changeVol}>
-            <div style={{left: sliderPos || '96%'}} className="marker"></div>
-            <div style={{width: `${(volume * 100)}%` || '50%'}} className="fill"></div>
+            <div style={{left: left}} className="marker"></div>
+            <div style={{width: width}} className="fill"></div>
           </div>
         </div>
         <div className='col-xs-8 wave-box'>
@@ -92,30 +96,36 @@ export default class AudioPlayer extends Component {
 
     loadPeaks(audio, wavesurfer)
 
-    window.addEventListener('set_audio_player_src', (e) => {
-      hls.detachMedia()
-      hls.loadSource(e.detail.url)
-      hls.attachMedia(audio)
+    let handler = changeSource(this, hls, wavesurfer, audio)
 
-      loadPeaks(audio, wavesurfer)
+    window.addEventListener('set_audio_player_src', handler)
 
-      this.setState({
-        playing: false,
-      })
-
-      audio.oncanplay = () => {
-        audio.volume = this.state.volume
-        audio.play()
-
-        this.setState({
-          playing: true,
-        })
-      }
-    })
+    this.setState({handler}) // add handler for graceful removal of event listener
   }
 
   componentWillUnmount() {
-    window.removeEventListener('set_audio_player_src', this.handleNewSrc.bind(this))
+    window.removeEventListener('set_audio_player_src', this.state.handler)
+  }
+}
+
+const changeSource = (component, hls, wavesurfer, audio) => (e) => {
+  hls.detachMedia()
+  hls.loadSource(e.detail.url)
+  hls.attachMedia(audio)
+
+  loadPeaks(audio, wavesurfer)
+
+  component.setState({
+    playing: false,
+  })
+
+  audio.oncanplay = () => {
+    audio.volume = component.state.volume
+    audio.play()
+
+    component.setState({
+      playing: true,
+    })
   }
 }
 
