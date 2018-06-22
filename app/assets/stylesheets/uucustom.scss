@@ -307,66 +307,98 @@ a.footer-link {
 
 
 /* PLAYER */
-.pause-button {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  margin: 0;
-
-  &:before {
-    position:absolute;
-    top: 85%;
-    left: 85%;
-    transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    content: "\f28c";
-    font-family: FontAwesome;
-    font-size: 80px;
-    color: #fff;
-    opacity: .8;
-    text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
-  }
-  &:hover:before {
-    color: #eee;
-  }
-}
-
-.play-button {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  margin: 0;
-
-  &:before {
-    position:absolute;
-    top: 85%;
-    left: 85%;
-    transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    content: "\f01d";
-    font-family: FontAwesome;
-    font-size: 80px;
-    color: #fff;
-    opacity: .8;
-    text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
-  }
-  &:hover:before {
-    color: #eee;
-  }
-}
-.wave-box {
-  height: 340px;
-  background-image: image-url('ucla_media_background.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-
 .play-icon {
-  float: right;
-  padding-right: 20px;
-  margin-top: -1.2rem;
+  cursor: pointer;
 }
+
+.player {
+  .volume-slider {
+    position: absolute;
+    top: 83%;
+    left: 33.33%;
+    height: 10px;
+    width: 58%;
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 10px;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+
+    .marker, .fill {
+      position: absolute;
+      border-radius: 15px;
+      background-color: #FFF;
+    }
+
+    .fill {
+      padding-right: 5px;
+      height: 10px;
+      min-width: 10px;
+      width: 50%;
+    }
+
+    .marker {
+      height: 15px;
+      min-width: 15px;
+      text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+      transform: translate(0%, -18%);
+      left: 46%;
+    }
+  }
+
+  .pause-button, .play-button {
+    position: absolute;
+    top: 65%;
+    left: 10%;
+
+    &:before {
+      font-family: FontAwesome;
+      font-size: 80px;
+      color: #fff;
+      opacity: .8;
+      cursor: pointer;
+      text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+    }
+
+    &:hover {
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    &:hover:before {
+      color: #FFFFFF;
+    }
+  }
+
+  .play-button {
+    &:before {
+      content: "\f01d";
+    }
+  }
+
+  .pause-button {
+    &:before {
+      content: "\f28c";
+    }
+  }
+
+  .wave-box {
+    height: 340px;
+    padding: 0;
+    background-image: image-url('ucla_media_background.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .play-icon {
+    float: right;
+    padding-right: 20px;
+    margin-top: -1.2rem;
+  }
+}
+/* END PLAYER */
 
 /* STATIC PAGES */
 
