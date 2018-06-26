@@ -4,7 +4,6 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
   include Blacklight::Marc::Catalog
 
-
   configure_blacklight do |config|
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
@@ -19,13 +18,10 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       rows: 10,
       :"hl" => true,
-      :"hl.fl" => "subject_t, title_t, author_t, interviewee_t, extent_display, language_t, biographical_display",
+      :"hl.fl" => "biographical_t, subject_t, description_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t ",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
-      :"hl.alternateField" => "dd",
-      # :"hl.usePhraseHighlighter" => true,
-      # :"hl.maxAnalyzedChars"=> -1
-      
+      :"hl.alternateField" => "dd"
     }
 
     # solr path which will be added to solr base url before the other solr params.
@@ -44,7 +40,7 @@ class CatalogController < ApplicationController
      # rows: 1,
      # q: '{!term f=id v=$id}'
       :"hl" => true,
-      :"hl.fl" => "subject_t, title_t, author_t, interviewee_t, extent_display, language_t, biographical_display",
+      :"hl.fl" => "biographical_t, subject_t, description_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.alternateField" => "dd",
@@ -112,29 +108,32 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     #config.add_index_field 'subtitle_display', label: 'Subtitle'
     config.add_index_field 'subject_t', label: 'Topic', helper_method: :split_multiple, highlight: true
-    config.add_index_field 'biographical_display', label: 'Biographical Note', highlight: true
+    config.add_index_field 'biographical_t', label: 'Biographical Note', highlight: true
     config.add_index_field 'extent_display', label: 'Length', highlight: true
-    config.add_index_field 'language_facet', label: 'Language', hightlight: true
-    config.add_index_field 'author_t', label: 'Interviewer', highlight: true
-    config.add_index_field 'interviewee_t', label: 'Interviewee', highlight: true
-    config.add_index_field 'title_t', label: 'Title', highlight: true
+    config.add_index_field 'language_t', label: 'Language', hightlight: true 
+    config.add_index_field 'author_t', label: 'Interviewer', highlight: true #new field - only show if highlight has results
+    config.add_index_field 'interviewee_t', label: 'Interviewee', highlight: true #new field - only show if highlight has results
+    config.add_index_field 'title_t', label: 'Title', highlight: true #new field - only show if highlight has results
+    config.add_index_field 'subtitle_t', label: 'Subtitle', highlight: true #new field - only show if highlight has results
+    config.add_index_field 'series_t', label: 'Series Name', highlight: true #new field - only show if highlight has results
+    config.add_index_field 'description_t', label: 'Description', highlight: true #new field - only show if highlight has results
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
-    config.add_show_field 'subtitle_display', label: 'Subtitle'
-    config.add_show_field 'series_facet', label: 'Series', link_to_search: "series_facet"
-    config.add_show_field 'subject_topic_facet', label: 'Topic', helper_method: :split_multiple
-    config.add_show_field 'contributor_display', label: 'Interviewer'
-    config.add_show_field 'author_display', label: 'Interviewer'
-    config.add_show_field 'interviewee_display', label: 'Interviewee'
-    config.add_show_field 'description_t', label: 'Description', helper_method: :split_multiple
-    config.add_show_field 'publisher_display', label: 'Publisher'
-    config.add_show_field 'pub_date', label: 'Date'
-    config.add_show_field 'type_of_resource_display', label: 'Type of Resource'
-    config.add_show_field 'extent_display', label: 'Length / Pages'
-    config.add_show_field 'language_facet', label: 'Language'
-    config.add_show_field 'coverage_display', label: 'Period Covered'
-    config.add_show_field 'rights_display', label: 'Copyright'
+    config.add_show_field 'subtitle_t', label: 'Subtitle', highlight: true
+    config.add_show_field 'series_t', label: 'Series', link_to_search: "series_facet", highlight: true
+    config.add_show_field 'subject_t', label: 'Topic', helper_method: :split_multiple, highlight: true
+    config.add_show_field 'contributor_display', label: 'Interviewer', highlight: true
+    config.add_show_field 'author_t', label: 'Interviewer', highlight: true
+    config.add_show_field 'interviewee_t', label: 'Interviewee', highlight: true
+    config.add_show_field 'description_t', label: 'Description', helper_method: :split_multiple, highlight: true
+    config.add_show_field 'publisher_display', label: 'Publisher', highlight: true
+    config.add_show_field 'pub_date', label: 'Date', highlight: true
+    config.add_show_field 'type_of_resource_display', label: 'Type of Resource', highlight: true
+    config.add_show_field 'extent_display', label: 'Length / Pages', highlight: true
+    config.add_show_field 'language_t', label: 'Language'
+    config.add_show_field 'coverage_display', label: 'Period Covered', highlight: true
+    config.add_show_field 'rights_display', label: 'Copyright', highlight: true
     config.add_show_field 'audio_b', label: 'Audio'
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'
@@ -225,4 +224,18 @@ class CatalogController < ApplicationController
     config.add_field_configuration_to_solr_request!
 
   end
+
+  # Override to add highlighing to show
+  def show
+    @response, @document = fetch params[:id], {
+      :"hl.q" => current_search_session.query_params["q"],
+      :df => blacklight_config.default_document_solr_params[:"hl.fl"]
+    }
+    respond_to do |format|
+      format.html { setup_next_and_previous_documents }
+      format.json { render json: { response: { document: @document } } }
+      additional_export_formats(@document, format)
+    end
+  end
+
 end

@@ -65,6 +65,7 @@ class OralHistoryItem
               child.elements.each('mods:languageTerm') do |e|
                 history.attributes["language_facet"] = LanguageList::LanguageInfo.find(e.text).try(:name)
                 history.attributes["language_sort"] = LanguageList::LanguageInfo.find(e.text).try(:name)
+                history.attributes["language_t"] = LanguageList::LanguageInfo.find(e.text).try(:name)
               end
             elsif child.name == "subject"
               child.elements.each('mods:topic') do |e|
@@ -100,6 +101,7 @@ class OralHistoryItem
               history.attributes["children_t"] << child_document.to_json
             elsif child.name == "relatedItem" && child.attributes['type'] == "series"
               history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
+              history.attributes["series_t"] = child.elements['mods:titleInfo/mods:title'].text
               history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text
             elsif child.name == "note"
               if child.attributes['type'] == 'biographical'
@@ -160,6 +162,7 @@ class OralHistoryItem
 
   def index_record
     SolrService.add(self.to_solr)
+    #TODO allow for search capturing
     SolrService.commit
   end
 
