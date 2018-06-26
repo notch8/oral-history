@@ -44,7 +44,12 @@ export default class AudioPlayer extends Component {
         <div className="col-xs-4">
           <img src={image} className='img-responsive' />
           <a onClick={this.handleTogglePlay} className={playPause}></a>
-          <div id="volume-slider" className="volume-slider" onClick={this.changeVol} onDrag={this.changeVol}>
+          <div
+            id="volume-slider"
+            className="volume-slider"
+            onClick={this.changeVol}
+            onMouseDown={this.changeVol}
+            onDrag={this.changeVol}>
             <div style={{left: left}} className="marker"></div>
             <div style={{width: width}} className="fill"></div>
           </div>
