@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
-export default class PlayButton extends React.Component {
+export default class PlayButton extends Component {
   render() {
     return (
       <div className="player">
