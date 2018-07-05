@@ -20,7 +20,7 @@ task peaks: [:environment] do
       doc["children_t"].each do |child|
         if JSON.parse(child)["url_t"]
           pl = JSON.parse(child)["url_t"]
-          id = JSON.parse(child)["id_t"].gsub!('/', '-')
+          id = JSON.parse(child)["id_t"].gsub('/', '-')
 
           pks.generate(pl, "#{id}.json")
         end
@@ -42,7 +42,7 @@ task peaks: [:environment] do
         doc["children_t"].each do |child|
           if JSON.parse(child)["url_t"]
             pl = JSON.parse(child)["url_t"]
-            id = JSON.parse(child)["id_t"].gsub!('/', '-')
+            id = JSON.parse(child)["id_t"].gsub('/', '-')
 
             pks.generate(pl, "#{id}.json")
           end
