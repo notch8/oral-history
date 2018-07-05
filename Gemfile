@@ -35,3 +35,5 @@ gem 'uglifier', '>= 1.3.0'
 gem 'web-console', '>= 3.3.0', group: [:development]
 gem 'webpacker', github: 'rails/webpacker'
 gem 'webpacker-react', "~> 0.3.2"
+gem 'ruby-audio', '~> 1.6.0'
+gem 'json-waveform'
