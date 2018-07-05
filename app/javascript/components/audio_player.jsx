@@ -8,6 +8,7 @@ const waveOptions = {
   backend: 'MediaElement',
   progressColor: '#c2daeb',
   waveColor: '#1e4b87',
+  fillParent: true,
   audioRate: 1,
   height: 340,
   barWidth: 2
@@ -17,10 +18,11 @@ export default class AudioPlayer extends Component {
   constructor(props) {
     super(props)
 
-    const { url } = this.props
+    const { id, src } = this.props
 
     this.state = {
-      source: url,
+      id: id,
+      source: src,
       playing: false,
       volume: 1,
     }
@@ -90,7 +92,7 @@ export default class AudioPlayer extends Component {
   }
 
   componentDidMount() {
-    const { source } = this.state
+    const { source, id } = this.state
     let { audio } = this.refs
 
     let hls = new Hls()
@@ -99,9 +101,9 @@ export default class AudioPlayer extends Component {
 
     let wavesurfer = window.WaveSurfer.create(waveOptions)
 
-    loadPeaks(audio, wavesurfer)
+    loadPeaks(id, audio, wavesurfer)
 
-    let handler = changeSource(this, hls, wavesurfer, audio)
+    let handler = changeSource(this, hls, wavesurfer, audio, id)
 
     window.addEventListener('set_audio_player_src', handler)
 
@@ -114,11 +116,13 @@ export default class AudioPlayer extends Component {
 }
 
 const changeSource = (component, hls, wavesurfer, audio) => (e) => {
+  const { id, src } = e.detail
+
   hls.detachMedia()
-  hls.loadSource(e.detail.url)
+  hls.loadSource(src)
   hls.attachMedia(audio)
 
-  loadPeaks(audio, wavesurfer)
+  loadPeaks(id, audio, wavesurfer)
 
   component.setState({
     playing: false,
@@ -134,10 +138,10 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
   }
 }
 
-const loadPeaks = function(element, wavesurfer) {
+const loadPeaks = function(id, element, wavesurfer) {
   wavesurfer.util.ajax({
       responseType: 'json',
-      url: '/peaks.json'
+      url: `/peaks/${id}.json`
   })
   .on('success', function(data) {
     wavesurfer.load(element, data);
