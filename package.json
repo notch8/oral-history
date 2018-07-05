@@ -9,6 +9,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "wavesurfer.js": "^2.0.6",
     "webpack-merge": "^4.1.1",
     "webpacker-react": "^0.3.2"
   },
