@@ -15,6 +15,8 @@ fi
 if [[ $PASSENGER_APP_ENV == "production" ]] || [[ $PASSENGER_APP_ENV == "staging" ]]
 then
     /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && bundle exec rake db:migrate assets:precompile'
+else
+    /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && bundle exec yarn install'
 fi
 
 exec /usr/sbin/nginx
