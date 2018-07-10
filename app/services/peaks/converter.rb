@@ -1,6 +1,6 @@
 module Peaks
   class Converter
-    DEFAULT_FFMPEG_CALL = "ffmpeg -i %s -acodec pcm_s16le -ar 44100 %s"
+    DEFAULT_FFMPEG_CALL = "ffmpeg -loglevel panic -i %s -acodec pcm_s16le -ar 44100 %s"
 
     def initialize(tmp_path = nil)
       @tmp_path = tmp_path || 'ffmpeg-'
