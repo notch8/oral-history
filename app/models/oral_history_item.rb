@@ -6,6 +6,8 @@ class OralHistoryItem
   end
 
   def self.import(args)
+    @peaks = Peaks::Processor.new('public/peaks')
+
     progress = args[:progress] || true
     limit = args[:limit] || 20000000  # essentially no limit
     url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
@@ -34,7 +36,6 @@ class OralHistoryItem
           next if set.class == REXML::Text
           set.children.each do |child|
             next if child.class == REXML::Text
-
             if child.name == "titleInfo"
               child.elements.each('mods:title') do |title|
                 title_text = title.text.to_s.strip
@@ -142,6 +143,8 @@ class OralHistoryItem
         end
       end
       history.index_record
+      
+      ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
       if progress
         bar.increment!
       end
