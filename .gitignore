@@ -24,3 +24,4 @@ public/packs/*
 .DS_Store
 .env.*
 public/peaks
+!public/peaks/.keep
