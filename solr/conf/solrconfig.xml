@@ -98,6 +98,10 @@
          subject_topic_facet^625
          subject_t^500
          author_unstem_search^250
+         interviewee_addl_unstem_search^250
+         interviewee_t^100
+         interviewee_addl_t^50
+         interviewee_unstem_search^250
          author_addl_unstem_search^250
          author_t^100
          author_addl_t^50
@@ -105,6 +109,8 @@
          subject_addl_t^50
          title_series_unstem_search^25
          title_series_t^10
+         language_t
+         biographical_t
          isbn_t
          text
        </str>
@@ -121,6 +127,8 @@
          subject_unstem_search^7500
          subject_topic_facet^6250
          subject_t^5000
+         interviewee_t^1000
+         interviewee_unstem_search^2500
          author_unstem_search^2500
          author_addl_unstem_search^2500
          author_t^1000
@@ -129,6 +137,8 @@
          subject_addl_t^500
          title_series_unstem_search^250
          title_series_t^100
+         biographical_t^10
+         language_t^10
          text^10
        </str>
        <str name="author_qf">
@@ -386,6 +396,8 @@
       -->
   </searchComponent>
 
+    <!-- TURN OFF SUGGEST - it causes performance issues -->
+  <!--
   <searchComponent name="suggest" class="solr.SuggestComponent">
     <lst name="suggester">
       <str name="name">mySuggester</str>
@@ -406,6 +418,6 @@
       <str>suggest</str>
     </arr>
   </requestHandler>
-
+  -->
 </config>
 

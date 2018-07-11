@@ -566,6 +566,7 @@
    <copyField source="author_t" dest="author_unstem_search"/>
    <copyField source="author_addl_t" dest="author_addl_unstem_search"/>
    <copyField source="subject_t" dest="subject_unstem_search"/>
+   <copyField source="language_t" dest="language_unstem_search"/>
    <copyField source="subject_addl_t" dest="subject_addl_unstem_search"/>
    <copyField source="subject_topic_facet" dest="subject_topic_unstem_search"/>
    <copyField source="description_facet" dest="description_unstem_search"/>
@@ -591,6 +592,7 @@
    <!-- subject spell check; should match fields for subject request handler -->
    <copyField source="subject_topic_facet" dest="subject_spell"/>
    <copyField source="description_facet" dest="description_spell"/>
+   <copyField source="lanugage_t" dest="language_spell"/>
    <copyField source="subject_t" dest="subject_spell"/>
    <copyField source="subject_addl_t" dest="subject_spell"/>
 
@@ -601,12 +603,14 @@
    <copyField source="title_added_entry_t" dest="opensearch_display"/>
    <copyField source="title_series_t" dest="opensearch_display"/>
    <copyField source="author_t" dest="opensearch_display"/>
+   <copyField source="language_t" dest="opensearch_display"/>
    <copyField source="author_addl_t" dest="opensearch_display"/>
    <copyField source="subject_topic_facet" dest="opensearch_display"/>
    <copyField source="description_facet" dest="opensearch_display"/>
    <copyField source="subject_t" dest="opensearch_display"/>
    <copyField source="subject_addl_t" dest="opensearch_display"/>
-
+   <copyField source="*_t" dest="opensearch_display"/>
+ 
    <!-- for suggestions -->
    <copyField source="*_t" dest="suggest"/>
    <copyField source="*_facet" dest="suggest"/>

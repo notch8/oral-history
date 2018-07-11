@@ -20,8 +20,7 @@ class CatalogController < ApplicationController
       :"hl" => true,
       :"hl.fl" => "biographical_t, subject_t, description_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t ",
       :"hl.simple.pre" => "<span class='label label-warning'>",
-      :"hl.simple.post" => "</span>",
-      :"hl.alternateField" => "dd"
+      :"hl.simple.post" => "</span>"
     }
 
     # solr path which will be added to solr base url before the other solr params.
@@ -107,16 +106,16 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     #config.add_index_field 'subtitle_display', label: 'Subtitle'
-    config.add_index_field 'subject_t', label: 'Topic', helper_method: :split_multiple, highlight: true
-    config.add_index_field 'biographical_t', label: 'Biographical Note', highlight: true
-    config.add_index_field 'extent_display', label: 'Length', highlight: true
-    config.add_index_field 'language_t', label: 'Language', hightlight: true 
-    config.add_index_field 'author_t', label: 'Interviewer', highlight: true #new field - only show if highlight has results
-    config.add_index_field 'interviewee_t', label: 'Interviewee', highlight: true #new field - only show if highlight has results
-    config.add_index_field 'title_t', label: 'Title', highlight: true #new field - only show if highlight has results
-    config.add_index_field 'subtitle_t', label: 'Subtitle', highlight: true #new field - only show if highlight has results
-    config.add_index_field 'series_t', label: 'Series Name', highlight: true #new field - only show if highlight has results
-    config.add_index_field 'description_t', label: 'Description', highlight: true #new field - only show if highlight has results
+    config.add_index_field 'subject_t', label: 'Topic', helper_method: :split_multiple, highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    config.add_index_field 'biographical_t', label: 'Biographical Note', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    config.add_index_field 'extent_display', label: 'Length', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    config.add_index_field 'language_t', label: 'Language', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    config.add_index_field 'author_t', label: 'Interviewer', highlight: true #only show if highlight has results
+    config.add_index_field 'interviewee_t', label: 'Interviewee', highlight: true #only show if highlight has results
+    config.add_index_field 'title_t', label: 'Title', highlight: true #only show if highlight has results
+    config.add_index_field 'subtitle_t', label: 'Subtitle', highlight: true #only show if highlight has results
+    config.add_index_field 'series_t', label: 'Series Name', highlight: true #only show if highlight has results
+    config.add_index_field 'description_t', label: 'Description', highlight: true #only show if highlight has results
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
@@ -201,6 +200,15 @@ class CatalogController < ApplicationController
       field.solr_local_parameters = {
         qf: '$subject_qf',
         pf: '$subject_pf'
+      }
+    end
+
+
+    config.add_search_field('biographical') do |field|
+      field.solr_parameters = { :'spellcheck.dictionary' => 'biographical' }
+      field.solr_local_parameters = {
+        qf: '$biographical_qf',
+        pf: '$biographical_pf'
       }
     end
 
