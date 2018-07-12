@@ -24,6 +24,8 @@ module Peaks
 
       peaks = @should_expand ? expand(raw_peaks) : raw_peaks
 
+      system("rm -rf #{raw_path.gsub('/audio.wave', '')}")
+
       peaks
     end
 
