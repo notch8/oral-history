@@ -19,11 +19,12 @@ export default class AudioPlayer extends Component {
   constructor(props) {
     super(props)
 
-    const { id, src } = this.props
+    const { id, src, peaks } = this.props
 
     this.state = {
       id: id,
       source: src,
+      peaks: peaks,
       playing: false,
       volume: 1,
     }
@@ -93,7 +94,7 @@ export default class AudioPlayer extends Component {
   }
 
   componentDidMount() {
-    const { source, id } = this.state
+    const { id, source, peaks } = this.state
     let { audio } = this.refs
 
     let hls = new Hls()
@@ -102,7 +103,7 @@ export default class AudioPlayer extends Component {
 
     let wavesurfer = WaveSurfer.create(waveOptions)
 
-    loadPeaks(id, audio, wavesurfer)
+    loadPeaks(id, audio, wavesurfer, peaks)
 
     let handler = changeSource(this, hls, wavesurfer, audio, id)
 
@@ -117,13 +118,13 @@ export default class AudioPlayer extends Component {
 }
 
 const changeSource = (component, hls, wavesurfer, audio) => (e) => {
-  const { id, src } = e.detail
+  const { id, src, peaks } = e.detail
 
   hls.detachMedia()
   hls.loadSource(src)
   hls.attachMedia(audio)
 
-  loadPeaks(id, audio, wavesurfer)
+  loadPeaks(id, audio, wavesurfer, peaks)
 
   component.setState({
     playing: false,
@@ -139,14 +140,16 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
   }
 }
 
-const loadPeaks = function(id, element, wavesurfer) {
-  wavesurfer.util.ajax({
-      responseType: 'json',
-      url: `/peaks/${id}.json`
-  })
-  .on('success', function(data) {
-    wavesurfer.load(element, data);
-  })
+const loadPeaks = function(id, element, wavesurfer, peaks) {
+  // wavesurfer.util.ajax({
+  //     responseType: 'json',
+  //     url: `/peaks/${id}.json`
+  // })
+  // .on('success', function(data) {
+  //   wavesurfer.load(element, data);
+  // })
+
+  wavesurfer.load(element, peaks);
 }
 
 const computeVolume = (e, b) => {

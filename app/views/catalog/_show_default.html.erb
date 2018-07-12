@@ -3,7 +3,8 @@
 <% end %>
 <div class="container">
   <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} %>
-  <%= react_component('AudioPlayer', id: parsed_children.try(:first).try(:[], "id_t").gsub('/', '-'), src: parsed_children.try(:first).try(:[], "url_t"), image: "/avatar.jpg") %>
+  <%= react_component('AudioPlayer', id: parsed_children.try(:first).try(:[], "id_t").gsub('/', '-'), src: parsed_children.try(:first).try(:[], "url_t"), peaks: parsed_children.try(:first).try(:[], "peaks"), image: "/avatar.jpg") %>
+  <%=  %>
 </div>
 <div class="container shortcode-html">
   <div class="col-sm-12">
@@ -27,7 +28,7 @@
                   </span>
                   <span class="g-valign-middle"><%= child["title_t"] %></span>
                 </a>
-                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"]) %>
+                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: child["peaks"]) %>
               </h5>
             </div>
             <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
