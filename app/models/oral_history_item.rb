@@ -6,8 +6,6 @@ class OralHistoryItem
   end
 
   def self.import(args)
-    @peaks = Peaks::Processor.new()
-
     progress = args[:progress] || true
     limit = args[:limit] || 20000000  # essentially no limit
     url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
