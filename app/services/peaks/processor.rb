@@ -1,4 +1,5 @@
 require "ruby-audio"
+require 'aws-sdk'
 
 module Peaks
   class Processor
@@ -8,6 +9,7 @@ module Peaks
       @should_expand = opts[:should_expand] || true
       @processor_method = opts[:processor_method] || :peak
       @width = opts[:width] || 1650
+      @s3_bucket = Aws::S3::Resource.new(region: ENV['AWS_REGION']).bucket(ENV['PEAKS_BUCKET'])
 
       @converter = Peaks::Converter.new()
     end
@@ -26,9 +28,14 @@ module Peaks
 
       peaks = @should_expand ? expand(raw_peaks) : raw_peaks
 
-      # TODO: this needs to be swapped for generic "writer" or a code block
       open(peaks_path, "wb", 0755) do |f|
         f.puts peaks.to_json
+      end
+
+      puts "Uploading file #{file_name}"
+      obj = @s3_bucket.object(peaks_filename)
+      if obj.upload_file(peaks_path)
+        system("rm #{peaks_path}")
       end
 
       # TODO: this needs to be cleaner - look into TmpDir accepting blocks
