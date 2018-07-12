@@ -103,7 +103,7 @@ export default class AudioPlayer extends Component {
 
     let wavesurfer = WaveSurfer.create(waveOptions)
 
-    loadPeaks(id, audio, wavesurfer, peaks)
+    wavesurfer.load(audio, peaks);
 
     let handler = changeSource(this, hls, wavesurfer, audio, id)
 
@@ -124,7 +124,7 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
   hls.loadSource(src)
   hls.attachMedia(audio)
 
-  loadPeaks(id, audio, wavesurfer, peaks)
+  wavesurfer.load(audio, peaks);
 
   component.setState({
     playing: false,
@@ -138,18 +138,6 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
       playing: true,
     })
   }
-}
-
-const loadPeaks = function(id, element, wavesurfer, peaks) {
-  // wavesurfer.util.ajax({
-  //     responseType: 'json',
-  //     url: `/peaks/${id}.json`
-  // })
-  // .on('success', function(data) {
-  //   wavesurfer.load(element, data);
-  // })
-
-  wavesurfer.load(element, peaks);
 }
 
 const computeVolume = (e, b) => {
