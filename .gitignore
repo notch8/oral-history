@@ -23,4 +23,3 @@
 public/packs/*
 .DS_Store
 .env.*
-public/peaks/*.json
