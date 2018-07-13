@@ -103,10 +103,7 @@ class OralHistoryItem
             elsif child.name == "relatedItem" && child.attributes['type'] == "series"
               history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
               history.attributes["series_t"] = child.elements['mods:titleInfo/mods:title'].text
-              history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text
-            
-            #elsif child.name == "relatedItem" && child.attributes['usage'] == "timed log"
-              
+              history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text              
             elsif child.name == "note"
               if child.attributes['type'] == 'biographical'
                 history.attributes["biographical_display"] = child.text
