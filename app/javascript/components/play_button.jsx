@@ -15,12 +15,13 @@ export default class PlayButton extends React.Component {
 
   handleOnClick(e) {
     var newUrl = this.props.url
+    var timelog = this.props.timelog
     var event = new CustomEvent(
       'set_audio_player_src',
       {
         bubbles: true,
         cancelable: true,
-        detail: { url: newUrl }
+        detail: { url: newUrl, file: timelog }
       },
     )
 

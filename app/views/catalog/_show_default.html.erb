@@ -5,6 +5,9 @@
   <% parsed_children = children_from(document) %>
   <%= react_component('AudioPlayer', url: parsed_children.try(:first).try(:[], "url_t"), image: "/avatar.jpg") %>
 </div>
+<div class="container">
+  <%= react_component('FileView') %>
+</div>
 <div class="container shortcode-html">
   <div class="col-sm-12">
     <div class="card rounded-0 g-brd-none">

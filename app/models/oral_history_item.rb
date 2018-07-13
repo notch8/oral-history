@@ -87,6 +87,9 @@ class OralHistoryItem
               end
             elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
               history.attributes["children_t"] ||= []
+              time_log_url = if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
+                 child.elements['mods:location/mods:url[@usage="timed log"]'].text
+              end
               child_document = {
                 'id': Digest::MD5.hexdigest(child.elements['mods:identifier'].text).to_i(16),
                 "id_t": child.elements['mods:identifier'].text,
@@ -94,7 +97,7 @@ class OralHistoryItem
                 "title_t": child.elements['mods:titleInfo/mods:title'].text,
                 "order_i": child.elements['mods:part'].attributes['order'],
                 "description_t": child.elements['mods:tableOfContents'].text,
-                "time_log_t": child.elements['mods:location/mods:url[@usage="timed log"]'].text
+                "time_log_t": time_log_url
               }
               if child.attributes['href'].present?
                 history.attributes["audio_b"] = true
