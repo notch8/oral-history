@@ -93,7 +93,8 @@ class OralHistoryItem
                 "url_t": child.attributes['href'],
                 "title_t": child.elements['mods:titleInfo/mods:title'].text,
                 "order_i": child.elements['mods:part'].attributes['order'],
-                "description_t": child.elements['mods:tableOfContents'].text
+                "description_t": child.elements['mods:tableOfContents'].text,
+                "time_log_t": child.elements['mods:location/mods:url[@usage="timed log"]'].text
               }
               if child.attributes['href'].present?
                 history.attributes["audio_b"] = true
@@ -103,6 +104,9 @@ class OralHistoryItem
               history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
               history.attributes["series_t"] = child.elements['mods:titleInfo/mods:title'].text
               history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text
+            
+            #elsif child.name == "relatedItem" && child.attributes['usage'] == "timed log"
+              
             elsif child.name == "note"
               if child.attributes['type'] == 'biographical'
                 history.attributes["biographical_display"] = child.text
