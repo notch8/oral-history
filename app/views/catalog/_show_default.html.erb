@@ -27,7 +27,7 @@
                   </span>
                   <span class="g-valign-middle"><%= child["title_t"] %></span>
                 </a>
-                <%= react_component('PlayButton', url: child["url_t"]) %>
+                <%= react_component('PlayButton', url: child["url_t"], timelog: child["time_log_t"]) %>
               </h5>
             </div>
             <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
