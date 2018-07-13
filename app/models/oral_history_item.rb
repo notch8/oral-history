@@ -34,7 +34,6 @@ class OralHistoryItem
           next if set.class == REXML::Text
           set.children.each do |child|
             next if child.class == REXML::Text
-
             if child.name == "titleInfo"
               child.elements.each('mods:title') do |title|
                 title_text = title.text.to_s.strip
@@ -111,6 +110,54 @@ class OralHistoryItem
               end
               history.attributes["description_t"] ||= []
               history.attributes["description_t"] << child.text
+            end
+          end
+        end
+      end
+
+      history.index_record
+
+      ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
+
+      if progress
+        bar.increment!
+      end
+      total += 1
+      break if total > limit
+    end
+  end
+
+  def id
+    self.attribtues[:id]
+  end
+
+  def to_solr
+    attributes
+  end
+
+  def index_record
+    SolrService.add(self.to_solr)
+    #TODO allow for search capturing
+    SolrService.commit
+  end
+
+  def remove_from_index
+    SolrService.delete_by_id(self.id)
+    SolrService.commit
+  end
+
+  def generate_peaks
+    @peaks = Peaks::Processor.new()
+
+    @peaks.from_solr_document self
+  end
+
+  def self.find(id)
+    OralHistoryItem.new(SolrDocument.find(id))
+  end
+end
+
+
 #           elsif child.name == "date"
 #              if child.content.length == 4
 #                pub_date = child.content.to_i
@@ -139,35 +186,3 @@ class OralHistoryItem
 #              history.attributes[child.name + "_display"] = child.content
 #              history.attributes[child.name + "_t"] ||= []
 #              history.attributes[child.name + "_t"] << child.content
-            end
-          end
-        end
-      end
-      history.index_record
-      if progress
-        bar.increment!
-      end
-      total += 1
-      break if total > limit
-    end
-  end
-
-  def id
-    self.attribtues[:id]
-  end
-
-  def to_solr
-    attributes
-  end
-
-  def index_record
-    SolrService.add(self.to_solr)
-    #TODO allow for search capturing
-    SolrService.commit
-  end
-
-  def remove_from_index
-    SolrService.delete_by_id(self.id)
-    SolrService.commit
-  end
-end

@@ -28,8 +28,7 @@ services:
       - .:/home/app/webapp
 
   web:
-    extends:
-      service: main
+    extends: main
     # Keep the stdin open, so we can attach to our app container's process
     # and do things such as byebug, etc:
     stdin_open: true
@@ -40,6 +39,14 @@ services:
     environment:
       - VIRTUAL_HOST=oralhistory.docker
       - VIRTUAL_PORT=80
+    depends_on:
+      - postgres
+      - solr
+      - delayed_job
+
+  delayed_job:
+    extends: main
+    command: bin/delayed_job run
     depends_on:
       - postgres
       - solr
