@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
-export default class PlayButton extends React.Component {
+export default class PlayButton extends Component {
   render() {
     return (
       <div className="player">
@@ -14,14 +14,15 @@ export default class PlayButton extends React.Component {
   }
 
   handleOnClick(e) {
-    var newUrl = this.props.url
-    var timelog = this.props.timelog
+
+    const { id, src, peaks, timelog } = this.props
+
     var event = new CustomEvent(
       'set_audio_player_src',
       {
         bubbles: true,
         cancelable: true,
-        detail: { url: newUrl, file: timelog }
+        detail: { id, src, peaks, timelog }
       },
     )
 

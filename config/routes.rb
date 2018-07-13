@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  mount DelayedJobWeb, at: "/delayed_job"
+
   get 'pages/contact', to: 'pages#contact', as: 'contact'
 
   get 'pages/permissions', to: 'pages#permissions', as: 'permissions'

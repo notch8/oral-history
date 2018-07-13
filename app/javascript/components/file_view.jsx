@@ -7,14 +7,14 @@ export default class FileView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      file: '',
+      timelog: '',
     }
   }
 
   render() {
     return(
       <div>
-        {this.state.file}
+        {this.state.timelog}
       </div>
     )
   }
@@ -31,7 +31,7 @@ export default class FileView extends Component {
   }
 
   changeFile(e) {
-    this.setState({file: e.detail.file})
+    this.setState({file: e.detail.timelog})
   }
 }
 
