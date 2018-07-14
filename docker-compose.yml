@@ -22,8 +22,8 @@ services:
     build: .
     image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
     env_file:
-      - .env
       - .env.development
+      - .env
     volumes:
       - .:/home/app/webapp
 
