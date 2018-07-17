@@ -41,7 +41,7 @@ services:
       - solr
       - delayed_job
 
-  delayed_job:
+  worker:
     extends: main
     command: bin/delayed_job run
     depends_on:
