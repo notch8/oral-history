@@ -448,6 +448,19 @@ a.footer-link {
 }
 /* END PLAYER */
 
+/* TRANSCRIPTS */
+div.transcript-container {
+  margin: 50px 20px;
+  padding: 20px;
+  width: auto;
+  height: 200px;
+  overflow-y: scroll;
+}
+.transcript-container-loading {
+  margin: 50px 20px;
+  padding: 20px;
+}
+
 /* STATIC PAGES */
 
 .u-heading-v1-4::before {
