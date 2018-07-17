@@ -48,7 +48,25 @@ services:
     depends_on:
       - postgres
       - solr
-
+  delayed_job:
+    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
+    environment:
+      - RAILS_ENV=production
+      - RACK_ENV=production
+      - PASSENGER_APP_ENV=production
+    restart: unless-stopped
+    command: bin/delayed_job run
+    labels:
+      io.rancher.container.pull_image: always
+    env_file:
+      - .env
+      - .env.production
+    depends_on:
+      - postgres
+      - solr
+    depends_on:
+      - postgres
+      - solr
 
 volumes:
   postgres:
