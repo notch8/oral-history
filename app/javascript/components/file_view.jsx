@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+var xslt = require('xslt')
 
 export default class FileView extends Component {
   
@@ -13,9 +14,7 @@ export default class FileView extends Component {
 
   render() {
     return(
-      <div>
-        {this.state.timelog}
-      </div>
+      <div dangerouslySetInnerHTML={{ __html: this.state.timelog}} /> 
     )
   }
     
@@ -31,7 +30,17 @@ export default class FileView extends Component {
   }
 
   changeFile(e) {
-    this.setState({file: e.detail.timelog})
+    let timelog = e.detail.timelog
+    var apiRequest1 = fetch('/master.xml').then(function(response){
+      return response.text()
+    });
+    var apiRequest2 = fetch('/tei.xslt').then(function(response){
+      return response.text()
+    });
+    
+    Promise.all([apiRequest1,apiRequest2]).then((values) => {
+      let outputXmlString = xslt(values[0], values[1]);
+      this.setState({ timelog: outputXmlString })
+    })
   }
 }
-
