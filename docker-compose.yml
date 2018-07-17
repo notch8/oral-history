@@ -42,9 +42,9 @@ services:
     depends_on:
       - postgres
       - solr
-      - delayed_job
+      - worker
 
-  delayed_job:
+  worker:
     extends: main
     command: bin/delayed_job run
     depends_on:
