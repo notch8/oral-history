@@ -1,6 +1,6 @@
 # Docker development setup
 
-1) Install Docker.app 
+1) Install Docker.app
 
 2) gem install stack_car
 
@@ -54,3 +54,7 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## Production Notes:
+Regarding docker-compose.production.yml: The delayed_job container is for scaling out processing of peaks for all of the audio files. 
+However, the web container always has one worker. Stopping the delayed_job container will not stop jobs from being run.
