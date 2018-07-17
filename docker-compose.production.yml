@@ -11,7 +11,7 @@ services:
       - 'postgres:/var/lib/postgresql/data'
 
   solr:
-    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/solr:dev"
     environment:
       - RAILS_ENV=production
       - RACK_ENV=production
