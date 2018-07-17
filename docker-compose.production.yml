@@ -11,13 +11,13 @@ services:
       - 'postgres:/var/lib/postgresql/data'
 
   solr:
-    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/solr:dev"
     environment:
       - RAILS_ENV=production
       - RACK_ENV=production
       - PASSENGER_APP_ENV=production
     restart: unless-stopped
-    command: /sbin/setuser app bash -l -c 'cd /home/app/webapp && bundle exec solr_wrapper'
+    command: /sbin/setuser app bash -l -c 'cd /home/app/webapp && bundle exec solr_wrapper --version 7.3.0'
     ports:
       - "8983"
     labels:
@@ -48,7 +48,27 @@ services:
     depends_on:
       - postgres
       - solr
-
+  # NOTE: THIS IS FOR SCALING OUT IMPORT/PROCESS (SPEICIFCALLY OF PEAKS)
+  # EVEN IF YOU KILL THIS CONTAINER, THERE IS A SINGLE WORKER IN THE WEB CONTAINER
+  worker:
+    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
+    environment:
+      - RAILS_ENV=production
+      - RACK_ENV=production
+      - PASSENGER_APP_ENV=production
+    restart: unless-stopped
+    command: bin/delayed_job run
+    labels:
+      io.rancher.container.pull_image: always
+    env_file:
+      - .env
+      - .env.production
+    depends_on:
+      - postgres
+      - solr
+    depends_on:
+      - postgres
+      - solr
 
 volumes:
   postgres:

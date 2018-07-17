@@ -22,8 +22,8 @@ services:
     build: .
     image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
     env_file:
-      - .env
       - .env.development
+      - .env
     volumes:
       - .:/home/app/webapp
 
@@ -42,9 +42,9 @@ services:
     depends_on:
       - postgres
       - solr
-      - delayed_job
+      - worker
 
-  delayed_job:
+  worker:
     extends: main
     command: bin/delayed_job run
     depends_on:
