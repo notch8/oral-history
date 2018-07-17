@@ -17,7 +17,7 @@ services:
       - RACK_ENV=production
       - PASSENGER_APP_ENV=production
     restart: unless-stopped
-    command: /sbin/setuser app bash -l -c 'cd /home/app/webapp && bundle exec solr_wrapper'
+    command: /sbin/setuser app bash -l -c 'cd /home/app/webapp && bundle exec solr_wrapper --version 7.3.0'
     ports:
       - "8983"
     labels:
