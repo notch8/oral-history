@@ -57,7 +57,7 @@ export default class FileView extends Component {
         throw new Error('Sorry, something went wrong while loading transcript.')
       }
     });
-    var apiRequest2 = fetch('/tei.xslt').then(function(response){
+    var apiRequest2 = fetch('/convert.xslt').then(function(response){
       if (response.ok) {
         return response.text()
       } else {

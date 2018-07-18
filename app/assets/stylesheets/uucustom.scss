@@ -458,6 +458,28 @@ div.transcript-container {
   width: auto;
 }
 
+span.speaker {
+  font-weight: 700;
+  color: #777;
+}
+
+span.speaker::after {
+  content: ': ';
+  font-weight: 700;
+  color: #777;
+}
+
+div.tei-head {
+  font-size: 1.2em;
+  font-weight: 700;
+  display:inline;
+  color: #777;
+}
+span.speaker ~ p {
+  display: inline;
+  color: #999;
+}
+
 /* STATIC PAGES */
 
 .u-heading-v1-4::before {
