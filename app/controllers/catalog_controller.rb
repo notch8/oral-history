@@ -236,8 +236,8 @@ class CatalogController < ApplicationController
   # Override to add highlighing to show
   def show
     @response, @document = fetch params[:id], {
-      :"hl.q" => current_search_session.query_params["q"],
-      :df => blacklight_config.default_document_solr_params[:"hl.fl"]
+      :"hl.q" => current_search_session.try(:query_params).try(:[], "q"),
+      :df => blacklight_config.try(:default_document_solr_params).try(:[], :"hl.fl")
     }
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
