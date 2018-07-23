@@ -23,34 +23,6 @@
       </div>
     </xsl:template>
 
-    <xsl:template match="list">
-      <xsl:apply-templates select="head"/>
-      <ul>
-        <xsl:apply-templates select="item"/>
-      </ul>
-    </xsl:template>
-    <xsl:template match="item">
-      <li>
-        <xsl:apply-templates/>
-      </li>
-    </xsl:template>
-
-    <xsl:template match="table">
-      <xsl:apply-templates select="head"/>
-      <table>
-        <xsl:apply-templates select="row"/>
-      </table>
-    </xsl:template>
-    <xsl:template match="row">
-      <tr>
-        <xsl:apply-templates/>
-      </tr>
-    </xsl:template>
-    <xsl:template match="cell">
-      <td>
-        <xsl:apply-templates/>
-      </td>
-    </xsl:template>
 
     <xsl:template match="opener">
       <div class="opener">
@@ -60,14 +32,6 @@
     <xsl:template match="note">
       <div class="note">
         <xsl:apply-templates/>
-      </div>
-    </xsl:template>
-
-    <xsl:template match="pb">
-      <div class="pageheader">
-        <xsl:attribute name="id">BOOKPAGE_<xsl:value-of select="@n"/></xsl:attribute>
-        <xsl:attribute name="data-image"><xsl:value-of select="@facs"/><xsl:value-of select="@xml:id"/></xsl:attribute>
-        Page <xsl:value-of select="@n"/>
       </div>
     </xsl:template>
 
@@ -104,7 +68,9 @@
       </span>
     </xsl:template>
     <xsl:template match="milestone">
-      <span unit="timestamp" start="time">
+
+      <span unit="timestamp" >
+        <xsl:attribute name="data-start"><xsl:value-of select="@start"/></xsl:attribute>
         <xsl:apply-templates/>
       </span>
     </xsl:template>
