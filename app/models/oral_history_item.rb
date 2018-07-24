@@ -131,8 +131,7 @@ class OralHistoryItem
 
       history.index_record
 
-      # TODO: REMEMBER TO COMMENT THIS BACK IN!
-      # ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
+      ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
 
       if progress
         bar.increment!
