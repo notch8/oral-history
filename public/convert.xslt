@@ -68,11 +68,13 @@
       </span>
     </xsl:template>
     <xsl:template match="milestone">
-
-      <span unit="timestamp" >
+      <br/>
+      <a class="audio-timestamp-link">
         <xsl:attribute name="data-start"><xsl:value-of select="@start"/></xsl:attribute>
         <xsl:apply-templates/>
-      </span>
+          <strong>(<xsl:value-of select="@start"/>)</strong>
+      </a>
+      
     </xsl:template>
 
 </xsl:stylesheet>
