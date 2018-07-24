@@ -1,3 +1,6 @@
+require 'nokogiri'
+require 'net/http'
+
 class OralHistoryItem
   attr_accessor :attributes
 
@@ -86,8 +89,14 @@ class OralHistoryItem
               end
             elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
               history.attributes["children_t"] ||= []
-              time_log_url = if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
-                 child.elements['mods:location/mods:url[@usage="timed log"]'].text
+              # history.attributes["transcripts_t"] ||= []
+              time_log_url = ''
+              parsed_transcript = ''
+
+              if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
+                time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
+                parsed_transcript = self.generate_transcript(time_log_url)
+                # history.attributes["transcripts_t"] << parsed_transcript
               end
               child_document = {
                 'id': Digest::MD5.hexdigest(child.elements['mods:identifier'].text).to_i(16),
@@ -96,7 +105,8 @@ class OralHistoryItem
                 "title_t": child.elements['mods:titleInfo/mods:title'].text,
                 "order_i": child.elements['mods:part'].attributes['order'],
                 "description_t": child.elements['mods:tableOfContents'].text,
-                "time_log_t": time_log_url
+                "time_log_t": time_log_url,
+                "transcript_t": parsed_transcript
               }
               if child.attributes['href'].present?
                 history.attributes["audio_b"] = true
@@ -105,7 +115,7 @@ class OralHistoryItem
             elsif child.name == "relatedItem" && child.attributes['type'] == "series"
               history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
               history.attributes["series_t"] = child.elements['mods:titleInfo/mods:title'].text
-              history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text              
+              history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text
             elsif child.name == "note"
               if child.attributes['type'] == 'biographical'
                 history.attributes["biographical_display"] = child.text
@@ -121,7 +131,8 @@ class OralHistoryItem
 
       history.index_record
 
-      ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
+      # TODO: REMEMBER TO COMMENT THIS BACK IN!
+      # ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
 
       if progress
         bar.increment!
@@ -158,6 +169,15 @@ class OralHistoryItem
 
   def self.find(id)
     OralHistoryItem.new(SolrDocument.find(id))
+  end
+
+  def self.generate_transcript(url)
+    tmpl = Nokogiri::XSLT(File.read('public/convert.xslt'))
+    resp = Net::HTTP.get(URI(url))
+
+    document = Nokogiri::XML(resp)
+
+    tmpl.transform(document).to_xml
   end
 end
 
