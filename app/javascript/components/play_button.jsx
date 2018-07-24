@@ -14,15 +14,14 @@ export default class PlayButton extends Component {
   }
 
   handleOnClick(e) {
-
-    const { id, src, peaks, timelog } = this.props
+    const { id, src, peaks, transcript } = this.props
 
     var event = new CustomEvent(
       'set_audio_player_src',
       {
         bubbles: true,
         cancelable: true,
-        detail: { id, src, peaks, timelog }
+        detail: { id, src, peaks, transcript }
       },
     )
 
