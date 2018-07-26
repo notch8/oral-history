@@ -1,3 +1,6 @@
+require 'nokogiri'
+require 'net/http'
+
 class OralHistoryItem
   attr_accessor :attributes
 
@@ -86,13 +89,24 @@ class OralHistoryItem
               end
             elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
               history.attributes["children_t"] ||= []
+              # history.attributes["transcripts_t"] ||= []
+              time_log_url = ''
+              parsed_transcript = ''
+
+              if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
+                time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
+                parsed_transcript = self.generate_transcript(time_log_url)
+                # history.attributes["transcripts_t"] << parsed_transcript
+              end
               child_document = {
                 'id': Digest::MD5.hexdigest(child.elements['mods:identifier'].text).to_i(16),
                 "id_t": child.elements['mods:identifier'].text,
                 "url_t": child.attributes['href'],
                 "title_t": child.elements['mods:titleInfo/mods:title'].text,
                 "order_i": child.elements['mods:part'].attributes['order'],
-                "description_t": child.elements['mods:tableOfContents'].text
+                "description_t": child.elements['mods:tableOfContents'].text,
+                "time_log_t": time_log_url,
+                "transcript_t": parsed_transcript
               }
               if child.attributes['href'].present?
                 history.attributes["audio_b"] = true
@@ -154,6 +168,15 @@ class OralHistoryItem
 
   def self.find(id)
     OralHistoryItem.new(SolrDocument.find(id))
+  end
+
+  def self.generate_transcript(url)
+    tmpl = Nokogiri::XSLT(File.read('public/convert.xslt'))
+    resp = Net::HTTP.get(URI(url))
+
+    document = Nokogiri::XML(resp)
+
+    tmpl.transform(document).to_xml
   end
 end
 

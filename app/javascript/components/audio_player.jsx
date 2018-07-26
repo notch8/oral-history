@@ -105,16 +105,34 @@ export default class AudioPlayer extends Component {
 
     wavesurfer.load(audio, peaks);
 
-    let handler = changeSource(this, hls, wavesurfer, audio, id)
+    let sourceHandler = changeSource(this, hls, wavesurfer, audio, id)
+    window.addEventListener('set_audio_player_src', sourceHandler)
 
-    window.addEventListener('set_audio_player_src', handler)
+    let jumpHandler = jumpTo(audio)
+    window.addEventListener('jump_to_audio_time', jumpHandler)
 
-    this.setState({handler}) // add handler for graceful removal of event listener
+    this.setState({
+      sourceHandler,
+      jumpHandler,
+    }) // add sourceHandler and jumpHandler for graceful removal of event listeners
   }
 
   componentWillUnmount() {
-    window.removeEventListener('set_audio_player_src', this.state.handler)
+    const { sourceHandler, jumpHandler } = this.state
+
+    window.removeEventListener('set_audio_player_src', sourceHandler)
+    window.removeEventListener('jump_to_audio_time', jumpHandler)
   }
+}
+
+const jumpTo = (audio) => (e) => {
+  let parts = e.detail.jump_to.split(':').reverse()
+
+  let seconds = parts.reduce((acc, val, i) => {
+    return acc + (parseInt(val) * (i > 0 ? 60 ** i : 1))
+  }, 0)
+
+  audio.currentTime = seconds
 }
 
 const changeSource = (component, hls, wavesurfer, audio) => (e) => {
