@@ -116,8 +116,9 @@ class OralHistoryItem
       end
 
       history.index_record
-
-      ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
+      if ENV['MAKE_WAVES']
+        ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
+      end
 
       if progress
         bar.increment!

@@ -1,0 +1,18 @@
+
+<% unless has_search_parameters? %>
+  <div class="container-fluid">
+    <div id="sidebar" class="<%= sidebar_classes %> padding-left-50">
+    <%= render 'search_sidebar' %>
+  </div>
+<% else %>
+  <div class="container">
+    <div id="sidebar" class="<%= sidebar_classes %>">
+    <%= render 'search_sidebar' %>
+  </div>
+<% end %>
+
+  <div id="content" class="<%= main_content_classes %>">
+    <%= render 'search_results' %>
+  </div>
+
+

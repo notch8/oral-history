@@ -203,6 +203,8 @@
          score,
          author_display,
          author_vern_display, 
+         interviewee_display,
+         interviewee_vern_display, 
          format, 
          isbn_t, 
          language_facet, 

@@ -475,6 +475,8 @@
    <field name="subtitle_vern_display" type="string" indexed="false" stored="true" multiValued="false"/>
    <field name="author_display" type="string" indexed="false" stored="true" multiValued="false"/>
    <field name="author_vern_display" type="string" indexed="false" stored="true" multiValued="false"/>
+   <field name="interviewee_display" type="string" indexed="false" stored="true" multiValued="false"/>
+   <field name="interviewee_vern_display" type="string" indexed="false" stored="true" multiValued="false"/>
    <field name="publisher_display" type="string" indexed="false" stored="true" multiValued="false"/>
    <field name="publisher_vern_display" type="string" indexed="false" stored="true" multiValued="false"/>
 

@@ -1,0 +1,79 @@
+<%= content_for(:head) do %>
+  <%= javascript_pack_tag "audio_player" %>
+<% end %>
+<div class="container">
+  <%# TODO: this feels really gross -- needs to be refactored %>
+  <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document).present? %>
+  <%= react_component('AudioPlayer', id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'), src: parsed_children.try(:first).try(:[], "url_t"), peaks: parsed_children.try(:first).try(:[], "peaks"), image: "/avatar.jpg") %>
+</div>
+<div class="container shortcode-html">
+  <div class="col-sm-12">
+    <div class="card rounded-0 g-brd-none">
+      <%= document["biographical_display"].first if document["biographical_display"].present? %>
+    </div>
+  </div>
+  <div id="accordion-10" class="u-accordion u-accordion-color-primary u-accordion-brd-primary" role="tablist" aria-multiselectable="true">
+    <% if parsed_children.present? %>
+      <% parsed_children.each_with_index do |child, i| %>
+        <div class="col-sm-12">
+          <!-- Card -->
+          <div class="card rounded-0 g-brd-none">
+            <div id="accordion-10-heading-<%= child['order_i'] %>" class="u-accordion__header g-pa-0" role="tab">
+              <h5 class="mb-0 g-font-weight-600 g-font-size-default g-brd-bottom g-brd-gray-light-v4 g-pa-15-0">
+                <a class="d-block g-color-main g-text-underline--none--hover collapsed" href="#accordion-10-body-<%= child['order_i'] %>" data-toggle="collapse" data-parent="#accordion-10" aria-expanded="false"  aria-controls="accordion-10-body-<%= child['order_i'] %>">
+                  <span class="u-accordion__control-icon g-ml-10">
+                    <i class="fa fa-angle-right"></i>
+                    <i class="fa fa-angle-down"></i>
+
+                  </span>
+                  <span class="g-valign-middle"><%= child["title_t"] %></span>
+                </a>
+                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: child["peaks"]) %>
+              </h5>
+            </div>
+            <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
+              <div class="u-accordion__body g-color-gray-dark-v5 g-pa-15-0">
+                <%= child["description_t"] %>
+              </div>
+            </div>
+          </div>
+          <!-- End Card -->
+        </div> <!-- end div for accordion card-->
+      <% end %> <!-- end parsed children loop with accordion -->
+    <% end %>
+    <div class="col-sm-12">
+      <!-- Card -->
+      <div class="card rounded-0 g-brd-none">
+        <div id="accordion-10-heading-last" class="u-accordion__header g-pa-0" role="tab">
+          <h5 class="mb-0 g-font-weight-600 g-font-size-default g-brd-bottom g-brd-gray-light-v4 g-pa-15-0">
+            <a class="d-block g-color-main g-text-underline--none--hover collapsed" href="#accordion-10-body-last" data-toggle="collapse" data-parent="#accordion-10" aria-expanded="false" aria-controls="accordion-10-body-last">
+              <span class="u-accordion__control-icon g-ml-10">
+                <i class="fa fa-angle-right"></i>
+                <i class="fa fa-angle-down"></i>
+
+
+              </span>
+              <span class="g-valign-middle">Metadata</span>
+            </a>
+          </h5>
+        </div>
+        <div id="accordion-10-body-last" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-last">
+          <div class="u-accordion__body g-color-gray-dark-v5 g-pa-15-0">
+            <% doc_presenter = show_presenter(document) %>
+            <%# default partial to display solr document fields in catalog show view -%>
+            <dl class="dl-horizontal  dl-invert show-page">
+              <% document_show_fields(document).each do |field_name, field| -%>
+                <% if should_render_show_field? document, field %>
+                  <dt class="blacklight-<%= field_name.parameterize %>"><%= render_document_show_field_label document, field: field_name %></dt>
+                  <dd class="blacklight-<%= field_name.parameterize %>"><%= doc_presenter.field_value field_name %></dd>
+                <% end -%>
+              <% end %>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <!-- End Card -->
+    </div>
+
+  </div> <!-- end accordion -->
+</div> <!-- end container -->
