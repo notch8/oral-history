@@ -111,7 +111,7 @@
          title_series_t^10
          language_t
          biographical_t
-         children_t
+         transcripts_t
          isbn_t
          text
        </str>
@@ -139,7 +139,7 @@
          title_series_unstem_search^250
          title_series_t^100
          biographical_t^10
-         children_t
+         transcripts_t
          language_t^10
          text^10
        </str>
