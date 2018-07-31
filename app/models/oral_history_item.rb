@@ -96,6 +96,7 @@ class OralHistoryItem
               }
               if child.attributes['href'].present?
                 history.attributes["audio_b"] = true
+                history.attributes["audio_display"] = "Yes"
               end
               history.attributes["children_t"] << child_document.to_json
             elsif child.name == "relatedItem" && child.attributes['type'] == "series"

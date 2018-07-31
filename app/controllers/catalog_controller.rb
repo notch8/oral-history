@@ -110,13 +110,13 @@ class CatalogController < ApplicationController
     config.add_index_field 'biographical_t', label: 'Biographical Note', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'extent_display', label: 'Length', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'language_t', label: 'Language', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'author_t', label: 'Interviewer', highlight: true #only show if highlight has results
     config.add_index_field 'interviewee_t', label: 'Interviewee', highlight: true #only show if highlight has results
     config.add_index_field 'title_t', label: 'Title', highlight: true #only show if highlight has results
     config.add_index_field 'subtitle_t', label: 'Subtitle', highlight: true #only show if highlight has results
     config.add_index_field 'series_t', label: 'Series Name', highlight: true #only show if highlight has results
     config.add_index_field 'description_t', label: 'Description', highlight: true #only show if highlight has results
-
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'subtitle_t', label: 'Subtitle', highlight: true

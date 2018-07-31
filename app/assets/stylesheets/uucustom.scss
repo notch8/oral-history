@@ -122,6 +122,7 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
 
 .navbar-nav > li > a {
   color: #fff;
+  padding: 15px 8px;
 }
 
 .navbar-inverse .navbar-nav > li > a {
@@ -139,17 +140,13 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   font-family: "Times New Roman";
 }
 
-@media screen and (min-width: 769px) and (max-width: 991px) {
+@media screen and (min-width: 768px) and (max-width: 991px) {
   #header-navbar .navbar-brand {
     overflow: hidden;
   }
 }
 
-@media screen and (max-width: 768px) {
-  body {
-    // position: absolute;
-  }
-
+@media screen and (max-width: 767px) {
   #header-navbar .navbar-brand {
     background-position: left 5px center;
     width: 160px;
