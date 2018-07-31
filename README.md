@@ -20,6 +20,9 @@ sc up
 sc be rake db:migrate import[100]
 ```
 
+## Development Notes
+When performing an import the system will attempt to download and process the audio files to create the peak files. This is very CPU & time intense. Change MAKE_WAVES in your .env to false (or delete it).
+
 # Deploy a new release
 
 ``` bash
@@ -56,5 +59,5 @@ Things you may want to cover:
 * ...
 
 ## Production Notes:
-Regarding docker-compose.production.yml: The delayed_job container is for scaling out processing of peaks for all of the audio files. 
+Regarding docker-compose.production.yml: The delayed_job container is for scaling out processing of peaks for all of the audio files.
 However, the web container always has one worker. Stopping the delayed_job container will not stop jobs from being run.

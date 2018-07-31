@@ -11,7 +11,8 @@
     "react-dom": "^16.2.0",
     "wavesurfer.js": "^2.0.6",
     "webpack-merge": "^4.1.1",
-    "webpacker-react": "^0.3.2"
+    "webpacker-react": "^0.3.2",
+    "xslt": "^0.9.1"
   },
   "devDependencies": {
     "webpack-dev-server": "^2.9.7"
