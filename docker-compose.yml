@@ -42,14 +42,14 @@ services:
     depends_on:
       - postgres
       - solr
-      - worker
+#      - worker
 
-  worker:
-    extends: main
-    command: bin/delayed_job run
-    depends_on:
-      - postgres
-      - solr
+  # worker:
+  #   extends: main
+  #   command: bin/delayed_job run
+  #   depends_on:
+  #     - postgres
+  #     - solr
 
 volumes:
   postgres:

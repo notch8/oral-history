@@ -114,6 +114,7 @@ class OralHistoryItem
 
               if child.attributes['href'].present?
                 history.attributes["audio_b"] = true
+                history.attributes["audio_display"] = "Yes"
               end
 
               history.attributes["children_t"] << child_document.to_json
@@ -135,8 +136,7 @@ class OralHistoryItem
       end
 
       history.index_record
-
-       if ENV['MAKE_WAVES']
+      if ENV['MAKE_WAVES']
         ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
       end
 
