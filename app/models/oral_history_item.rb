@@ -89,28 +89,33 @@ class OralHistoryItem
               end
             elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
               history.attributes["children_t"] ||= []
-              # history.attributes["transcripts_t"] ||= []
+              history.attributes["transcripts_t"] ||= []
               time_log_url = ''
-              parsed_transcript = ''
+              order = child.elements['mods:part'].attributes['order']
 
               if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
                 time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
-                parsed_transcript = self.generate_transcript(time_log_url)
-                # history.attributes["transcripts_t"] << parsed_transcript
+
+                history.attributes["transcripts_t"] << {
+                  "transcript_t": self.generate_transcript(time_log_url),
+                  "order_i": order
+                }.to_json
               end
+
               child_document = {
                 'id': Digest::MD5.hexdigest(child.elements['mods:identifier'].text).to_i(16),
                 "id_t": child.elements['mods:identifier'].text,
                 "url_t": child.attributes['href'],
                 "title_t": child.elements['mods:titleInfo/mods:title'].text,
-                "order_i": child.elements['mods:part'].attributes['order'],
+                "order_i": order,
                 "description_t": child.elements['mods:tableOfContents'].text,
-                "time_log_t": time_log_url,
-                "transcript_t": parsed_transcript
+                "time_log_t": time_log_url
               }
+
               if child.attributes['href'].present?
                 history.attributes["audio_b"] = true
               end
+
               history.attributes["children_t"] << child_document.to_json
             elsif child.name == "relatedItem" && child.attributes['type'] == "series"
               history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
@@ -131,7 +136,9 @@ class OralHistoryItem
 
       history.index_record
 
-      ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
+       if ENV['MAKE_WAVES']
+        ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
+      end
 
       if progress
         bar.increment!
