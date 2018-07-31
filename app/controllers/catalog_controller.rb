@@ -40,8 +40,8 @@ class CatalogController < ApplicationController
      # q: '{!term f=id v=$id}'
       :"hl" => true,
       :"hl.fl" => "biographical_t, subject_t, description_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
-      :"hl.simple.pre" => "<span class='label label-warning'>",
-      :"hl.simple.post" => "</span>",
+      # :"hl.simple.pre" => "<span class='label label-warning'>",
+      # :"hl.simple.post" => "</span>",
       :"hl.alternateField" => "dd",
     }
 
