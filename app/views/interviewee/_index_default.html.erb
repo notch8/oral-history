@@ -8,7 +8,7 @@
       <% if field_name == "audio_b" && doc_presenter.field_value(field_name) == "T" %>
         <dd class="blacklight-<%= field_name.parameterize %>"><span class="glyphicon glyphicon-headphones"></span></dd>
       <% elsif field_name == "audio_b" && doc_presenter.field_value(field_name) == "F"%>
-      <dd class="blacklight-<%= field_name.parameterize %>">No audio file available</span></dd>
+      <dd class="blacklight-<%= field_name.parameterize %>"><span class="glyphicon glyphicon-ban-circle"></span></dd>
       <% else %>
         <dd class="blacklight-<%= field_name.parameterize %>"><%= doc_presenter.field_value field_name %></dd>
       <% end %>
