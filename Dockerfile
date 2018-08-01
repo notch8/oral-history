@@ -1,42 +1,19 @@
-FROM phusion/passenger-ruby23:0.9.20
+FROM registry.gitlab.com/notch8/oral_history/base:latest
+ARG BRANCH
 
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
-    apt-get update -qq && \
-    apt-get install -y build-essential nodejs yarn pv libsasl2-dev libpq-dev postgresql-client default-jdk libsndfile1-dev ffmpeg && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ADD http://timejson.herokuapp.com build-time
+ADD ops/webapp.conf /etc/nginx/sites-enabled/webapp.conf
+ADD ops/env.conf /etc/nginx/main.d/env.conf
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
-
-RUN rm /etc/nginx/sites-enabled/default
-COPY ops/webapp.conf /etc/nginx/sites-enabled/webapp.conf
-COPY ops/env.conf /etc/nginx/main.d/env.conf
-
-ENV APP_HOME /home/app/webapp
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
-
-ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
-  BUNDLE_JOBS=4
-
-ADD Gemfile* $APP_HOME/
-RUN bundle check || bundle install
-
-RUN touch /var/log/worker.log && chmod 666 /var/log/worker.log
-RUN mkdir /etc/service/worker
-ADD ops/worker.sh /etc/service/worker/run
-RUN chmod +x /etc/service/worker/run
-
-
-COPY . $APP_HOME
-RUN chown -R app $APP_HOME
-RUN /sbin/setuser app yarn install
-
-# Asset complie and migrate if prod, otherwise just start nginx
-ADD ops/nginx.sh /etc/service/nginx/run
-RUN chmod +x /etc/service/nginx/run
-RUN rm -f /etc/service/nginx/down
+RUN cd /home/app/webapp && \
+    /sbin/setuser app git fetch -ap && \
+    /sbin/setuser app git checkout -f $BRANCH && \
+    /sbin/setuser app git pull origin $BRANCH && \
+    /sbin/setuser app git clean -fd && \
+    chown -R app $APP_HOME && \
+    (/sbin/setuser app bundle check || /sbin/setuser app bundle install) && \
+    /sbin/setuser app bundle exec rake assets:precompile DB_ADAPTER=nulldb NODE_ENV=production && \
+    chown -R app $APP_HOME && \
+    rm -f /etc/service/nginx/down
 
 CMD ["/sbin/my_init"]
