@@ -3,8 +3,12 @@
 <% end %>
 <div class="container">
   <%# TODO: this feels really gross -- needs to be refactored %>
-  <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document).present? %>
+  <% parsed_transcripts = transcripts_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if transcripts_from(document) %>
+  <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document) %>
   <%= react_component('AudioPlayer', id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'), src: parsed_children.try(:first).try(:[], "url_t"), peaks: parsed_children.try(:first).try(:[], "peaks"), image: "/avatar.jpg") %>
+</div>
+<div class="container">
+  <%= react_component('FileView') %>
 </div>
 <div class="container shortcode-html">
   <div class="col-sm-12">
@@ -28,7 +32,8 @@
                   </span>
                   <span class="g-valign-middle"><%= child["title_t"] %></span>
                 </a>
-                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: child["peaks"]) %>
+
+                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: child["peaks"], transcript: parsed_transcripts[i]["transcript_t"]) %>
               </h5>
             </div>
             <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
@@ -50,8 +55,6 @@
               <span class="u-accordion__control-icon g-ml-10">
                 <i class="fa fa-angle-right"></i>
                 <i class="fa fa-angle-down"></i>
-
-
               </span>
               <span class="g-valign-middle">Metadata</span>
             </a>
@@ -62,10 +65,18 @@
             <% doc_presenter = show_presenter(document) %>
             <%# default partial to display solr document fields in catalog show view -%>
             <dl class="dl-horizontal  dl-invert show-page">
+            
               <% document_show_fields(document).each do |field_name, field| -%>
                 <% if should_render_show_field? document, field %>
                   <dt class="blacklight-<%= field_name.parameterize %>"><%= render_document_show_field_label document, field: field_name %></dt>
-                  <dd class="blacklight-<%= field_name.parameterize %>"><%= doc_presenter.field_value field_name %></dd>
+                  <% if field_name == "audio_b" && doc_presenter.field_value(field_name) == "true" %>
+                    <dd class="blacklight-<%= field_name.parameterize %>"><span class="glyphicon glyphicon-headphones"></span></dd>
+                  <% elsif field_name == "audio_b" && doc_presenter.field_value(field_name) == "false" %>
+                  <dd class="blacklight-<%= field_name.parameterize %>"><span class="glyphicon glyphicon-ban-circle"></span></dd>
+                  <% else %>
+                  
+                    <dd class="blacklight-<%= field_name.parameterize %>"><%= doc_presenter.field_value field_name %></dd>
+                  <% end %>
                 <% end -%>
               <% end %>
             </dl>

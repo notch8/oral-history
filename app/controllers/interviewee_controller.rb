@@ -7,7 +7,7 @@ class IntervieweeController < ApplicationController
     config.default_solr_params = {
       rows: 10,
     }
-    config.index.title_field = 'interviewee_display'
+    config.index.title_field = 'title_display'
     config.index.display_type_field = 'format'
 
 #    config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
@@ -43,7 +43,7 @@ class IntervieweeController < ApplicationController
     config.add_sort_field 'interviewee_sort asc, title_sort asc', label: 'Interviewee'
     config.add_index_field 'title_t', label: 'Title', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'subject_t', label: 'Topic', helper_method: :split_multiple, highlight: true, solr_params: { :"hl.alternateField" => "dd" }
-
+    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_facet_fields_to_solr_request!
 
     config.add_field_configuration_to_solr_request!
