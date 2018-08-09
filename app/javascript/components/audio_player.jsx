@@ -27,6 +27,7 @@ export default class AudioPlayer extends Component {
       peaks: peaks,
       playing: false,
       volume: 1,
+      currentTime: '--:--:-- / --:--:--',
     }
 
     this.handleTogglePlay = this.handleTogglePlay.bind(this)
@@ -35,7 +36,7 @@ export default class AudioPlayer extends Component {
   }
 
   render() {
-    const { volume, source, playing, sliderPos } = this.state
+    const { volume, source, playing, sliderPos, currentTime } = this.state
     const { image } = this.props
 
     const width = `${(volume * 100)}%` || '50%'
@@ -57,6 +58,7 @@ export default class AudioPlayer extends Component {
             <div style={{left: left}} className="marker"></div>
             <div style={{width: width}} className="fill"></div>
           </div>
+          <div className="time-box">{currentTime}</div>
         </div>
         <div className='col-xs-8 wave-box'>
         </div>
@@ -96,6 +98,28 @@ export default class AudioPlayer extends Component {
   componentDidMount() {
     const { id, source, peaks } = this.state
     let { audio } = this.refs
+
+    audio.ontimeupdate = () => {
+      const c = Math.floor(audio.currentTime)
+      const d = Math.floor(audio.duration)
+
+      this.setState({
+        currentTime: `${formatTime(c)} / -${formatTime(d-c)}`
+      })
+    }
+
+    const interval = setInterval(() => {
+      if(audio.duration > 0) {
+        const c = Math.floor(audio.currentTime)
+        const d = Math.floor(audio.duration)
+
+        this.setState({
+          currentTime: `00:00:00 / -${formatTime(d-c)}`
+        })
+
+        clearInterval(interval)
+      }
+    }, 200)
 
     let hls = new Hls()
     hls.loadSource(source)
@@ -170,4 +194,18 @@ const computeVolume = (e, b) => {
   }
 
   return volume
+}
+
+const formatTime = (seconds) => {
+  if (seconds == 0) {
+    return '00:00:00'
+  }
+
+  const hours = Math.floor(seconds / 3600)
+  const mins = Math.floor(seconds / 60 % 60)
+  const secs = Math.floor(seconds % 60)
+
+  const pad = (num) => num > 9 ? `${num}` : `0${num}`
+
+  return `${pad(hours)}:${pad(mins)}:${pad(secs)}`
 }
