@@ -1,8 +1,5 @@
 module ApplicationHelper
   def split_multiple(options={})
-    options[:document] # the original document
-    options[:field] # the field to render
-    options[:value] # the value of the field
     render 'shared/multiple', value: options[:value].uniq
   end
 
@@ -20,5 +17,9 @@ module ApplicationHelper
 
   def children_from(document)
     from_helper "children_t", document
+  end
+
+  def highlightable_series_link(options={})
+    link_to options[:value][0], root_path(f: {series_facet: options[:document]["series_t"]})
   end
 end
