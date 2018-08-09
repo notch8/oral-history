@@ -99,15 +99,6 @@ export default class AudioPlayer extends Component {
     const { id, source, peaks } = this.state
     let { audio } = this.refs
 
-    audio.ontimeupdate = () => {
-      const c = Math.floor(audio.currentTime)
-      const d = Math.floor(audio.duration)
-
-      this.setState({
-        currentTime: `${formatTime(c)} / -${formatTime(d-c)}`
-      })
-    }
-
     const interval = setInterval(() => {
       if(audio.duration > 0) {
         const c = Math.floor(audio.currentTime)
@@ -120,6 +111,15 @@ export default class AudioPlayer extends Component {
         clearInterval(interval)
       }
     }, 200)
+
+    audio.ontimeupdate = () => {
+      const c = Math.floor(audio.currentTime)
+      const d = Math.floor(audio.duration)
+
+      this.setState({
+        currentTime: `${formatTime(c)} / -${formatTime(d-c)}`
+      })
+    }
 
     let hls = new Hls()
     hls.loadSource(source)
