@@ -149,16 +149,6 @@ export default class AudioPlayer extends Component {
   }
 }
 
-const jumpTo = (audio) => (e) => {
-  let parts = e.detail.jump_to.split(':').reverse()
-
-  let seconds = parts.reduce((acc, val, i) => {
-    return acc + (parseInt(val) * (i > 0 ? 60 ** i : 1))
-  }, 0)
-
-  audio.currentTime = seconds
-}
-
 const changeSource = (component, hls, wavesurfer, audio) => (e) => {
   const { id, src, peaks } = e.detail
 
@@ -194,6 +184,16 @@ const computeVolume = (e, b) => {
   }
 
   return volume
+}
+
+const jumpTo = (audio) => (e) => {
+  let parts = e.detail.jump_to.split(':').reverse()
+
+  let seconds = parts.reduce((acc, val, i) => {
+    return acc + (parseInt(val) * (i > 0 ? 60 ** i : 1))
+  }, 0)
+
+  audio.currentTime = seconds
 }
 
 const formatTime = (seconds) => {
