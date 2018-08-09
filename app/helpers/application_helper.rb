@@ -29,6 +29,6 @@ module ApplicationHelper
       link_to f[1], f[0], target: '_blank'
     end
 
-    raw links.join('<br/>')
+    links.join('<br/>').html_safe
   end
 end
