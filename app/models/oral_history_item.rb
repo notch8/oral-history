@@ -130,6 +130,12 @@ class OralHistoryItem
               end
               history.attributes["description_t"] ||= []
               history.attributes["description_t"] << child.text
+            elsif child.name == 'location'
+              child.elements.each do |f|
+                history.attributes['links_t'] ||= []
+
+                history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
+              end
             end
           end
         end
