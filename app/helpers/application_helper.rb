@@ -22,4 +22,14 @@ module ApplicationHelper
   def highlightable_series_link(options={})
     link_to options[:value][0], root_path(f: {series_facet: options[:document]["series_t"]})
   end
+
+  def file_links(options = {})
+    links = options[:value].map do |f|
+      f = JSON.parse(f)
+
+      link_to f[1], f[0], target: '_blank'
+    end
+
+    links.join('<br/>').html_safe
+  end
 end
