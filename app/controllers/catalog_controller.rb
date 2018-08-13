@@ -120,7 +120,7 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'subtitle_t', label: 'Subtitle', highlight: true
-    config.add_show_field 'series_t', label: 'Series', link_to_search: "series_facet", highlight: true
+    config.add_show_field 'series_t', label: 'Series', link_to_search: "series_facet", highlight: true, helper_method: 'highlightable_series_link'
     config.add_show_field 'subject_t', label: 'Topic', helper_method: :split_multiple, highlight: true
     config.add_show_field 'contributor_display', label: 'Interviewer', highlight: true
     config.add_show_field 'author_t', label: 'Interviewer', highlight: true
