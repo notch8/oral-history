@@ -353,9 +353,25 @@ a.footer-link {
 }
 
 .player {
+  .time-box {
+    position: absolute;
+    top: 80%;
+    left: 30%;
+    width: 58%;
+    margin: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 2px 8px;
+    color: white;
+    background-color: rgba(0,0,0,.6);
+    display: inline-block;
+    text-align: center;
+    border-radius: 3px;
+  }
+
   .volume-slider {
     position: absolute;
-    top: 83%;
+    top: 77%;
     left: 33.33%;
     height: 10px;
     width: 58%;
@@ -397,7 +413,7 @@ a.footer-link {
 
     &:before {
       font-family: FontAwesome;
-      font-size: 80px;
+      font-size: 85px;
       color: #fff;
       opacity: .8;
       cursor: pointer;
