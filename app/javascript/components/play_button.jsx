@@ -16,6 +16,11 @@ export default class PlayButton extends Component {
   handleOnClick(e) {
     const { id, src, peaks, transcript } = this.props
 
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    })
+
     var event = new CustomEvent(
       'set_audio_player_src',
       {
