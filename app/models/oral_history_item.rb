@@ -114,6 +114,7 @@ class OralHistoryItem
 
               if child.attributes['href'].present?
                 history.attributes["audio_b"] = true
+                history.attributes["audio_display"] = "Yes"
               end
 
               history.attributes["children_t"] << child_document.to_json
@@ -129,14 +130,19 @@ class OralHistoryItem
               end
               history.attributes["description_t"] ||= []
               history.attributes["description_t"] << child.text
+            elsif child.name == 'location'
+              child.elements.each do |f|
+                history.attributes['links_t'] ||= []
+
+                history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
+              end
             end
           end
         end
       end
 
       history.index_record
-
-       if ENV['MAKE_WAVES']
+      if ENV['MAKE_WAVES']
         ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
       end
 

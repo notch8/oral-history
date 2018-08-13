@@ -12,6 +12,7 @@ class SolrDocument
   field_semantics.merge!(
     :title => "title_display",
     :author => "author_display",
+    :interviewee => "interviewee_display",
     :language => "language_facet",
     :format => "format"
   )

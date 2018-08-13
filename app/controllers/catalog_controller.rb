@@ -39,7 +39,7 @@ class CatalogController < ApplicationController
      # rows: 1,
      # q: '{!term f=id v=$id}'
       :"hl" => true,
-      :"hl.fl" => "biographical_t, subject_t, description_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
+      :"hl.fl" => "biographical_t, subject_t, description_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t, links_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.alternateField" => "dd",
@@ -110,13 +110,13 @@ class CatalogController < ApplicationController
     config.add_index_field 'biographical_t', label: 'Biographical Note', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'extent_display', label: 'Length', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'language_t', label: 'Language', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'author_t', label: 'Interviewer', highlight: true #only show if highlight has results
     config.add_index_field 'interviewee_t', label: 'Interviewee', highlight: true #only show if highlight has results
     config.add_index_field 'title_t', label: 'Title', highlight: true #only show if highlight has results
     config.add_index_field 'subtitle_t', label: 'Subtitle', highlight: true #only show if highlight has results
     config.add_index_field 'series_t', label: 'Series Name', highlight: true #only show if highlight has results
     config.add_index_field 'description_t', label: 'Description', highlight: true #only show if highlight has results
-
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'subtitle_t', label: 'Subtitle', highlight: true
@@ -134,6 +134,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'coverage_display', label: 'Period Covered', highlight: true
     config.add_show_field 'rights_display', label: 'Copyright', highlight: true
     config.add_show_field 'audio_b', label: 'Audio'
+    config.add_show_field 'links_t', label: 'Files', helper_method: 'file_links' 
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'
  #   config.add_show_field 'url_fulltext_display', label: 'URL'

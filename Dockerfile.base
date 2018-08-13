@@ -1,0 +1,64 @@
+FROM phusion/passenger-ruby23:0.9.33
+ARG DEPLOY_KEY
+
+RUN echo 'Downloading Packages' && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+    apt-get update -qq && \
+    apt-get install -y  \
+      build-essential \
+      default-jdk \
+      ffmpeg \
+      imagemagick \
+      libpq-dev \
+      libsasl2-dev \
+      libsndfile1-dev \
+      nodejs \
+      postgresql-client \
+      pv \
+      tzdata \
+      unzip \
+      yarn \
+      zip \
+      && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    yarn config set no-progress && \
+    yarn config set silent && \
+    echo 'Packages Downloaded'
+
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+
+RUN gem install whenever
+RUN rm /etc/nginx/sites-enabled/default
+
+ENV APP_HOME /home/app/webapp
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
+  BUNDLE_JOBS=4
+
+ADD Gemfile* $APP_HOME/
+RUN bundle check || bundle install
+
+RUN touch /var/log/worker.log && chmod 666 /var/log/worker.log
+RUN mkdir /etc/service/worker
+ADD ops/worker.sh /etc/service/worker/run
+RUN chmod +x /etc/service/worker/run
+
+ADD . $APP_HOME
+RUN chown -R app $APP_HOME && \
+    echo "${DEPLOY_KEY}" | base64 -d > /home/app/.ssh/id_rsa && \
+    chown app /home/app/.ssh/id_rsa && \
+    chmod 600 /home/app/.ssh/id_rsa && \
+    ssh-keyscan gitlab.com > /home/app/.ssh/known_hosts
+
+RUN /sbin/setuser app yarn install
+
+# this is so that these items are cached and only have to be updated
+RUN  /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && NODE_ENV=production DB_ADAPTER=nulldb bundle exec rake assets:clobber assets:precompile'
+
+RUN rm -f /etc/service/nginx/down
+

@@ -122,6 +122,7 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
 
 .navbar-nav > li > a {
   color: #fff;
+  padding: 15px 8px;
 }
 
 .navbar-inverse .navbar-nav > li > a {
@@ -139,13 +140,13 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   font-family: "Times New Roman";
 }
 
-@media screen and (min-width: 769px) and (max-width: 991px) {
+@media screen and (min-width: 768px) and (max-width: 991px) {
   #header-navbar .navbar-brand {
     overflow: hidden;
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   #header-navbar .navbar-brand {
     background-position: left 5px center;
     width: 160px;
@@ -352,9 +353,25 @@ a.footer-link {
 }
 
 .player {
+  .time-box {
+    position: absolute;
+    top: 80%;
+    left: 30%;
+    width: 58%;
+    margin: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 2px 8px;
+    color: white;
+    background-color: rgba(0,0,0,.6);
+    display: inline-block;
+    text-align: center;
+    border-radius: 3px;
+  }
+
   .volume-slider {
     position: absolute;
-    top: 83%;
+    top: 77%;
     left: 33.33%;
     height: 10px;
     width: 58%;
@@ -396,7 +413,7 @@ a.footer-link {
 
     &:before {
       font-family: FontAwesome;
-      font-size: 80px;
+      font-size: 85px;
       color: #fff;
       opacity: .8;
       cursor: pointer;
