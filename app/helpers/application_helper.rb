@@ -21,4 +21,14 @@ module ApplicationHelper
   def children_from(document)
     from_helper "children_t", document
   end
+
+  def file_links(options = {})
+    links = options[:value].map do |f|
+      f = JSON.parse(f)
+
+      link_to f[1], f[0], target: '_blank'
+    end
+
+    links.join('<br/>').html_safe
+  end
 end

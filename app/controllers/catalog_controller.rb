@@ -39,7 +39,7 @@ class CatalogController < ApplicationController
      # rows: 1,
      # q: '{!term f=id v=$id}'
       :"hl" => true,
-      :"hl.fl" => "biographical_t, subject_t, description_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
+      :"hl.fl" => "biographical_t, subject_t, description_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t, links_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.alternateField" => "dd",
@@ -134,6 +134,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'coverage_display', label: 'Period Covered', highlight: true
     config.add_show_field 'rights_display', label: 'Copyright', highlight: true
     config.add_show_field 'audio_b', label: 'Audio'
+    config.add_show_field 'links_t', label: 'Files', helper_method: 'file_links' 
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'
  #   config.add_show_field 'url_fulltext_display', label: 'URL'
