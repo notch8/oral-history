@@ -69,14 +69,7 @@
               <% document_show_fields(document).each do |field_name, field| -%>
                 <% if should_render_show_field? document, field %>
                   <dt class="blacklight-<%= field_name.parameterize %>"><%= render_document_show_field_label document, field: field_name %></dt>
-                  <% if field_name == "audio_b" && doc_presenter.field_value(field_name) == "true" %>
-                    <dd class="blacklight-<%= field_name.parameterize %>"><span class="glyphicon glyphicon-headphones"></span></dd>
-                  <% elsif field_name == "audio_b" && doc_presenter.field_value(field_name) == "false" %>
-                  <dd class="blacklight-<%= field_name.parameterize %>"><span class="glyphicon glyphicon-ban-circle"></span></dd>
-                  <% else %>
-                  
-                    <dd class="blacklight-<%= field_name.parameterize %>"><%= doc_presenter.field_value field_name %></dd>
-                  <% end %>
+                  <dd class="blacklight-<%= field_name.parameterize %>"><%= doc_presenter.field_value field_name %></dd>
                 <% end -%>
               <% end %>
             </dl>
