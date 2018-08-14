@@ -205,13 +205,13 @@ const formatTime = (seconds) => {
   const mins = Math.floor(seconds / 60 % 60)
   const secs = Math.floor(seconds % 60)
 
-  const pad = (num) => {
-    if (num == NaN) {
-      return "00"
-    }
+  return `${pad(hours)}:${pad(mins)}:${pad(secs)}`
+}
 
-    return num > 9 ? `${num}` : `0${num}`
+const pad = (num) => {
+  if (num == NaN) {
+    return "00"
   }
 
-  return `${pad(hours)}:${pad(mins)}:${pad(secs)}`
+  return num > 9 ? `${num}` : `0${num}`
 }
