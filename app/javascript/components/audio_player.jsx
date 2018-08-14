@@ -209,7 +209,7 @@ const formatTime = (seconds) => {
 }
 
 const pad = (num) => {
-  if (num == NaN) {
+  if (isNaN(num) || Number.isNaN(num) || num == Infinity) {
     return "00"
   }
 
