@@ -32,4 +32,17 @@ module ApplicationHelper
 
     links.join('<br/>').html_safe
   end
+
+  def audio_icon options={}
+    "<dd class='blacklight-audio_b'><span class='glyphicon #{ options[:value][0] == "T" || options[:value][0] == true ? 'glyphicon-headphones' : 'glyphicon-ban-circle' }'></span></dd>".html_safe
+  end
+
+
+  def audio_icon_with_text options={}
+    if options == "false"
+      "<span class='glyphicon glyphicon-ban-circle' style='margin-left: 1em;'></span>&nbsp;false".html_safe
+    else 
+      "<span class='glyphicon glyphicon-headphones' style='margin-left: 1em;'></span>&nbsp;true".html_safe
+    end
+  end
 end

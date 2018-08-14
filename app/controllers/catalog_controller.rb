@@ -88,7 +88,7 @@ class CatalogController < ApplicationController
 #    config.add_facet_field 'subject_era_facet', label: 'Era'
     config.add_facet_field 'series_facet', label: "Series"
     #config.add_facet_field 'type_of_resource_facet', label: 'Type of Resource'
-    config.add_facet_field 'audio_b', label: 'Has Audio'
+    config.add_facet_field 'audio_b', label: 'Has Audio', helper_method: 'audio_icon_with_text'
     #config.add_facet_field 'example_pivot_field', label: 'Pivot Field', :pivot => ['format', 'language_facet']
 
 #    config.add_facet_field 'example_query_facet_field', label: 'Publish Date', :query => {
@@ -110,7 +110,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'biographical_t', label: 'Biographical Note', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'extent_display', label: 'Length', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'language_t', label: 'Language', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
-    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }, helper_method: 'audio_icon'
     config.add_index_field 'author_t', label: 'Interviewer', highlight: true #only show if highlight has results
     config.add_index_field 'interviewee_t', label: 'Interviewee', highlight: true #only show if highlight has results
     config.add_index_field 'title_t', label: 'Title', highlight: true #only show if highlight has results
@@ -133,7 +133,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'language_t', label: 'Language'
     config.add_show_field 'coverage_display', label: 'Period Covered', highlight: true
     config.add_show_field 'rights_display', label: 'Copyright', highlight: true
-    config.add_show_field 'audio_b', label: 'Audio'
+    config.add_show_field 'audio_b', label: 'Audio', helper_method: 'audio_icon'
     config.add_show_field 'links_t', label: 'Files', helper_method: 'file_links' 
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'
