@@ -86,7 +86,7 @@ class CatalogController < ApplicationController
     #config.add_facet_field 'lc_1letter_facet', label: 'Call Number'
     #config.add_facet_field 'subject_geo_facet', label: 'Region'
 #    config.add_facet_field 'subject_era_facet', label: 'Era'
-    config.add_facet_field 'series_facet', label: "Series"
+    config.add_facet_field 'series_facet', label: 'Series'
     #config.add_facet_field 'type_of_resource_facet', label: 'Type of Resource'
     config.add_facet_field 'audio_b', label: 'Has Audio', helper_method: 'audio_icon_with_text'
     #config.add_facet_field 'example_pivot_field', label: 'Pivot Field', :pivot => ['format', 'language_facet']
@@ -134,7 +134,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'coverage_display', label: 'Period Covered', highlight: true
     config.add_show_field 'rights_display', label: 'Copyright', highlight: true
     config.add_show_field 'audio_b', label: 'Audio', helper_method: 'audio_icon'
-    config.add_show_field 'links_t', label: 'Files', helper_method: 'file_links' 
+    config.add_show_field 'links_t', label: 'Files', helper_method: 'file_links'
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'
  #   config.add_show_field 'url_fulltext_display', label: 'URL'
