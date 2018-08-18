@@ -21,16 +21,17 @@
     background-color: #1e4b87;
     color: #fff;
     text-align: center;
-    padding: 5px;
+    padding: 5px 10px;
     border-radius: 6px;
     font-family: inherit;
 
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 1;
-    bottom: 110%;
+    bottom: 122%;
     left: -400%;
     font-size: .9rem;
+    box-shadow: -1px 2px #111111;
 }
 
 .series-tooltip:hover {
@@ -44,8 +45,11 @@
 
 @media only screen and (min-width: 480px) {
   .series-tooltip .series-tooltip-text {
-    width: 380px;
+    width: 360px;
+    padding: 10px 15px;
+    bottom: 135%;
     font-size: 1rem;
+    box-shadow: -2px 3px #111111;
   }
 }
 
