@@ -5,10 +5,17 @@
   <%# TODO: this feels really gross -- needs to be refactored %>
   <% parsed_transcripts = transcripts_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if transcripts_from(document) %>
   <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document) %>
-  <%= react_component('AudioPlayer', id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'), src: parsed_children.try(:first).try(:[], "url_t"), peaks: parsed_children.try(:first).try(:[], "peaks"), image: "/avatar.jpg") %>
+  <%= react_component(
+    'AudioPlayer',
+    id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'),
+    src: parsed_children.try(:first).try(:[], "url_t"),
+    peaks: parsed_children.try(:first).try(:[], "peaks"),
+    transcript: parsed_transcripts.try(:first).try(:[], "transcript_t"),
+    image: "/avatar.jpg"
+  ) %>
 </div>
 <div class="container">
-  <%= react_component('FileView') %>
+  <%= react_component('FileView', transcript: parsed_transcripts.try(:first).try(:[], "transcript_t")) %>
 </div>
 <div class="container shortcode-html">
   <div class="col-sm-12">
@@ -65,7 +72,7 @@
             <% doc_presenter = show_presenter(document) %>
             <%# default partial to display solr document fields in catalog show view -%>
             <dl class="dl-horizontal  dl-invert show-page">
-            
+
               <% document_show_fields(document).each do |field_name, field| -%>
                 <% if should_render_show_field? document, field %>
                   <dt class="blacklight-<%= field_name.parameterize %>"><%= render_document_show_field_label document, field: field_name %></dt>

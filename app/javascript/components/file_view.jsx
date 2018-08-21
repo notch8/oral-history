@@ -26,10 +26,9 @@ export default class FileView extends Component {
 
         {transcript && isPlaying ? (
           <div ref='container' className="container g-brd-primary g-brd-around rounded-0 transcript-container" dangerouslySetInnerHTML={{ __html: transcript}} />
-          ) : (
+        ) : (
           <div></div>
-          )
-        }
+        )}
       </div>
     )
   }
@@ -52,6 +51,8 @@ export default class FileView extends Component {
       transcript: e.detail.transcript
     })
 
-    this.refs.container.scrollTop = 0
+    if (this.refs.container) {
+      this.refs.container.scrollTop = 0
+    }
   }
 }
