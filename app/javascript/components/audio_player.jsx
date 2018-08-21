@@ -19,13 +19,15 @@ export default class AudioPlayer extends Component {
   constructor(props) {
     super(props)
 
-    const { id, src, peaks } = this.props
+    const { id, src, peaks, transcript } = this.props
 
     this.state = {
       id: id,
       source: src,
       peaks: peaks,
+      transcript: transcript,
       playing: false,
+      initialPlay: false,
       volume: 1,
       currentTime: '--:--:-- / --:--:--',
     }
@@ -81,18 +83,32 @@ export default class AudioPlayer extends Component {
   }
 
   handleTogglePlay() {
-    let { playing } = this.state
+    let { playing, initialPlay } = this.state
     let { audio } = this.refs
+    const { id, src, peaks, transcript } = this.props
 
     playing = !playing
-
-    this.setState({ playing })
 
     if (playing) {
       audio.play()
     } else {
       audio.pause()
     }
+
+    if (playing && !initialPlay) {
+      var event = new CustomEvent(
+        'set_audio_player_src',
+        {
+          bubbles: true,
+          cancelable: true,
+          detail: { id, src, peaks, transcript }
+        },
+      )
+
+      window.dispatchEvent(event)
+    }
+
+    this.setState({ playing, initialPlay: true })
   }
 
   componentDidMount() {
