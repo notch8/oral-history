@@ -9,3 +9,10 @@
 @import 'unify';
 @import 'uucustom';
 
+/* ensures glyphicon still displays correctly */
+.glyphicon {
+  font-family: inherit;
+}
+.glyphicon:before{
+  font-family:'Glyphicons Halflings';
+}
