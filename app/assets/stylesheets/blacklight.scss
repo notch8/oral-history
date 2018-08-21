@@ -10,28 +10,28 @@
 @import 'uucustom';
 
 .series-tooltip {
-    position: relative;
-    display: inline-block;
-    font-family: inherit;
+  position: relative;
+  display: inline-block;
+  font-family: inherit;
 }
 
 .series-tooltip .series-tooltip-text {
-    visibility: hidden;
-    width: 240px;
-    background-color: #1e4b87;
-    color: #fff;
-    text-align: center;
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-family: inherit;
+  visibility: hidden;
+  width: 240px;
+  background-color: #1e4b87;
+  color: #fff;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-family: inherit;
 
-    /* Position the tooltip text - see examples below! */
-    position: absolute;
-    z-index: 1;
-    bottom: 122%;
-    left: -400%;
-    font-size: .9rem;
-    box-shadow: -1px 2px #111111;
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  bottom: 122%;
+  left: -400%;
+  font-size: .9rem;
+  box-shadow: -1px 2px #111111;
 }
 
 .series-tooltip:hover {
@@ -40,7 +40,7 @@
 
 /* Show the tooltip text when you mouse over the tooltip container */
 .series-tooltip:hover .series-tooltip-text {
-    visibility: visible;
+  visibility: visible;
 }
 
 @media only screen and (min-width: 480px) {
@@ -61,8 +61,8 @@
 
 /* ensures glyphicon still displays correctly */
 .glyphicon {
-    font-family: inherit;
+  font-family: inherit;
 }
 .glyphicon:before{
-    font-family:'Glyphicons Halflings';
+  font-family:'Glyphicons Halflings';
 }
