@@ -89,6 +89,22 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   visibility: visible;
 }
 
+@media only screen and (min-width: 480px) {
+  .series-tooltip .series-tooltip-text {
+    width: 360px;
+    padding: 10px 15px;
+    bottom: 135%;
+    font-size: 1rem;
+    box-shadow: -2px 3px 8px rgba(0,0,0,.4);
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .series-tooltip .series-tooltip-text {
+    width: 340px;
+  }
+}
+
 /**/
 
 /* BUTTON STYLES */

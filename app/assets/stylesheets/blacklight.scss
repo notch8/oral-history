@@ -9,22 +9,6 @@
 @import 'unify';
 @import 'uucustom';
 
-@media only screen and (min-width: 480px) {
-  .series-tooltip .series-tooltip-text {
-    width: 360px;
-    padding: 10px 15px;
-    bottom: 135%;
-    font-size: 1rem;
-    box-shadow: -2px 3px #111111;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  .series-tooltip .series-tooltip-text {
-    width: 340px;
-  }
-}
-
 /* ensures glyphicon still displays correctly */
 .glyphicon {
   font-family: inherit;
