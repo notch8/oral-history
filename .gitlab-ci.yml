@@ -1,4 +1,4 @@
-image: docker:17.04
+image: registry.gitlab.com/notch8/scripts/builder:latest 
 services:
   - docker:dind
   - postgres:latest
