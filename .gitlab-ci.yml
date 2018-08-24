@@ -25,6 +25,7 @@ variables:
 build:
   stage: build
   script:
+    - export BRANCH=$CI_BUILD_REF_SLUG
     - docker login -u "gitlab-ci-token" -p "$CI_BUILD_TOKEN" $CI_REGISTRY
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_PROJECT_NAME-$CI_BUILD_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_PROJECT_NAME-$CI_BUILD_REF_SLUG"

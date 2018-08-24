@@ -5,6 +5,7 @@ ADD http://timejson.herokuapp.com build-time
 ADD ops/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 ADD ops/env.conf /etc/nginx/main.d/env.conf
 
+RUN echo $BRANCH
 RUN cd /home/app/webapp && \
     /sbin/setuser app git fetch -ap && \
     /sbin/setuser app git checkout -f $BRANCH && \

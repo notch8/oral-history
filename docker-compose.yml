@@ -30,7 +30,11 @@ services:
      - .env
  
   main:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BRANCH=${BRANCH:-master}
     image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
     env_file:
       - .env.development
