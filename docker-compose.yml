@@ -50,7 +50,7 @@ services:
     # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
     tty: true
     ports:
-      - "${DOCKER_PORT}"
+      - "${DOCKER_PORTS}"
     environment:
       - VIRTUAL_HOST=oralhistory.docker
       - VIRTUAL_PORT=80
