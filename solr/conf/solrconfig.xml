@@ -89,6 +89,8 @@
          subtitle_unstem_search^50000
          title_t^25000
          subtitle_t^10000
+         title_series_unstem_search^100000
+         title_series_t^50000
          title_addl_unstem_search^5000
          title_addl_t^2500
          title_added_entry_unstem_search^1500
@@ -100,6 +102,7 @@
          author_unstem_search^250
          interviewee_addl_unstem_search^250
          interviewee_t^100
+         transcripts_t^50
          interviewee_addl_t^50
          interviewee_unstem_search^250
          author_addl_unstem_search^250
@@ -107,11 +110,8 @@
          author_addl_t^50
          subject_addl_unstem_search^250
          subject_addl_t^50
-         title_series_unstem_search^25
-         title_series_t^10
          language_t
          biographical_t
-         transcripts_t
          isbn_t
          text
        </str>
@@ -120,6 +120,10 @@
          subtitle_unstem_search^500000
          title_t^250000
          subtitle_t^100000
+         title_series_unstem_search^100000
+         title_series_t^250000
+         interviewee_unstem_search^50000
+         interviewee_t^25000
          title_addl_unstem_search^50000
          title_addl_t^25000
          title_added_entry_unstem_search^15000
@@ -128,18 +132,14 @@
          subject_unstem_search^7500
          subject_topic_facet^6250
          subject_t^5000
-         interviewee_t^1000
-         interviewee_unstem_search^2500
          author_unstem_search^2500
          author_addl_unstem_search^2500
          author_t^1000
          author_addl_t^500
          subject_addl_unstem_search^2500
          subject_addl_t^500
-         title_series_unstem_search^250
-         title_series_t^100
+         transcripts_t^100
          biographical_t^10
-         transcripts_t
          language_t^10
          text^10
        </str>
@@ -204,12 +204,12 @@
          id,
          score,
          author_display,
-         author_vern_display, 
+         author_vern_display,
          interviewee_display,
-         interviewee_vern_display, 
-         format, 
-         isbn_t, 
-         language_facet, 
+         interviewee_vern_display,
+         format,
+         isbn_t,
+         language_facet,
          lc_callnum_display,
          material_type_display,
          published_display,
