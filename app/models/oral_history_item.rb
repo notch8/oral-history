@@ -5,7 +5,7 @@ class OralHistoryItem
   attr_accessor :attributes, :new_record
 
   def initialize(attr={})
-    @attributes = attr
+    @attributes = attr.with_indifferent_access
   end
 
   def self.import(args)
@@ -20,15 +20,15 @@ class OralHistoryItem
       bar = ProgressBar.new(response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i)
     end
     total = 0
-    records = response.full.each do |record|
-      history = OralHistoryItem.find_or_new(Digest::MD5.hexdigest(record.header.identifier).to_i(16))
-      if record.header
-        if record.header.identifier
-          history.attributes['id_t'] = record.header.identifier.split('/').last
-        end
-        if record.header.datestamp
-          history.attributes[:timestamp] = Time.parse(record.header.datestamp)
-        end
+    response.full.each do |record|
+      if record.header && record.header.identifier
+        history = OralHistoryItem.find_or_new(record.header.identifier.split('/').last) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
+        history.attributes['id_t'] = record.header.identifier.split('/').last
+      else
+        next
+      end
+      if record.header.datestamp
+        history.attributes[:timestamp] = Time.parse(record.header.datestamp)
       end
       history.attributes["audio_b"] = false
       if record.metadata
@@ -81,7 +81,6 @@ class OralHistoryItem
                 history.attributes["author_t"] ||= []
                 history.attributes["author_t"] << child.elements['mods:namePart'].text
               elsif child.elements['mods:role/mods:roleTerm'].text == "interviewee"
-                debugger if child.elements['mods:namePart'].text.to_s.match('Margolis')
                 history.attributes["interviewee_display"] = child.elements['mods:namePart'].text
                 history.attributes["interviewee_t"] ||= []
                 history.attributes["interviewee_t"] << child.elements['mods:namePart'].text
@@ -143,7 +142,7 @@ class OralHistoryItem
 
       history.index_record
       if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.new_record?
-        ProcessPeakJob.perform_later(history.attributes['id'])
+        ProcessPeakJob.perform_later(history.id)
       end
 
       if progress
@@ -159,7 +158,11 @@ class OralHistoryItem
   end
 
   def id
-    self.attribtues[:id]
+    self.attributes[:id]
+  end
+
+  def id=(value)
+    self.attributes[:id] = value
   end
 
   def to_solr
@@ -188,7 +191,7 @@ class OralHistoryItem
   end
 
   def self.find_or_new(id)
-    OralHistoryItem.new(SolrDocument.find(id))
+    self.find(id)
   rescue Blacklight::Exceptions::RecordNotFound
     OralHistoryItem.new(id: id)
   end
