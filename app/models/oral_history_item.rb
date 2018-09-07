@@ -21,7 +21,7 @@ class OralHistoryItem
     end
     total = 0
     records = response.full.each do |record|
-      history = OralHistoryItem.find_or_new(total) # Digest::MD5.hexdigest(record.header.identifier).to_i(16))
+      history = OralHistoryItem.find_or_new(Digest::MD5.hexdigest(record.header.identifier).to_i(16))
       if record.header
         if record.header.identifier
           history.attributes['id_t'] = record.header.identifier.split('/').last

@@ -11,9 +11,8 @@ services:
       - 'postgres:/var/lib/postgresql/data'
 
   solr:
-    image: "${REGISTRY_HOST}${REGISTRY_URI}/solr:dev"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/solr:latest"
     restart: unless-stopped
-    command: /sbin/setuser app bash -l -c 'cd /home/app/webapp && bundle exec solr_wrapper --version 7.3.0'
     ports:
       - "8983"
     labels:
@@ -22,8 +21,12 @@ services:
       rap.le_test: true
       io.rancher.container.pull_image: always
     env_file:
-      - .env
       - .env.production
+      - .env
+    volumes:
+      - solr:/solr_home
+
+
   web:
     image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
     restart: unless-stopped
