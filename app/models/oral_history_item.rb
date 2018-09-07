@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'net/http'
 
 class OralHistoryItem
-  attr_accessor :attributes
+  attr_accessor :attributes, :new_record
 
   def initialize(attr={})
     @attributes = attr
@@ -21,11 +21,10 @@ class OralHistoryItem
     end
     total = 0
     records = response.full.each do |record|
-      history = OralHistoryItem.new
+      history = OralHistoryItem.find_or_new(total) # Digest::MD5.hexdigest(record.header.identifier).to_i(16))
       if record.header
         if record.header.identifier
           history.attributes['id_t'] = record.header.identifier.split('/').last
-          history.attributes['id'] = total # Digest::MD5.hexdigest(record.header.identifier).to_i(16)
         end
         if record.header.datestamp
           history.attributes[:timestamp] = Time.parse(record.header.datestamp)
@@ -82,6 +81,7 @@ class OralHistoryItem
                 history.attributes["author_t"] ||= []
                 history.attributes["author_t"] << child.elements['mods:namePart'].text
               elsif child.elements['mods:role/mods:roleTerm'].text == "interviewee"
+                debugger if child.elements['mods:namePart'].text.to_s.match('Margolis')
                 history.attributes["interviewee_display"] = child.elements['mods:namePart'].text
                 history.attributes["interviewee_t"] ||= []
                 history.attributes["interviewee_t"] << child.elements['mods:namePart'].text
@@ -123,7 +123,7 @@ class OralHistoryItem
               history.attributes["series_t"] = child.elements['mods:titleInfo/mods:title'].text
               history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text
             elsif child.name == "note"
-              if child.attributes['type'] == 'biographical'
+              if child.attributes['type'].to_s.match('biographical')
                 history.attributes["biographical_display"] = child.text
                 history.attributes["biographical_t"] ||= []
                 history.attributes["biographical_t"] << child.text
@@ -142,8 +142,8 @@ class OralHistoryItem
       end
 
       history.index_record
-      if ENV['MAKE_WAVES']
-        ProcessPeakJob.perform_later(history.attributes['id']) if history.attributes["audio_b"]
+      if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.new_record?
+        ProcessPeakJob.perform_later(history.attributes['id'])
       end
 
       if progress
@@ -152,6 +152,10 @@ class OralHistoryItem
       total += 1
       break if total > limit
     end
+  end
+
+  def new_record?
+    self.attributes.is_a?(Hash)
   end
 
   def id
@@ -181,6 +185,12 @@ class OralHistoryItem
 
   def self.find(id)
     OralHistoryItem.new(SolrDocument.find(id))
+  end
+
+  def self.find_or_new(id)
+    OralHistoryItem.new(SolrDocument.find(id))
+  rescue Blacklight::Exceptions::RecordNotFound
+    OralHistoryItem.new(id: id)
   end
 
   def self.generate_transcript(url)

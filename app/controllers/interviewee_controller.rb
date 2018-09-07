@@ -38,7 +38,7 @@ class IntervieweeController < ApplicationController
                              :w => { label: 'W', fq: "interviewee_sort:/W.*/" },
                              :x => { label: 'X', fq: "interviewee_sort:/X.*/" },
                              :y => { label: 'Y', fq: "interviewee_sort:/Y.*/" },
-                             :z => { label: 'Z', fq: "interviewee_sort:/Z*/" }
+                             :z => { label: 'Z', fq: "interviewee_sort:/Z.*/" }
                            }
     config.add_sort_field 'interviewee_sort asc, title_sort asc', label: 'Interviewee'
     config.add_index_field 'title_t', label: 'Title', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
