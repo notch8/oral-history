@@ -5,7 +5,11 @@ class OralHistoryItem
   attr_accessor :attributes, :new_record
 
   def initialize(attr={})
-    @attributes = attr.with_indifferent_access
+    if attr.is_a?(Hash)
+      @attributes = attr.with_indifferent_access
+    else
+      @attributes = attr
+    end
   end
 
   def self.import(args)
