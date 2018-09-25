@@ -102,7 +102,7 @@
          author_unstem_search^250
          interviewee_addl_unstem_search^250
          interviewee_t^100
-         transcripts_t^50
+         transcripts_t^100
          interviewee_addl_t^50
          interviewee_unstem_search^250
          author_addl_unstem_search^250
@@ -138,7 +138,7 @@
          author_addl_t^500
          subject_addl_unstem_search^2500
          subject_addl_t^500
-         transcripts_t^100
+         transcripts_t^400
          biographical_t^10
          language_t^10
          text^10
