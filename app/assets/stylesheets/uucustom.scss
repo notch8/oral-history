@@ -349,8 +349,12 @@ a.footer-link {
   color: #fff
 }
 
-.text-muted, .appliedFilter .filterName:after, .facet-values .remove, .search_history .filterName, .search_history .filterSeparator {
+.text-muted, .appliedFilter .filterName:after, .search_history .filterName, .search_history .filterSeparator {
     color: #ffe800 !important;
+}
+
+.facet-values .remove {
+    color: #db3b21 !important;
 }
 
 /* SHOW PAGE */
