@@ -39,10 +39,12 @@ class CatalogController < ApplicationController
      # rows: 1,
      # q: '{!term f=id v=$id}'
       :"hl" => true,
+      :"hl.fragsize" => 0,
+      :"hl.preserveMulti" => true,
       :"hl.fl" => "biographical_t, subject_t, description_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t, links_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
-      :"hl.alternateField" => "dd",
+      :"hl.alternateField" => "dd"
     }
 
     # solr field configuration for search results/index views
@@ -125,7 +127,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'contributor_display', label: 'Interviewer', highlight: true
     config.add_show_field 'author_t', label: 'Interviewer', highlight: true
     config.add_show_field 'interviewee_t', label: 'Interviewee', highlight: true
-    config.add_show_field 'description_t', label: 'Description', helper_method: :split_multiple, highlight: true
+    config.add_show_field 'description_t', label: 'Description', highlight: true, helper_method: :split_multiple
     config.add_show_field 'publisher_display', label: 'Publisher', highlight: true
     config.add_show_field 'pub_date', label: 'Date', highlight: true
     config.add_show_field 'type_of_resource_display', label: 'Type of Resource', highlight: true
@@ -246,5 +248,4 @@ class CatalogController < ApplicationController
       additional_export_formats(@document, format)
     end
   end
-
 end
