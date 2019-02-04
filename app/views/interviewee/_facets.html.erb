@@ -18,9 +18,9 @@
   <div id="facet-panel-collapse" class="collapse panel-group">
     <%= render_facet_partials %>
     <div class="panel panel-default">
-      <div class="collapsed panel-heading" data-toggle="collapse">
+      <div class="collapsed panel-heading">
         <h3 class="panel-title facet-field-heading">
-          <a href="/">Browse Collections</a>
+          <%= link_to facet_field_label("Browse Collections").titleize, "/", :"data-no-turbolink" => true %>
         </h3>
       </div>
     </div>
