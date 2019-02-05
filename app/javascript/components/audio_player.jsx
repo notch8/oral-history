@@ -12,7 +12,7 @@ const waveOptions = {
   fillParent: true,
   audioRate: 1,
   height: 340,
-  barWidth: 2
+  barWidth: 2,
 }
 
 export default class AudioPlayer extends Component {
@@ -30,6 +30,9 @@ export default class AudioPlayer extends Component {
       initialPlay: false,
       volume: 1,
       currentTime: '--:--:-- / --:--:--',
+      current: '00:00:00',
+      duration: '00:00:00',
+      progressPercent: 0
     }
 
     this.handleTogglePlay = this.handleTogglePlay.bind(this)
@@ -38,7 +41,7 @@ export default class AudioPlayer extends Component {
   }
 
   render() {
-    const { volume, source, playing, sliderPos, currentTime } = this.state
+    const { volume, source, playing, sliderPos, currentTime, progressPercent, current, duration } = this.state
     const { image } = this.props
 
     const width = `${(volume * 100)}%` || '50%'
@@ -47,7 +50,6 @@ export default class AudioPlayer extends Component {
 
     return (
       <div className="player col-xs-12">
-        <audio id="audio" ref="audio" src={source} style={{display: 'none'}}></audio>
         <div className="col-xs-4">
           <img src={image} className='img-responsive' />
           <a onClick={this.handleTogglePlay} className={playPause}></a>
@@ -64,8 +66,28 @@ export default class AudioPlayer extends Component {
         </div>
         <div className='col-xs-8 wave-box'>
         </div>
+        <div id="audioplayer" className='col-xs-8 col-xs-offset-4 progress-container'>
+          <div id="timeline">
+            <div 
+              id="playhead"
+              style={{marginLeft: `${progressPercent}%`}}
+            >
+            </div>
+          </div>
+          <div className="time-container">
+            <div>{current}</div>
+            <div>{duration}</div>
+          </div>
+          
+        </div>
+        
+        <audio id="audio" ref="audio" src={source} ></audio>
       </div>
     )
+  }
+
+  changeScrubber(e) {
+
   }
 
   changeVol(e) {
@@ -119,9 +141,13 @@ export default class AudioPlayer extends Component {
       if(audio.duration > 0) {
         const c = Math.floor(audio.currentTime)
         const d = Math.floor(audio.duration)
-
+        const progressPercent = (100 * ( c / d)).toFixed(2)
+        
         this.setState({
-          currentTime: `00:00:00 / -${formatTime(d-c)}`
+          currentTime: `00:00:00 / -${formatTime(d-c)}`,
+          current: formatTime(c),
+          duration: formatTime(d-c),
+          progressPercent: progressPercent
         })
 
         clearInterval(interval)
@@ -131,9 +157,13 @@ export default class AudioPlayer extends Component {
     audio.ontimeupdate = () => {
       const c = Math.floor(audio.currentTime)
       const d = Math.floor(audio.duration)
+      const progressPercent = (100 * ( c / d)).toFixed(2)
 
       this.setState({
-        currentTime: `${formatTime(c)} / -${formatTime(d-c)}`
+        currentTime: `${formatTime(c)} / -${formatTime(d-c)}`,
+        current: formatTime(c),
+          duration: formatTime(d-c),
+        progressPercent: progressPercent
       })
     }
 
