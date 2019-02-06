@@ -53,7 +53,6 @@ export default class AudioPlayer extends Component {
           <a onClick={this.handleTogglePlay} className={playPause}></a>
           <div className="volume-container">
             <span className="fa fa-volume-up">
-              
             </span>
           </div>
           <div
