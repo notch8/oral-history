@@ -75,7 +75,7 @@ export default class AudioPlayer extends Component {
             
             <div 
               id="playhead"
-              style={{marginLeft: (isNaN(progressPosition) ? 0 : progressPosition) - 5}}
+              style={{marginLeft: (isNaN(progressPosition) ? 0 : progressPosition) - 7}}
             >
             </div>
           </div>
