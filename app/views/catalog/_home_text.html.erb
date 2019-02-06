@@ -10,6 +10,24 @@
         </header>
 
         <div class="row">
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['African American History']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("african-american-history.jpg", :alt => "African American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['African American History']}), :class=> "g-color-white" do %>
+                      African American History
+                    <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+          
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['Agriculture']}) do %>
@@ -29,40 +47,6 @@
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <%= link_to root_path(f:{subject_topic_facet: ['Architecture, Landscape Architecture, and Design']}) do %>
-                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("architecture.jpg", :alt => "Architecture, Lanscape Architecture, and Design", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-                </figure>
-              <% end %>
-              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
-                <h3 class="h4">
-                  <%= link_to root_path(f:{subject_topic_facet: ['Architecture, Landscape Architecture, and Design']}), :class=> "g-color-white" do %>
-                      Architecture, Landscape Architecture, and Design
-                    <% end %>
-                </h3>
-              </header>
-            </article>
-          </div>
-          
-          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
-            <article class="u-block-hover u-shadow-v21 rounded">
-              <%= link_to root_path(f:{subject_topic_facet: ['African American History']}) do %>
-                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("african-american-history.jpg", :alt => "African American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
-                </figure>
-              <% end %>
-              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
-                <h3 class="h4">
-                  <%= link_to root_path(f:{subject_topic_facet: ['African American History']}), :class=> "g-color-white" do %>
-                      African American History
-                    <% end %>
-                </h3>
-              </header>
-            </article>
-          </div>
-
-          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
-            <article class="u-block-hover u-shadow-v21 rounded">
               <%= link_to root_path(f:{subject_topic_facet: ['American Indian History']}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
                   <%= image_tag("american-indian-history.jpg", :alt => "American Indian History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
@@ -74,6 +58,23 @@
                   <%= link_to root_path(f:{subject_topic_facet: ['American Indian History']}), :class=> "g-color-white" do %>
                     American Indian History
                   <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Architecture, Landscape Architecture, and Design']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("architecture.jpg", :alt => "Architecture, Lanscape Architecture, and Design", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white ">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Architecture, Landscape Architecture, and Design']}), :class=> "g-color-white" do %>
+                      Architecture, Landscape Architecture, and Design
+                    <% end %>
                 </h3>
               </header>
             </article>
@@ -145,6 +146,24 @@
                 <h3 class="h4">
                   <%= link_to root_path(f:{subject_topic_facet: ['Business']}), :class=> "g-color-white" do %>
                     Business
+                  <% end %>
+                </h3>
+              </header>
+            </article>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
+            <article class="u-block-hover u-shadow-v21 rounded">
+              <%= link_to root_path(f:{subject_topic_facet: ['Central Americans in Southern California']}) do %>
+                <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
+                  <%= image_tag("central-americans.jpg", :alt => "Central Americans in Southern California Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                </figure>
+              <% end %>
+
+              <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
+                <h3 class="h4">
+                  <%= link_to root_path(f:{subject_topic_facet: ['Central Americans in Southern California']}), :class=> "g-color-white" do %>
+                    Central Americans in Southern California
                   <% end %>
                 </h3>
               </header>
@@ -351,16 +370,16 @@
 
           <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
             <article class="u-block-hover u-shadow-v21 rounded">
-              <%= link_to root_path(f:{subject_topic_facet: ["Iranian Americans"]}) do %>
+              <%= link_to root_path(f:{subject_topic_facet: ["Iranian American History"]}) do %>
                 <figure class="u-bg-overlay g-bg-black-opacity-0_4--after">
-                  <%= image_tag("iranian-americans.jpg", :alt => "Iranian Americans Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
+                  <%= image_tag("iranian-americans.jpg", :alt => "Iranian American History Collection", :class=> "img-fluid w-100 u-block-hover__main--zoom-v1") %>
                 </figure>
               <% end %>
 
               <header class="u-bg-overlay__inner g-pos-abs g-top-30 g-right-30 g-left-30 g-color-white">
                 <h3 class="h4">
-                  <%= link_to root_path(f:{subject_topic_facet: ["Iranian Americans"]}), :class=> "g-color-white" do %>
-                    Iranian Americans
+                  <%= link_to root_path(f:{subject_topic_facet: ["Iranian American History"]}), :class=> "g-color-white" do %>
+                    Iranian American History
                   <% end %>
                 </h3>
               </header>
