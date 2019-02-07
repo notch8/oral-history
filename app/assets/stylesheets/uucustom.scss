@@ -526,6 +526,7 @@ div.transcript-container {
   width: auto;
   height: 200px;
   overflow-y: scroll;
+  resize: vertical;
 }
 .transcript-container-loading {
   margin: 50px 20px;
