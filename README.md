@@ -32,6 +32,8 @@ sc deploy {staging | production} # deployes those tags to the server
 
 Releaese and Deployment are handled by the gitlab ci by default. See ops/deploy-app to deploy from locally, but note all Rancher install pull the currently tagged registry image
 
+# Manually deploy to staging
+In Rancher, run an Upgrade on the web and worker containers and make sure to update the branch name at the end of the strings in the "Select Image*" text box and in the TAG text box. (update with the new branch name that you would like to deploy)
 
 # README
 
