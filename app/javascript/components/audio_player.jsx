@@ -71,11 +71,12 @@ export default class AudioPlayer extends Component {
         <div id="audioplayer" className='col-xs-8 col-xs-offset-4 progress-container'>
           <div id="timeline"
             onClick={this.handleProgressClick}
+            onDragOver={this.handleProgressClick}
           >
-            
             <div 
               id="playhead"
               style={{marginLeft: (isNaN(progressPosition) ? 0 : progressPosition) - 7}}
+              draggable
             >
             </div>
           </div>
