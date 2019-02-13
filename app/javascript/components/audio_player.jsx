@@ -30,6 +30,8 @@ export default class AudioPlayer extends Component {
       initialPlay: false,
       volume: 1,
       currentTime: '--:--:-- / --:--:--',
+      mapped: {},
+      scrollTimeIndex: 0,
     }
 
     this.handleTogglePlay = this.handleTogglePlay.bind(this)
@@ -38,7 +40,7 @@ export default class AudioPlayer extends Component {
   }
 
   render() {
-    const { volume, source, playing, sliderPos, currentTime } = this.state
+    const { volume, source, playing, sliderPos, currentTime, mapped } = this.state
     const { image } = this.props
 
     const width = `${(volume * 100)}%` || '50%'
@@ -114,7 +116,6 @@ export default class AudioPlayer extends Component {
   componentDidMount() {
     const { id, source, peaks } = this.state
     let { audio } = this.refs
-
     const interval = setInterval(() => {
       if(audio.duration > 0) {
         const c = Math.floor(audio.currentTime)
@@ -129,8 +130,20 @@ export default class AudioPlayer extends Component {
     }, 200)
 
     audio.ontimeupdate = () => {
+      const {mapped, scrollTimeIndex} = this.state
       const c = Math.floor(audio.currentTime)
       const d = Math.floor(audio.duration)
+
+      let scrollTimes = Object.keys(mapped)
+      
+      let nextScrollTime = scrollTimes[scrollTimeIndex]
+      
+      if (mapped[c] != undefined && nextScrollTime <= c) {
+        console.log("Hey there, the nextScrollTime is less than or equal to current time")
+        this.setState({scrollTimeIndex: scrollTimeIndex + 1})
+        console.log(scrollTimeIndex)
+        mapped[nextScrollTime].scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+      }
 
       this.setState({
         currentTime: `${formatTime(c)} / -${formatTime(d-c)}`
@@ -167,6 +180,7 @@ export default class AudioPlayer extends Component {
 
 const changeSource = (component, hls, wavesurfer, audio) => (e) => {
   const { id, src, peaks } = e.detail
+  const { mapped } = component.state
 
   hls.detachMedia()
   hls.loadSource(src)
@@ -174,6 +188,9 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
 
   wavesurfer.load(audio, peaks);
 
+  let mappedTimes = {}
+  Array.from(document.getElementsByClassName('audio-timestamp-link')).map(function(link) { mappedTimes[timeStrToSeconds(link.getAttribute('data-start'))] = link })
+  
   component.setState({
     playing: false,
   })
@@ -181,9 +198,10 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
   audio.oncanplay = () => {
     audio.volume = component.state.volume
     audio.play()
-
+    
     component.setState({
       playing: true,
+      mapped: mappedTimes,
     })
   }
 }
@@ -203,13 +221,19 @@ const computeVolume = (e, b) => {
 }
 
 const jumpTo = (audio) => (e) => {
-  let parts = e.detail.jump_to.split(':').reverse()
+  const seconds = timeStrToSeconds(e.detail.jump_to)
 
-  let seconds = parts.reduce((acc, val, i) => {
+  audio.currentTime = seconds
+}
+
+const timeStrToSeconds = (str) => {
+  let parts = str.split(':').reverse()
+
+  const seconds = parts.reduce((acc, val, i) => {
     return acc + (parseInt(val) * (i > 0 ? 60 ** i : 1))
   }, 0)
 
-  audio.currentTime = seconds
+  return seconds
 }
 
 const formatTime = (seconds) => {
