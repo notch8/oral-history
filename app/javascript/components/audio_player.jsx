@@ -30,7 +30,6 @@ export default class AudioPlayer extends Component {
       initialPlay: false,
       volume: 1,
       currentTime: '--:--:-- / --:--:--',
-      mapped: {},
       scrollTimeIndex: 0,
     }
 
@@ -130,23 +129,36 @@ export default class AudioPlayer extends Component {
     }, 200)
 
     audio.ontimeupdate = () => {
-      const {mapped, scrollTimeIndex} = this.state
+      let { scrollTimeIndex } = this.state
       const c = Math.floor(audio.currentTime)
       const d = Math.floor(audio.duration)
+
+      let mapped = {}
+
+      // NOTE (george): yes, this isn't ideal and queries the DOM every iteration
+      // but because the render methods between the file_view and the audio_player aren't
+      // synced it is simpler to constantly check the DOM. 
+      // Ideally, we would make this entire page (or at least the player, transcript, and sections)
+      // React-ified and use something like React Provider (instead of Redux) to manage the state.
+      let timestamps = Array.from(document.getElementsByClassName('audio-timestamp-link'))
+      timestamps.map(function (link) { mapped[timeStrToSeconds(link.getAttribute('data-start'))] = link })
 
       let scrollTimes = Object.keys(mapped)
       
       let nextScrollTime = scrollTimes[scrollTimeIndex]
       
       if (mapped[c] != undefined && nextScrollTime <= c) {
-        console.log("Hey there, the nextScrollTime is less than or equal to current time")
-        this.setState({scrollTimeIndex: scrollTimeIndex + 1})
-        console.log(scrollTimeIndex)
-        mapped[nextScrollTime].scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+        mapped[nextScrollTime].scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
+        })
+        scrollTimeIndex += 1
       }
 
       this.setState({
-        currentTime: `${formatTime(c)} / -${formatTime(d-c)}`
+        currentTime: `${formatTime(c)} / -${formatTime(d-c)}`,
+        scrollTimeIndex,
       })
     }
 
@@ -188,8 +200,6 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
 
   wavesurfer.load(audio, peaks);
 
-  let mappedTimes = {}
-  Array.from(document.getElementsByClassName('audio-timestamp-link')).map(function(link) { mappedTimes[timeStrToSeconds(link.getAttribute('data-start'))] = link })
   
   component.setState({
     playing: false,
@@ -200,8 +210,7 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
     audio.play()
     
     component.setState({
-      playing: true,
-      mapped: mappedTimes,
+      playing: true
     })
   }
 }
