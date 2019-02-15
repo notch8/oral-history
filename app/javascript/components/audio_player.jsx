@@ -30,8 +30,8 @@ export default class AudioPlayer extends Component {
       initialPlay: false,
       volume: 1,
       currentTime: '--:--:-- / --:--:--',
-      scrollTimeIndex: 0,
       isSrolling: false,
+      currentScrolledTime: 0,
     }
 
     this.handleTogglePlay = this.handleTogglePlay.bind(this)
@@ -148,7 +148,7 @@ export default class AudioPlayer extends Component {
     }, 200)
 
     audio.ontimeupdate = () => {
-      let { scrollTimeIndex, isScrolling } = this.state
+      let { currentScrolledTime, isScrolling } = this.state
       const c = Math.floor(audio.currentTime)
       const d = Math.floor(audio.duration)
 
@@ -163,7 +163,7 @@ export default class AudioPlayer extends Component {
 
       let nextScrollTime = getNearestTimeIndex(Object.keys(mapped), c)
       
-      if (isScrolling && mapped[c] != undefined && nextScrollTime <= c) {
+      if (isScrolling && nextScrollTime != currentScrolledTime) {
         mapped[nextScrollTime].scrollIntoView({
           behavior: "smooth",
           block: "center",
@@ -171,7 +171,10 @@ export default class AudioPlayer extends Component {
         })
       }
 
-      this.setState({ currentTime: `${formatTime(c)} / -${formatTime(d-c)}` })
+      this.setState({
+        currentTime: `${formatTime(c)} / -${formatTime(d-c)}`,
+        currentScrolledTime: nextScrollTime,
+      })
     }
 
     let hls = new Hls()
