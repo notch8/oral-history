@@ -422,37 +422,20 @@ a.footer-link {
 }
 
 .player {
-  .time-box {
-    position: absolute;
-    top: 80%;
-    left: 30%;
-    width: 58%;
-    margin: 15px;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 2px 8px;
-    color: white;
-    background-color: rgba(0,0,0,.6);
-    display: inline-block;
-    text-align: center;
-    border-radius: 3px;
-  }
-
   .volume-slider {
     position: absolute;
-    top: 77%;
-    left: 33.33%;
+    top: 90%;
+    left: 50%;
     height: 10px;
-    width: 58%;
+    width: 40%;
     background-color: rgba(255,255,255,0.6);
     border-radius: 10px;
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
     cursor: pointer;
 
     .marker, .fill {
       position: absolute;
       border-radius: 15px;
-      background-color: #FFF;
     }
 
     .fill {
@@ -462,17 +445,28 @@ a.footer-link {
       padding-right: 5px;
       -webkit-transition: width 0.35s; /* For Safari 3.1 to 6.0 */
       transition: width 0.35s;
+      background-color: #FFF;
     }
 
     .marker {
       height: 15px;
       min-width: 15px;
-      text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
       transform: translate(0%, -18%);
       left: 46%;
       -webkit-transition: left 0.35s; /* For Safari 3.1 to 6.0 */
       transition: left 0.35s;
+      background-color:#FFF;
     }
+  }
+
+  .volume-container {
+    color: #fff;
+    position: absolute;
+    top: 84%;
+    left: 40%;
+    font-size:30px;
+    text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
   }
 
   .pause-button, .play-button {
@@ -537,6 +531,7 @@ div.transcript-container {
   width: auto;
   height: 200px;
   overflow-y: scroll;
+  resize: vertical;
 }
 .transcript-container-loading {
   margin: 50px 20px;

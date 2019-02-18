@@ -39,9 +39,9 @@ module ApplicationHelper
 
   def audio_icon_with_text options={}
     if options == "false"
-      "<span class='glyphicon glyphicon-ban-circle' style='margin-left: 1em;'></span>&nbsp;false".html_safe
+      "<span class='glyphicon glyphicon-ban-circle' style='margin-left: 1em;'></span>&nbsp;no".html_safe
     else
-      "<span class='glyphicon glyphicon-headphones' style='margin-left: 1em;'></span>&nbsp;true".html_safe
+      "<span class='glyphicon glyphicon-headphones' style='margin-left: 1em;'></span>&nbsp;yes".html_safe
     end
   end
 end
