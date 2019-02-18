@@ -68,22 +68,21 @@ export default class AudioPlayer extends Component {
             <div style={{ left: left }} className="marker"></div>
             <div style={{ width: width }} className="fill"></div>
           </div>
-          <div className="time-box">{currentTime}</div>
-          <div>
-            <button
-              onClick={this.handleToggleIsScrolling}  
-              className="btn btn-xs u-btn-outline-primary"
-            >
-              {isScrolling ? (
-                <i className="fa fa fa-check g-font-size-18"></i>
-              ) : (
-                <i className="fa fa-close g-font-size-18"></i>
-              )}
-              &nbsp;Autoscroll
-            </button>
-          </div>
         </div>
         <div className='col-xs-8 wave-box'></div>
+        <div className='col-xs-4'>
+          <button
+            onClick={this.handleToggleIsScrolling}  
+            className="btn btn-xs u-btn-outline-primary"
+          >
+            {isScrolling ? (
+              <i className="fa fa fa-check g-font-size-18"></i>
+            ) : (
+              <i className="fa fa-close g-font-size-18"></i>
+            )}
+            &nbsp;Autoscroll
+          </button>
+        </div>
       </div>
     )
   }
