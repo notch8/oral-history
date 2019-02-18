@@ -31,8 +31,8 @@ export default class AudioPlayer extends Component {
       initialPlay: false,
       volume: 1,
       currentTime: '--:--:-- / --:--:--',
-      current: '00:00:00',
-      duration: '00:00:00',
+      current: '--:--:--',
+      duration: '--:--:--',
       progressPosition: 0
     }
 
