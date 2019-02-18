@@ -124,9 +124,15 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
 }
 
 .u-btn-outline-primary {
-  background-color: transparent;
   border-color: #3284bf !important;
   color: #3284bf !important;
+  background-color: transparent !important;
+}
+
+.u-btn-outline-primary:hover, .u-btn-outline-primary.active {
+  border-color: #1e4b87 !important;
+  color: #1e4b87 !important;
+  background-color: transparent !important;
 }
 
 .submit-search-text:hover {
