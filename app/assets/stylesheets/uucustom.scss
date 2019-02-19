@@ -413,10 +413,10 @@ a.footer-link {
 .player {
   .volume-slider {
     position: absolute;
-    top: 90%;
-    left: 50%;
+    top: 87%;
+    left: 55%;
     height: 10px;
-    width: 40%;
+    width: 35%;
     background-color: rgba(255,255,255,0.6);
     border-radius: 10px;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
@@ -452,7 +452,7 @@ a.footer-link {
   .volume-container {
     color: #fff;
     position: absolute;
-    top: 84%;
+    top: 80%;
     left: 40%;
     font-size:30px;
     text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
@@ -460,7 +460,7 @@ a.footer-link {
 
   .pause-button, .play-button {
     position: absolute;
-    top: 65%;
+    top: 60%;
     left: 10%;
 
     &:before {
@@ -497,7 +497,7 @@ a.footer-link {
   }
 
   .wave-box {
-    height: 340px;
+    height: 285px;
     padding: 0;
     background-image: image-url('ucla_media_background.jpg');
     background-repeat: no-repeat;
@@ -510,6 +510,16 @@ a.footer-link {
     padding-right: 20px;
     margin-top: -1.2rem;
   }
+  
+  .narrator-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+    padding:0;
+    min-height: 285px;
+  }
+
 }
 /* END PLAYER */
 
