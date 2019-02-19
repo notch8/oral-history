@@ -453,7 +453,7 @@ a.footer-link {
     color: #fff;
     position: absolute;
     top: 80%;
-    left: 40%;
+    left: 44%;
     font-size:30px;
     text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
   }
@@ -461,13 +461,12 @@ a.footer-link {
   .pause-button, .play-button {
     position: absolute;
     top: 60%;
-    left: 10%;
+    left: 4%;
 
     &:before {
       font-family: FontAwesome;
       font-size: 85px;
       color: #fff;
-      opacity: .8;
       cursor: pointer;
       text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
       transform: translate(-50%, -50%);
@@ -515,7 +514,7 @@ a.footer-link {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #000000;
+    background-color: #1e4b87;
     padding:0;
     min-height: 285px;
   }
