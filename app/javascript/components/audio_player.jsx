@@ -89,7 +89,7 @@ export default class AudioPlayer extends Component {
             <div>{duration}</div>
           </div>
         </div>
-        <audio id="audio" ref="audio" src={source} ></audio>
+        <audio id="audio" ref="audio" src={source}></audio>
       </div>
     )
   }
