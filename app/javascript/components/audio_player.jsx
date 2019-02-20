@@ -9,6 +9,7 @@ const waveOptions = {
   backend: 'MediaElement',
   progressColor: '#c2daeb',
   waveColor: '#1e4b87',
+  cursorColor: '#ffffff',
   fillParent: true,
   audioRate: 1,
   height: 285,
@@ -30,15 +31,19 @@ export default class AudioPlayer extends Component {
       initialPlay: false,
       volume: 1,
       currentTime: '--:--:-- / --:--:--',
+      current: '--:--:--',
+      duration: '--:--:--',
+      progressPosition: 0
     }
 
     this.handleTogglePlay = this.handleTogglePlay.bind(this)
     this.changeVol = this.changeVol.bind(this)
     this.changeSource = changeSource.bind(this)
+    this.handleProgressClick = this.handleProgressClick.bind(this)
   }
 
   render() {
-    const { volume, source, playing, sliderPos, currentTime } = this.state
+    const { volume, source, playing, sliderPos, currentTime, progressPosition, current, duration } = this.state
     const { image } = this.props
 
     const width = `${(volume * 100)}%` || '50%'
@@ -68,8 +73,47 @@ export default class AudioPlayer extends Component {
         </div>
         <div className='col-sm-9 wave-box'>
         </div>
+        <div id="audioplayer" className='col-xs-8 col-xs-offset-4 progress-container'>
+          <div id="timeline"
+            onClick={this.handleProgressClick}
+            onDragOver={this.handleProgressClick}
+          >
+            <div 
+              id="playhead"
+              style={{marginLeft: (isNaN(progressPosition) ? 0 : progressPosition) - 7}}
+              draggable
+            >
+            </div>
+          </div>
+          <div className="time-container">
+            <div>{current}</div>
+            <div>{duration}</div>
+          </div>
+        </div>
+        <audio id="audio" ref="audio" src={source}></audio>
       </div>
     )
+  }
+
+  handleProgressClick(e) {
+    try {
+      const { initialPlay, playing } = this.state
+      let { audio } = this.refs
+      const { clientX } = e
+      let timelineBox = document.getElementById('timeline').getClientRects()[0]
+      let position = clientX - timelineBox.left
+      let percentage = ( position / timelineBox.width) * audio.duration
+      audio.currentTime = percentage
+
+      if (!initialPlay || !playing) {
+        audio.play() 
+        audio.pause()
+      }
+
+      this.setState({progressPosition:  position, initialPlay: true})  
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   changeVol(e) {
@@ -123,9 +167,14 @@ export default class AudioPlayer extends Component {
       if(audio.duration > 0) {
         const c = Math.floor(audio.currentTime)
         const d = Math.floor(audio.duration)
-
+        let timelineBox = document.getElementById('timeline').getClientRects()[0]
+        const progressPosition = (c / d) * timelineBox.width
+      
         this.setState({
-          currentTime: `00:00:00 / -${formatTime(d-c)}`
+          currentTime: `00:00:00 / -${formatTime(d-c)}`,
+          current: formatTime(c),
+          duration: formatTime(d-c),
+          progressPosition: progressPosition || 0
         })
 
         clearInterval(interval)
@@ -135,9 +184,14 @@ export default class AudioPlayer extends Component {
     audio.ontimeupdate = () => {
       const c = Math.floor(audio.currentTime)
       const d = Math.floor(audio.duration)
+      let timelineBox = document.getElementById('timeline').getClientRects()[0]
+      const progressPosition = (c / d) * timelineBox.width
 
       this.setState({
-        currentTime: `${formatTime(c)} / -${formatTime(d-c)}`
+        currentTime: `${formatTime(c)} / -${formatTime(d-c)}`,
+        current: formatTime(c),
+        duration: formatTime(d-c),
+        progressPosition: progressPosition
       })
     }
 
