@@ -73,7 +73,7 @@ export default class AudioPlayer extends Component {
         </div>
         <div className='col-sm-9 wave-box'>
         </div>
-        <div id="audioplayer" className='col-xs-8 col-xs-offset-4 progress-container'>
+        <div id="audioplayer" className='col-xs-9 col-xs-offset-3 progress-container'>
           <div id="timeline"
             onClick={this.handleProgressClick}
             onDragOver={this.handleProgressClick}
