@@ -29,6 +29,7 @@ gem 'pg', '~> 0.18'
 gem 'progress_bar'
 gem 'puma', '~> 3.7'
 gem 'rsolr', '>= 1.0'
+gem 'rspec-rails', '~> 3.8', group: [:development, :test]
 gem 'ruby-audio', '~> 1.6.0'
 gem 'sass-rails', '~> 5.0'
 gem 'sentry-raven'
