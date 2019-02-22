@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="u-heading-v2-5--bottom g-brd-primary "> 
+    <h2 class="u-heading-v2__title text-uppercase g-font-weight-300 mb-0 g-mt-40">Resend confirmation instructions</h2>
+  </div>
+  <div class="g-mt-40 g-mb-40">
+
+    <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+      <%= devise_error_messages! %>
+
+      <div class="field">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+      </div>
+
+      <div class="actions g-mt-40 g-mb-40">
+        <%= f.submit "Resend confirmation instructions", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+  <%= render "devise/shared/links" %>
+</div>
