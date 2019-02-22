@@ -24,8 +24,6 @@ Rails.application.routes.draw do
 
   get 'admin/run_import', to: 'admin#run_import', as: 'run_import'
 
-  
-
   mount Blacklight::Engine => '/'
   Blacklight::Marc.add_routes(self)
   root to: "catalog#index"
