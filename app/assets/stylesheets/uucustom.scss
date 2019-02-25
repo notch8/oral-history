@@ -41,6 +41,10 @@ a:hover, a:focus {
   background-color: #3284bf !important;
 }
 
+.g-color-primary {
+  color: #3284bf !important;
+}
+
 .g-color-primary--hover:hover {
   color: #3284bf !important;
 }
@@ -560,7 +564,7 @@ a.footer-link {
 
 /* TRANSCRIPTS */
 div.transcript-container {
-  margin: 50px 20px;
+  margin: 0 20px 10px 20px;
   padding: 20px;
   width: auto;
   height: 200px;
