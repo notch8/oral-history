@@ -44,4 +44,12 @@ module ApplicationHelper
       "<span class='glyphicon glyphicon-headphones' style='margin-left: 1em;'></span>&nbsp;yes".html_safe
     end
   end
+
+  def narrator_image(document)
+    thumbnail = document["links_t"].select { |str| str.match(/thumbnail.jpg/) } if document["links_t"]
+    thumbnail_url = URI.extract(thumbnail.flatten.first).first if thumbnail && thumbnail.any?
+    image = thumbnail_url.present? ? thumbnail_url : "/avatar.jpg"
+  end
+
+
 end
