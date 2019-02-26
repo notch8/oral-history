@@ -88,7 +88,7 @@ export default class AudioPlayer extends Component {
             &nbsp;Autoscroll
           </button>
         </div>
-        <div id="audioplayer" className='col-xs-9 col-xs-offset-3 progress-container'>
+        <div id="audioplayer" className='col-xs-9 progress-container'>
           <div id="timeline"
             onClick={this.handleProgressClick}
             onDragOver={this.handleProgressClick}
