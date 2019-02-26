@@ -41,6 +41,10 @@ a:hover, a:focus {
   background-color: #3284bf !important;
 }
 
+.g-color-primary {
+  color: #3284bf !important;
+}
+
 .g-color-primary--hover:hover {
   color: #3284bf !important;
 }
@@ -108,8 +112,7 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
 /**/
 
 /* BUTTON STYLES */
-
-.btn-primary {
+.btn-primary  {
   background-color: #3284bf !important;
   border-color: #3284bf !important;
 }
@@ -117,6 +120,18 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   border-color: #ffe800 !important;
   background-color: #ffe800 !important;
   color: #555 !important;
+}
+
+.u-btn-outline-primary {
+  border-color: #3284bf !important;
+  color: #3284bf !important;
+  background-color: transparent !important;
+}
+
+.u-btn-outline-primary:hover, .u-btn-outline-primary.active {
+  border-color: #1e4b87 !important;
+  color: #1e4b87 !important;
+  background-color: transparent !important;
 }
 
 .submit-search-text:hover {
@@ -558,7 +573,7 @@ a.footer-link {
 
 /* TRANSCRIPTS */
 div.transcript-container {
-  margin: 50px 20px;
+  margin: 0 20px 10px 20px;
   padding: 20px;
   width: auto;
   height: 200px;

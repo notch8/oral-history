@@ -15,6 +15,8 @@
     image: narrator_image(document)
   ) %>
 </div>
+<%= render :partial => 'download_transcript_panel', locals: {document: document} %>
+
 <div class="container">
   <%= react_component('FileView', transcript: parsed_transcripts.try(:first).try(:[], "transcript_t")) %>
 </div>
@@ -24,6 +26,7 @@
       <%= document["biographical_display"].first if document["biographical_display"].present? %>
     </div>
   </div>
+         
   <div id="accordion-10" class="u-accordion u-accordion-color-primary u-accordion-brd-primary" role="tablist" aria-multiselectable="true">
     <% if parsed_children.present? %>
       <% parsed_children.each_with_index do |child, i| %>
