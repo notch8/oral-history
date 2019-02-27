@@ -12,13 +12,22 @@ class OralHistoryItem
     end
   end
 
-  def self.import(args)
-    progress = args[:progress] || true
-    limit = args[:limit] || 20000000  # essentially no limit
+  def self.fetch(args)
     url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
     set = args[:set] || "oralhistory"
     client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
-    response = client.list_records(set: set, metadata_prefix: 'mods')  
+    response = client.list_records(set: set, metadata_prefix: 'mods')
+  end
+
+  def self.fetch_first_id
+    response = self.fetch({progress: false, limit:1})
+    response.full&.first&.header&.identifier&.split('/')&.last
+  end
+
+  def self.import(args)
+    progress = args[:progress] || true
+    limit = args[:limit] || 20000000  # essentially no limit
+    response = self.fetch(args)
 
     if progress
       bar = ProgressBar.new(response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i)
@@ -136,7 +145,6 @@ class OralHistoryItem
             elsif child.name == 'location'
               child.elements.each do |f|
                 history.attributes['links_t'] ||= []
-
                 history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
               end
             end
@@ -157,8 +165,9 @@ class OralHistoryItem
         bar.increment!
       end
       total += 1
-      break if total > limit
+      break if total >= limit
     end
+    return total
   end
 
   def new_record?

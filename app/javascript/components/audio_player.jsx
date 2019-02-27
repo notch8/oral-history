@@ -12,8 +12,8 @@ const waveOptions = {
   cursorColor: '#ffffff',
   fillParent: true,
   audioRate: 1,
-  height: 340,
-  barWidth: 2,
+  height: 285,
+  barWidth: 2
 }
 
 export default class AudioPlayer extends Component {
@@ -54,9 +54,9 @@ export default class AudioPlayer extends Component {
     const playPause = (playing ? 'pause-button' : 'play-button')
 
     return (
-      <div className="player col-xs-12">
-        <audio id="audio" ref="audio" src={source} style={{ display: 'none' }}></audio>
-        <div className="col-xs-4">
+      <div className="player">
+        <audio id="audio" ref="audio" src={source} style={{display: 'none'}}></audio>
+        <div className="col-sm-3 narrator-image-container">
           <img src={image} className='img-responsive' />
           <a onClick={this.handleTogglePlay} className={playPause}></a>
           <div className="volume-container">
@@ -74,8 +74,8 @@ export default class AudioPlayer extends Component {
             <div style={{ width: width }} className="fill"></div>
           </div>
         </div>
-        <div className='col-xs-8 wave-box'></div>
-        <div className='col-xs-4'>
+        <div className='col-xs-9 wave-box'></div>
+        <div className='col-xs-3'>
           <button
             onClick={this.handleToggleIsScrolling}  
             className="btn btn-xs u-btn-outline-primary"
@@ -88,7 +88,7 @@ export default class AudioPlayer extends Component {
             &nbsp;Autoscroll
           </button>
         </div>
-        <div id="audioplayer" className='col-xs-8 col-xs-offset-4 progress-container'>
+        <div id="audioplayer" className='col-xs-9 progress-container'>
           <div id="timeline"
             onClick={this.handleProgressClick}
             onDragOver={this.handleProgressClick}
