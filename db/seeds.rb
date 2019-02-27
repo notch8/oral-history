@@ -8,12 +8,12 @@
 
 # seed the database with users who can access the admin page
 [
-  { email: 'rob@notch8.com', password: 'testing123', password_confirmation: 'testing123'},
-  { email: 'tbarnett@library.ucla.edu', password: 'uclaoh2019', password_confirmation: 'uclaoh2019'},
-  { email: 'genosanchez@library.ucla.edu', password: 'uclaoh2019', password_confirmation: 'uclaoh2019'},
-  { email: 'pghorpade@library.ucla.edu', password: 'uclaoh2019', password_confirmation: 'uclaoh2019'}
+  { email: 'rob@notch8.com', password: 'testing123'},
+  { email: 'tbarnett@library.ucla.edu', password: 'uclaoh2019'},
+  { email: 'genosanchez@library.ucla.edu', password: 'uclaoh2019'},
+  { email: 'pghorpade@library.ucla.edu', password: 'uclaoh2019'}
 ].each do |set|
   next if User.where(email: set[:email]).first
-  user = User.create(email: set[:email], password: set[:password], password_confirmation: set[:password_confirmation])
+  user = User.create!(email: set[:email], password: set[:password])
 end
 
