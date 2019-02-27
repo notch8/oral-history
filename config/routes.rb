@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   get '/admin', to: 'admin#index', as: 'admin'
 
-  get 'admin/run_import', to: 'admin#run_import', as: 'run_import'
+  post 'admin/run_import', to: 'admin#run_import', as: 'run_import'
 
   mount Blacklight::Engine => '/'
   Blacklight::Marc.add_routes(self)

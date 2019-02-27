@@ -18,7 +18,7 @@ class OralHistoryItem
     url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
     set = args[:set] || "oralhistory"
     client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
-    response = client.list_records(set: set, metadata_prefix: 'mods')
+    response = client.list_records(set: set, metadata_prefix: 'mods')  
 
     if progress
       bar = ProgressBar.new(response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i)
@@ -149,6 +149,10 @@ class OralHistoryItem
         ProcessPeakJob.perform_later(history.id)
       end
 
+      if true
+        yield(total) if block_given?        
+      end
+
       if progress
         bar.increment!
       end
@@ -207,6 +211,14 @@ class OralHistoryItem
     document = Nokogiri::XML(resp)
 
     tmpl.transform(document).to_xml
+  end
+
+  def self.total_records(args = {})
+    url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
+    set = args[:set] || "oralhistory"
+    client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
+    response = client.list_records(set: set, metadata_prefix: 'mods')
+    response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i
   end
 end
 

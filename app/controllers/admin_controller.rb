@@ -5,7 +5,8 @@ class AdminController < ApplicationController
   end
 
   def run_import
-    OralHistoryItem.import({ progress: false })
+    puts "Import job should run here"
+    @job = Delayed::Job.enqueue ImportRecordsJob.new
+    Rails.logger.info @job.inspect
   end
-
 end

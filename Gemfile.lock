@@ -192,6 +192,8 @@ GEM
     progress_bar (1.1.0)
       highline (~> 1.6)
       options (~> 2.3.0)
+    progress_job (0.0.4)
+      delayed_job
     puma (3.11.0)
     rack (2.0.3)
     rack-protection (2.0.3)
@@ -356,6 +358,7 @@ DEPENDENCIES
   oai
   pg (~> 0.18)
   progress_bar
+  progress_job
   puma (~> 3.7)
   rails (~> 5.1.4)
   rsolr (>= 1.0)
