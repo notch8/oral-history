@@ -13,6 +13,7 @@ RUN cd /home/app/webapp && \
     /sbin/setuser app git clean -fd && \
     chown -R app $APP_HOME && \
     (/sbin/setuser app bundle check || /sbin/setuser app bundle install) && \
+    /sbin/setuser app bundle exed rake db:seed DB_ADAPTER=nulldb NODE_ENV=production && \
     /sbin/setuser app bundle exec rake assets:precompile DB_ADAPTER=nulldb NODE_ENV=production && \
     chown -R app $APP_HOME && \
     rm -f /etc/service/nginx/down
