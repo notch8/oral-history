@@ -5,8 +5,6 @@ class AdminController < ApplicationController
   end
 
   def run_import
-    puts "Import job should run here"
     @job = Delayed::Job.enqueue ImportRecordsJob.new
-    Rails.logger.info @job.inspect
   end
 end
