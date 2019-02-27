@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180712165619) do
+ActiveRecord::Schema.define(version: 20190226005909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,9 @@ ActiveRecord::Schema.define(version: 20180712165619) do
     t.string "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "progress_stage"
+    t.integer "progress_current", default: 0
+    t.integer "progress_max", default: 0
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 

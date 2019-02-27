@@ -5,7 +5,6 @@ class AdminController < ApplicationController
   end
 
   def run_import
-    OralHistoryItem.import({ progress: false })
+    @job = Delayed::Job.enqueue ImportRecordsJob.new
   end
-
 end
