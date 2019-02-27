@@ -57,7 +57,7 @@ class SolrService
     end
   end
 
-  def self.count
+  def self.total_record_count
     res = @@connection.get 'select', params: { start: cursor, rows: page_size }
     remaining_records = res["response"]["numFound"].to_i
   end

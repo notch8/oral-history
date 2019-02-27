@@ -8,6 +8,7 @@ describe OralHistoryItem do
   end
 
   it "doesn't reimport duplicate records" do
+    # it is possible that this may give a false negative due to sorting of records
     total_imported = OralHistoryItem.import({progress: false, limit: 1})
     expect(total_imported).to eq 1
     document_id = OralHistoryItem.fetch_first_id
