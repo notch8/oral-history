@@ -19,14 +19,15 @@ var interval;
         if (progress.toString() !== 'NaN'){
           $('.progress-status').text(job.progress_current + '/' + job.progress_max);
           $('.progress-bar').css('width', progress + '%').text(progress + '%');
+          $('#run-import-button').attr("disabled", "disabled");
         }
       },
       error: function(){
         // Job is no loger in database which means it finished successfuly
         $('.progress').removeClass('active');
         $('.progress-bar').css('width', '100%').text('100%');
-        $('.progress-status').text('Successfully exported!');
-        $('.export-link').show();
+        $('.progress-status').text('Successfully imported!');
+        $('#run-import-button').removeAttr("disabled");
         clearInterval(interval);
       }
     })
