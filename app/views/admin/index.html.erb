@@ -4,5 +4,7 @@
   </div>
   <p class="g-mt-40 g-mb-40">Manually trigger records importer</p>
   <%= link_to "Run Importer", run_import_url, remote: true, class: "btn btn-lg btn-primary" %>
-  
+  <div class="g-mt-40 g-mb-40">
+    <%= link_to t('blacklight.header_links.logout'), destroy_user_session_path %>
+  </div>
 </div>

@@ -31,8 +31,10 @@
         <li><%= link_to 'Selected Oral History Organizations', organizations_path %></li>
         <li><%= link_to 'Oral History Training', training_path %></li>
         <li><%= link_to 'Bibliography', bibliography_path %></li>
+        <li><%= link_to 'Admin', admin_path %></li>
       </ul>
     </li>
+    
     <%= render_nav_actions do |config, action|%>
       <li><%= action %></li>
     <% end %>
