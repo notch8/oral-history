@@ -580,6 +580,7 @@ div.transcript-container {
   overflow-y: scroll;
   resize: vertical;
 }
+
 .transcript-container-loading {
   margin: 50px 20px;
   padding: 20px;
@@ -610,6 +611,12 @@ span.speaker ~ p {
 
 .audio-timestamp-link {
   cursor: pointer;
+}
+
+.drag-helper {
+  padding-right: 18px;
+  margin-top: -10px;
+  color: #3284bf;
 }
 
 /* STATIC PAGES */

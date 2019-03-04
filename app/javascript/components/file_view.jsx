@@ -25,7 +25,9 @@ export default class FileView extends Component {
         }
 
         {transcript && isPlaying ? (
-          <div ref='container' className="container g-brd-primary g-brd-around rounded-0 transcript-container" dangerouslySetInnerHTML={{ __html: transcript}} />
+          <div><div ref='container' className="container g-brd-primary g-brd-around rounded-0 transcript-container" dangerouslySetInnerHTML={{ __html: transcript}} />
+          <div className="text-right drag-helper"><small className="form-text text-right">(pull down to resize)</small></div>
+          </div>
         ) : (
           <div></div>
         )}
