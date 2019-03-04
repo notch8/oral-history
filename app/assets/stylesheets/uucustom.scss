@@ -566,6 +566,9 @@ a.footer-link {
     background-color: #1e4b87;
     padding:0;
     min-height: 285px;
+    .img-responsive {
+      min-height: 285px;
+    }
   }
 
 }
