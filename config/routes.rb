@@ -37,6 +37,10 @@ Rails.application.routes.draw do
     concerns :searchable
   end
 
+  resource :full_text, only: [:index], as: 'full_text', path: '/full_text', controller: 'full_text' do
+    concerns :searchable
+  end
+
   devise_for :users
   concern :exportable, Blacklight::Routes::Exportable.new
 
