@@ -4,11 +4,11 @@ Rails.application.routes.draw do
 
   get 'pages/contact', to: 'pages#contact', as: 'contact'
 
-  get 'pages/copyrightandpermissions', to: 'pages#copyrightandpermissions', as: 'copyrightandpermissions'
+  get 'pages/copyright_and_permissions', to: 'pages#copyright_and_permissions', as: 'copyright_and_permissions'
 
-  get 'pages/interviewguidelines', to: 'pages#interviewguidelines', as: 'interviewguidelines'
+  get 'pages/interview_guidelines', to: 'pages#interview_guidelines', as: 'interview_guidelines'
 
-  get 'pages/familyhistory', to: 'pages#familyhistory', as: 'familyhistory'
+  get 'pages/family_history', to: 'pages#family_history', as: 'family_history'
 
   get 'pages/programs', to: 'pages#programs', as: 'programs'
 

@@ -6,13 +6,13 @@ class PagesController < ApplicationController
   def contact
   end
 
-  def copyrightandpermissions
+  def copyright_and_permissions
   end
 
-  def interviewguidelines
+  def interview_guidelines
   end
 
-  def familyhistory
+  def family_history
   end
 
   def programs
