@@ -150,6 +150,11 @@ class OralHistoryItem
                 history.attributes['place_t'] = []
                 history.attributes['place_t'] << child.text
               end
+              if child.attributes['type'].to_s.match('supportingdocuments')
+                history.attributes['supporting_documents_display'] = child.text
+                history.attributes['supporting_documents_t'] = []
+                history.attributes['supporting_documents_t'] << child.text
+              end
               if child.attributes['type'].to_s.match('interviewerhistory')
                 history.attributes['interviewer_history_display'] = child.text
                 history.attributes['interviewer_history_t'] = []
