@@ -46,7 +46,7 @@ module ApplicationHelper
   end
 
   def narrator_image(document)
-    thumbnail = document["links_t"].select { |str| str.match(/thumbnail.jpg/) } if document["links_t"]
+    thumbnail = document["links_t"].select { |str| str.match(/master/) } if document["links_t"]
     thumbnail_url = URI.extract(thumbnail.flatten.first).first if thumbnail && thumbnail.any?
     image = thumbnail_url.present? ? thumbnail_url : "/avatar.jpg"
   end
