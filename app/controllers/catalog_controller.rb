@@ -134,7 +134,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'extent_display', label: 'Length / Pages', highlight: true
     config.add_show_field 'language_t', label: 'Language'
     config.add_show_field 'coverage_display', label: 'Period Covered', highlight: true
-    config.add_show_field 'rights_display', label: 'Copyright', highlight: true
+    config.add_show_field 'rights_t', label: 'Copyright', highlight: true
     config.add_show_field 'audio_b', label: 'Audio', helper_method: 'audio_icon'
     config.add_show_field 'links_t', label: 'Files', helper_method: 'file_links'
  #   config.add_show_field 'author_vern_display', label: 'Author'
