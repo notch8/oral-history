@@ -151,34 +151,28 @@ class OralHistoryItem
               end
               if child.attributes['type'].to_s.match('personpresent')
                 history.attributes['person_present_display'] = child.text
-                history.attributes['person_present_t'] ||= []
                 history.attributes['person_present_t'] << child.text
               end
               if child.attributes['type'].to_s.match('place')
                 history.attributes['place_display'] = child.text
-                history.attributes['place_t'] ||= []
                 history.attributes['place_t'] << child.text
               end
               if child.attributes['type'].to_s.match('supportingdocuments')
                 history.attributes['supporting_documents_display'] = child.text
-                history.attributes['supporting_documents_t'] ||= []
                 history.attributes['supporting_documents_t'] << child.text
               end
               if child.attributes['type'].to_s.match('interviewerhistory')
                 history.attributes['interviewer_history_display'] = child.text
-                history.attributes['interviewer_history_t'] ||= []
                 history.attributes['interviewer_history_t'] << child.text
               end
               if child.attributes['type'].to_s.match('processinterview')
                 history.attributes['process_interview_display'] = child.text
-                history.attributes['process_interview_t'] ||= []
                 history.attributes['process_interview_t'] << child.text
               end
               history.attributes["description_t"] ||= []
               history.attributes["description_t"] << child.text
             elsif child.name == 'location'
               child.elements.each do |f|
-                history.attributes['links_t'] ||= []
                 history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
               end
             end
