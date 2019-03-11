@@ -41,7 +41,7 @@ class CatalogController < ApplicationController
       :"hl" => true,
       :"hl.fragsize" => 0,
       :"hl.preserveMulti" => true,
-      :"hl.fl" => "biographical_t, subject_t, description_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t, links_t",
+      :"hl.fl" => "biographical_t, subject_t, description_t, person_present_t, place_t, supporting_documents_t, interviewer_history_t, process_interview_t, type_of_resource_display, audio_b, extent_display, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t, links_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.alternateField" => "dd"
@@ -128,15 +128,20 @@ class CatalogController < ApplicationController
     config.add_show_field 'author_t', label: 'Interviewer', highlight: true
     config.add_show_field 'interviewee_t', label: 'Interviewee', highlight: true
     config.add_show_field 'description_t', label: 'Description', highlight: true, helper_method: :split_multiple
+    config.add_show_field 'person_present_t', label: 'Persons Present', highlight: true
+    config.add_show_field 'place_t', label: 'Place Conducted', highlight: true
+    config.add_show_field 'supporting_documents_t', label: 'Supporting Documents', highlight: true
+    config.add_show_field 'interviewer_history_t', label: 'Interviewer Background and Preparation', highlight: true
+    config.add_show_field 'process_interview_t', label: 'Processing of Interview', highlight: true
     config.add_show_field 'publisher_display', label: 'Publisher', highlight: true
     config.add_show_field 'pub_date', label: 'Date', highlight: true
-    config.add_show_field 'type_of_resource_display', label: 'Type of Resource', highlight: true
     config.add_show_field 'extent_display', label: 'Length / Pages', highlight: true
     config.add_show_field 'language_t', label: 'Language'
     config.add_show_field 'coverage_display', label: 'Period Covered', highlight: true
     config.add_show_field 'rights_t', label: 'Copyright', highlight: true
     config.add_show_field 'audio_b', label: 'Audio', helper_method: 'audio_icon'
     config.add_show_field 'links_t', label: 'Files', helper_method: 'file_links'
+    config.add_show_field 'abstract_t', label: 'Series Statement'
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'
  #   config.add_show_field 'url_fulltext_display', label: 'URL'

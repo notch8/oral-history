@@ -5,10 +5,11 @@
       <% document_show_fields(document).each do |field_name, field| -%>
         <% if field_name == "links_t" %>
           <% if should_render_show_field? document, field %>
-            <div id="accordion-04-heading-01" class="u-accordion__header accordion-color-primary" role="tab">
+            <div id="accordion-04-heading-01" class="u-accordion__header accordion-color-primary download-accordion" role="tab">
               <a class="d-flex collapsed u-link-v5 g-color-main g-color-primary--hover g-font-size-16" href="#accordion-04-body-01" data-toggle="collapse" data-parent="#accordion-04" aria-expanded="false" aria-controls="accordion-04-body-01">
                 <button class="btn btn-xs u-btn-outline-primary">
                   <i class="fa fa-download"></i>
+                  Available Downloads
                 </button>
               </a>
             </div>
