@@ -420,6 +420,22 @@ a.footer-link {
   display: none; }
 
 
+@media (min-width: 768px) {
+  .dl-horizontal dd {
+    margin-left: 220px;
+  }
+  .dl-horizontal dt {
+    float: left;
+    width: 200px;
+    clear: left;
+    text-align: right;
+    overflow: visible; 
+    text-overflow: initial;
+    white-space: normal;
+  }
+}
+
+
 /* PLAYER */
 .play-icon {
   cursor: pointer;
