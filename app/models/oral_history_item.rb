@@ -81,7 +81,7 @@ class OralHistoryItem
               history.attributes["type_of_resource_facet"] ||= []
               history.attributes["type_of_resource_facet"] << child.text
             elsif child.name == "accessCondition"
-              history.attributes["rights_display"] = child.text
+              history.attributes["rights_display"] = [child.text]
               history.attributes["rights_t"] = []
               history.attributes["rights_t"] << child.text
             elsif child.name == 'language'
