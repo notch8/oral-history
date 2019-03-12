@@ -605,6 +605,8 @@ div.transcript-container {
   resize: vertical;
 }
 
+
+
 .transcript-container-loading {
   margin: 50px 20px;
   padding: 20px;
@@ -642,11 +644,16 @@ span.speaker ~ p {
   margin-top: -10px;
   color: #3284bf;
 }
- /* hide drag helper text in ie and edge */
+ /* increase size of transcript window and
+    hide drag helper text in ie and edge */
  /* IE10+ CSS */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
   .drag-helper {
     display: none;
+  }
+
+  div.transcript-container {
+    height: 400px;
   }
 }
 
@@ -655,12 +662,20 @@ span.speaker ~ p {
   .drag-helper {
     display: none;
   }
+
+  div.transcript-container {
+    height: 400px;
+  }
 }
 
 @supports (-ms-ime-align:auto) {
   /* IE Edge 16+ CSS */ 
   .drag-helper {
     display: none;
+  }
+
+  div.transcript-container {
+    height: 400px;
   }
 }
 
