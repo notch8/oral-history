@@ -9,9 +9,11 @@ class FullTextController < ApplicationController
     config.default_solr_params = {
       rows: 10,
       :"hl" => true,
-      :"hl.fl" => "transcripts_t, description_t",
+      :"hl.fl" => ["description_t", "transcripts_t"],
       :"hl.simple.pre" => "<span class='label label-warning'>",
-      :"hl.simple.post" => "</span>"
+      :"hl.simple.post" => "</span>",
+      :"hl.requireFieldMatch" => true,
+      :"hl.snippets" => 20,
     }
 
     config.default_document_solr_params = {
