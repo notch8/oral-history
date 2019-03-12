@@ -68,7 +68,7 @@ export default class AudioPlayer extends Component {
             className="volume-slider"
             onClick={this.changeVol}
             onMouseDown={this.changeVol}
-            onDrag={this.changeVol}
+            onDragOver={this.changeVol}
           >
             <div style={{ left: left }} className="marker"></div>
             <div style={{ width: width }} className="fill"></div>
