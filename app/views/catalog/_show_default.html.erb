@@ -44,7 +44,7 @@
                   <span class="g-valign-middle"><%= child["title_t"] %></span>
                 </a>
 
-                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: child["peaks"], transcript: parsed_transcripts[i]["transcript_t"]) %>
+                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: child["peaks"], transcript: parsed_transcripts ? parsed_transcripts[i]["transcript_t"] : '' ) %>
               </h5>
             </div>
             <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
