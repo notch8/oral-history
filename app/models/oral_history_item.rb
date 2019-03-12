@@ -47,12 +47,13 @@ class OralHistoryItem
       if record.metadata
         record.metadata.children.each do |set|
           next if set.class == REXML::Text
+          history.attributes["children_t"] = []
+          history.attributes["transcripts_t"] = []
           history.attributes['person_present_t'] = []
-            history.attributes['place_t'] = []
-            history.attributes['supporting_documents_t'] = []
-            history.attributes['interviewer_history_t'] = []
-            history.attributes['process_interview_t'] = []
-            history.attributes['links_t'] = []
+          history.attributes['place_t'] = []
+          history.attributes['supporting_documents_t'] = []
+          history.attributes['interviewer_history_t'] = []
+          history.attributes['process_interview_t'] = []
           set.children.each do |child|
             next if child.class == REXML::Text
             if child.name == "titleInfo"
@@ -80,7 +81,9 @@ class OralHistoryItem
               history.attributes["type_of_resource_facet"] ||= []
               history.attributes["type_of_resource_facet"] << child.text
             elsif child.name == "accessCondition"
-              history.attributes["rights_t"] = child.text
+              history.attributes["rights_display"] = [child.text]
+              history.attributes["rights_t"] = []
+              history.attributes["rights_t"] << child.text
             elsif child.name == 'language'
               child.elements.each('mods:languageTerm') do |e|
                 history.attributes["language_facet"] = LanguageList::LanguageInfo.find(e.text).try(:name)
@@ -106,8 +109,6 @@ class OralHistoryItem
                 history.attributes["interviewee_sort"] = child.elements['mods:namePart'].text
               end
             elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
-              history.attributes["children_t"] ||= []
-              history.attributes["transcripts_t"] ||= []
               time_log_url = ''
               order = child.elements['mods:part'].attributes['order']
 
@@ -173,8 +174,14 @@ class OralHistoryItem
               history.attributes["description_t"] << child.text
             elsif child.name == 'location'
               child.elements.each do |f|
+                history.attributes['links_t'] = []
                 history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
               end
+            elsif child.name == 'physicalDescription'
+              history.attributes["extent_display"] = child.elements['mods:extent'].text
+              history.attributes['extent_t'] = []
+              history.attributes['extent_t'] << child.elements['mods:extent'].text
+              
             end
           end
         end
