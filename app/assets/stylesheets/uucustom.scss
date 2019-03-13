@@ -445,9 +445,9 @@ a.footer-link {
   .volume-slider {
     position: absolute;
     top: 87%;
-    left: 55%;
+    left: 60%;
     height: 10px;
-    width: 35%;
+    width: 30%;
     background-color: rgba(255,255,255,0.6);
     border-radius: 10px;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
@@ -586,8 +586,44 @@ a.footer-link {
       max-height: 285px;
     }
   }
-
 }
+
+// 768 992 1200
+@media (min-width: 768px) {
+  div.player {
+    max-width: 100%;
+  }
+  .player {
+    .pause-button, .play-button {
+      top: 70%;
+    
+      &:before {
+        font-size: 60px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .player {
+    .volume-container {
+      left: 60%;
+    }
+    .volume-slider {
+      left: 70%;
+      width: 20%;
+    }
+    .time-container {
+      margin-bottom: 24px;
+    }
+    .autoscroll-button {
+      position: absolute;
+      top: 70%;
+      left: 4%;
+    }
+  }
+}
+
 /* END PLAYER */
 
 /* TRANSCRIPTS */
@@ -642,11 +678,16 @@ span.speaker ~ p {
   margin-top: -10px;
   color: #3284bf;
 }
- /* hide drag helper text in ie and edge */
+ /* increase size of transcript window and
+    hide drag helper text in ie and edge */
  /* IE10+ CSS */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
   .drag-helper {
     display: none;
+  }
+
+  div.transcript-container {
+    height: 400px;
   }
 }
 
@@ -655,12 +696,20 @@ span.speaker ~ p {
   .drag-helper {
     display: none;
   }
+
+  div.transcript-container {
+    height: 400px;
+  }
 }
 
 @supports (-ms-ime-align:auto) {
   /* IE Edge 16+ CSS */ 
   .drag-helper {
     display: none;
+  }
+
+  div.transcript-container {
+    height: 400px;
   }
 }
 
@@ -684,5 +733,6 @@ span.speaker ~ p {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
+
 
 
