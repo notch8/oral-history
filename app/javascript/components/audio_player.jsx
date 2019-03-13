@@ -75,7 +75,7 @@ export default class AudioPlayer extends Component {
           </div>
         </div>
         <div className='col-sm-9 wave-box'></div>
-        <div className='col-sm-3'>
+        <div className='col-sm-3 autoscroll-button'>
           <button
             onClick={this.handleToggleIsScrolling}  
             className="btn btn-xs u-btn-outline-primary"
