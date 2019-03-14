@@ -54,8 +54,9 @@ class OralHistoryItem
           history.attributes['supporting_documents_t'] = []
           history.attributes['interviewer_history_t'] = []
           history.attributes['process_interview_t'] = []
+          history.attributes['links_t'] = []
           set.children.each do |child|
-            next if child.class == REXML::Text
+          next if child.class == REXML::Text
             if child.name == "titleInfo"
               child.elements.each('mods:title') do |title|
                 title_text = title.text.to_s.strip
@@ -147,7 +148,7 @@ class OralHistoryItem
             elsif child.name == "note"
               if child.attributes['type'].to_s.match('biographical')
                 history.attributes["biographical_display"] = child.text
-                history.attributes["biographical_t"] ||= []
+                history.attributes["biographical_t"] = []
                 history.attributes["biographical_t"] << child.text
               end
               if child.attributes['type'].to_s.match('personpresent')
@@ -174,7 +175,6 @@ class OralHistoryItem
               history.attributes["description_t"] << child.text
             elsif child.name == 'location'
               child.elements.each do |f|
-                history.attributes['links_t'] = []
                 history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
               end
             elsif child.name == 'physicalDescription'
