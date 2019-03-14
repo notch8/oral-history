@@ -70,7 +70,6 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     :address          => "em.library.ucla.edu",
     :port             => 25,
-    :domain           => "ucla.edu",
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.
