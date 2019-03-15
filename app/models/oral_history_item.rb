@@ -47,13 +47,17 @@ class OralHistoryItem
       if record.metadata
         record.metadata.children.each do |set|
           next if set.class == REXML::Text
+
           history.attributes["children_t"] = []
           history.attributes["transcripts_t"] = []
+          history.attributes["description_t"] = []
           history.attributes['person_present_t'] = []
           history.attributes['place_t'] = []
           history.attributes['supporting_documents_t'] = []
           history.attributes['interviewer_history_t'] = []
           history.attributes['process_interview_t'] = []
+          history.attributes['links_t'] = []
+
           set.children.each do |child|
             next if child.class == REXML::Text
             if child.name == "titleInfo"
@@ -69,8 +73,7 @@ class OralHistoryItem
                   history.attributes["title_t"] << title_text
                 end
               end
-            elsif child.name == "abstract" ||
-                  child.name == "extent"
+            elsif child.name == "abstract"
               history.attributes[child.name + "_display"] = child.text
               history.attributes[child.name + "_t"] ||= []
               history.attributes[child.name + "_t"] << child.text
@@ -136,6 +139,7 @@ class OralHistoryItem
                 history.attributes["audio_display"] = "Yes"
               end
 
+              history.attributes["description_t"] << child.elements['mods:tableOfContents'].text
               history.attributes["children_t"] << child_document.to_json
             elsif child.name == "relatedItem" && child.attributes['type'] == "series"
               history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
@@ -170,11 +174,8 @@ class OralHistoryItem
                 history.attributes['process_interview_display'] = child.text
                 history.attributes['process_interview_t'] << child.text
               end
-              history.attributes["description_t"] ||= []
-              history.attributes["description_t"] << child.text
             elsif child.name == 'location'
               child.elements.each do |f|
-                history.attributes['links_t'] = []
                 history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
               end
             elsif child.name == 'physicalDescription'
