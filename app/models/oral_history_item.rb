@@ -138,8 +138,6 @@ class OralHistoryItem
                 history.attributes["audio_b"] = true
                 history.attributes["audio_display"] = "Yes"
               end
-
-              history.attributes["description_t"] << child.elements['mods:tableOfContents'].text
               history.attributes["children_t"] << child_document.to_json
             elsif child.name == "relatedItem" && child.attributes['type'] == "series"
               history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
