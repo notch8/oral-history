@@ -138,7 +138,6 @@ class OralHistoryItem
                 history.attributes["audio_b"] = true
                 history.attributes["audio_display"] = "Yes"
               end
-              history.attributes["description_t"] << child.elements['mods:tableOfContents'].text
               history.attributes["children_t"] << child_document.to_json
             elsif child.name == "relatedItem" && child.attributes['type'] == "series"
               history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
@@ -173,6 +172,7 @@ class OralHistoryItem
                 history.attributes['process_interview_display'] = child.text
                 history.attributes['process_interview_t'] << child.text
               end
+              history.attributes["description_t"] << child.text
             elsif child.name == 'location'
               child.elements.each do |f|
                 history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
