@@ -21,14 +21,14 @@
                   <%= link_to_document document, document_show_link_field(document), counter: count %>
                 </h3>
               </div>
-              <dl class="document-metadata dl-horizontal dl-invert dl-full-text">
+              <dl class="document-metadata dl-horizontal dl-invert dl-full-text ">
                 <dt class="blacklight-<%= field_name.parameterize %>"><%= render_index_field_label document, field: field_name %></dt>
                 <dd class="blacklight-<%= field_name.parameterize %>"><%= value.html_safe %></dd>
               </dl>
-            <% end %>
+            </div>
           <% end %>
         <% end %>
       <% end %>
-    </div>
+    <% end %>
   <% end %>
 </div>
