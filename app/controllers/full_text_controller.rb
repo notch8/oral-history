@@ -7,13 +7,13 @@ class FullTextController < ApplicationController
   configure_blacklight do |config|
     
     config.default_solr_params = {
-      rows: 10,
+      rows: 3,
       :"hl" => true,
       :"hl.fl" => ["description_t", "transcripts_t"],
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.requireFieldMatch" => true,
-      :"hl.snippets" => 20,
+      :"hl.snippets" => 100,
     }
 
     config.default_document_solr_params = {
@@ -45,7 +45,8 @@ class FullTextController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field 'transcripts_t', label: 'Transcript', highlight: true, helper_method: :split_multiple
-    config.add_index_field 'description_t', label: 'Description', highlight: true, helper_method: :split_multiple 
+    config.add_index_field 'description_t', label: 'Description', highlight: true, helper_method: :split_multiple
+
     
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
