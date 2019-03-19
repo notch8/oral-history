@@ -50,6 +50,7 @@ class OralHistoryItem
 
           history.attributes["children_t"] = []
           history.attributes["transcripts_t"] = []
+          history.attributes["transcripts_json_t"] = []
           history.attributes["description_t"] = []
           history.attributes['person_present_t'] = []
           history.attributes['place_t'] = []
@@ -116,11 +117,13 @@ class OralHistoryItem
 
               if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
                 time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
-
-                history.attributes["transcripts_t"] << {
-                  "transcript_t": self.generate_transcript(time_log_url),
+                transcript = self.generate_transcript(time_log_url)
+                history.attributes["transcripts_json_t"] << {
+                  "transcript_t": transcript,
                   "order_i": order
                 }.to_json
+
+                history.attributes["transcripts_t"] << transcript
               end
 
               child_document = {
