@@ -14,7 +14,7 @@ class FullTextController < ApplicationController
       :"hl.simple.post" => "</span>",
       :"hl.requireFieldMatch" => true,
       :"hl.snippets" => 50,
-      :"hl.fragsize" => 200
+      :"hl.fragsize" => 300
     }
 
     config.default_document_solr_params = {

@@ -122,8 +122,8 @@ class OralHistoryItem
                   "transcript_t": transcript,
                   "order_i": order
                 }.to_json
-
-                history.attributes["transcripts_t"] << transcript
+                transcript_stripped = ActionController::Base.helpers.strip_tags(transcript)
+                history.attributes["transcripts_t"] << transcript_stripped
               end
 
               child_document = {
