@@ -13,8 +13,8 @@ class FullTextController < ApplicationController
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.requireFieldMatch" => true,
-      :"hl.snippets" => 100,
-      :"hl.fragsize" => 300
+      :"hl.snippets" => 50,
+      :"hl.fragsize" => 200
     }
 
     config.default_document_solr_params = {
