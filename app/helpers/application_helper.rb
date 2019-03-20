@@ -12,7 +12,7 @@ module ApplicationHelper
   end
 
   def transcripts_from(document)
-    from_helper "transcripts_t", document
+    from_helper "transcripts_json_t", document
   end
 
   def children_from(document)
@@ -21,6 +21,23 @@ module ApplicationHelper
 
   def highlightable_series_link(options={})
     link_to options[:value][0], root_path(f: {series_facet: options[:document]["series_t"]})
+  end
+
+  def link_parser(links)
+    result = {}
+    links.each do |link|
+      parsed = JSON.parse(link)
+      result[parsed[1]] = parsed[0]
+    end
+    return result
+  end
+
+  def no_images(links)
+    links.reject {|name, value| name.match('Narrator')}
+  end
+
+  def not_only_images?(links)
+    no_images(links).size > 0
   end
 
   def file_links(options = {})
