@@ -12,12 +12,20 @@ class OralHistoryItem
     end
   end
 
-  def self.fetch(args)
+  def self.client(args)
     url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
-    set = args[:set] || "oralhistory"
-    client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
-    response = client.list_records(set: set, metadata_prefix: 'mods')
+    OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
   end
+
+  def self.fetch(args)
+    set = args[:set] || "oralhistory"
+    response = client(args).list_records(set: set, metadata_prefix: 'mods')
+  end
+
+  def self.get(args)
+    response = client(args).get_record(identifier: args[:identifier], metadata_prefix: 'mods', )
+  end
+
 
   def self.fetch_first_id
     response = self.fetch({progress: false, limit:1})
@@ -34,170 +42,16 @@ class OralHistoryItem
     end
     total = 0
     response.full.each do |record|
-      if record.header && record.header.identifier
-        history = OralHistoryItem.find_or_new(record.header.identifier.split('/').last) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
-        history.attributes['id_t'] = record.header.identifier.split('/').last
-      else
-        next
-      end
-      if record.header.datestamp
-        history.attributes[:timestamp] = Time.parse(record.header.datestamp)
-      end
-      history.attributes["audio_b"] = false
-      if record.metadata
-        record.metadata.children.each do |set|
-          next if set.class == REXML::Text
-
-          history.attributes["children_t"] = []
-          history.attributes["transcripts_t"] = []
-          history.attributes["transcripts_json_t"] = []
-          history.attributes["description_t"] = []
-          history.attributes['person_present_t'] = []
-          history.attributes['place_t'] = []
-          history.attributes['supporting_documents_t'] = []
-          history.attributes['interviewer_history_t'] = []
-          history.attributes['process_interview_t'] = []
-          history.attributes['links_t'] = []
-          set.children.each do |child|
-          next if child.class == REXML::Text
-            if child.name == "titleInfo"
-              child.elements.each('mods:title') do |title|
-                title_text = title.text.to_s.strip
-                if(child.attributes["type"] == "alternative") && title_text.size > 0
-                  history.attributes["subtitle_display"] ||= title_text
-                  history.attributes["subtitle_t"] ||= []
-                  history.attributes["subtitle_t"] << title_text
-                elsif title_text.size > 0
-                  history.attributes["title_display"] ||= title_text
-                  history.attributes["title_t"] ||= []
-                  history.attributes["title_t"] << title_text
-                end
-              end
-            elsif child.name == "abstract"
-              history.attributes[child.name + "_display"] = child.text
-              history.attributes[child.name + "_t"] ||= []
-              history.attributes[child.name + "_t"] << child.text
-            elsif child.name == "typeOfResource"
-              history.attributes["type_of_resource_display"] = child.text
-              history.attributes["type_of_resource_t"] ||= []
-              history.attributes["type_of_resource_t"] << child.text
-              history.attributes["type_of_resource_facet"] ||= []
-              history.attributes["type_of_resource_facet"] << child.text
-            elsif child.name == "accessCondition"
-              history.attributes["rights_display"] = [child.text]
-              history.attributes["rights_t"] = []
-              history.attributes["rights_t"] << child.text
-            elsif child.name == 'language'
-              child.elements.each('mods:languageTerm') do |e|
-                history.attributes["language_facet"] = LanguageList::LanguageInfo.find(e.text).try(:name)
-                history.attributes["language_sort"] = LanguageList::LanguageInfo.find(e.text).try(:name)
-                history.attributes["language_t"] = [LanguageList::LanguageInfo.find(e.text).try(:name)]
-              end
-            elsif child.name == "subject"
-              child.elements.each('mods:topic') do |e|
-                history.attributes["subject_topic_facet"] ||= []
-                history.attributes["subject_topic_facet"] << e.text
-                history.attributes["subject_t"] ||= []
-                history.attributes["subject_t"] << e.text
-              end
-            elsif child.name == "name"
-              if child.elements['mods:role/mods:roleTerm'].text == "interviewer"
-                history.attributes["author_display"] = child.elements['mods:namePart'].text
-                history.attributes["author_t"] ||= []
-                history.attributes["author_t"] << child.elements['mods:namePart'].text
-              elsif child.elements['mods:role/mods:roleTerm'].text == "interviewee"
-                history.attributes["interviewee_display"] = child.elements['mods:namePart'].text
-                history.attributes["interviewee_t"] ||= []
-                history.attributes["interviewee_t"] << child.elements['mods:namePart'].text
-                history.attributes["interviewee_sort"] = child.elements['mods:namePart'].text
-              end
-            elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
-              time_log_url = ''
-              order = child.elements['mods:part'].attributes['order']
-
-              if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
-                time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
-                transcript = self.generate_transcript(time_log_url)
-                history.attributes["transcripts_json_t"] << {
-                  "transcript_t": transcript,
-                  "order_i": order
-                }.to_json
-                transcript_stripped = ActionController::Base.helpers.strip_tags(transcript)
-                history.attributes["transcripts_t"] << transcript_stripped
-              end
-
-              child_document = {
-                'id': Digest::MD5.hexdigest(child.elements['mods:identifier'].text).to_i(16),
-                "id_t": child.elements['mods:identifier'].text,
-                "url_t": child.attributes['href'],
-                "title_t": child.elements['mods:titleInfo/mods:title'].text,
-                "order_i": order,
-                "description_t": child.elements['mods:tableOfContents'].text,
-                "time_log_t": time_log_url
-              }
-
-              if child.attributes['href'].present?
-                history.attributes["audio_b"] = true
-                history.attributes["audio_display"] = "Yes"
-              end
-              history.attributes["children_t"] << child_document.to_json
-            elsif child.name == "relatedItem" && child.attributes['type'] == "series"
-              history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
-              history.attributes["series_t"] = child.elements['mods:titleInfo/mods:title'].text
-              history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text
-              history.attributes["abstract_display"] = child.elements['mods:abstract'].text
-              history.attributes["abstract_t"] = []
-              history.attributes["abstract_t"] << child.elements['mods:abstract'].text
-            elsif child.name == "note"
-              if child.attributes['type'].to_s.match('biographical')
-                history.attributes["biographical_display"] = child.text
-                history.attributes["biographical_t"] = []
-                history.attributes["biographical_t"] << child.text
-              end
-              if child.attributes['type'].to_s.match('personpresent')
-                history.attributes['person_present_display'] = child.text
-                history.attributes['person_present_t'] << child.text
-              end
-              if child.attributes['type'].to_s.match('place')
-                history.attributes['place_display'] = child.text
-                history.attributes['place_t'] << child.text
-              end
-              if child.attributes['type'].to_s.match('supportingdocuments')
-                history.attributes['supporting_documents_display'] = child.text
-                history.attributes['supporting_documents_t'] << child.text
-              end
-              if child.attributes['type'].to_s.match('interviewerhistory')
-                history.attributes['interviewer_history_display'] = child.text
-                history.attributes['interviewer_history_t'] << child.text
-              end
-              if child.attributes['type'].to_s.match('processinterview')
-                history.attributes['process_interview_display'] = child.text
-                history.attributes['process_interview_t'] << child.text
-              end
-              history.attributes["description_t"] << child.text
-            elsif child.name == 'location'
-              child.elements.each do |f|
-                history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
-              end
-            elsif child.name == 'physicalDescription'
-              history.attributes["extent_display"] = child.elements['mods:extent'].text
-              history.attributes['extent_t'] = []
-              history.attributes['extent_t'] << child.elements['mods:extent'].text
-              
-            end
-          end
-        end
-      end
-
+      history = process_record(record)
       history.index_record
       if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.new_record?
         ProcessPeakJob.perform_later(history.id)
       end
-
+  
       if true
         yield(total) if block_given?        
       end
-
+  
       if progress
         bar.increment!
       end
@@ -205,6 +59,190 @@ class OralHistoryItem
       break if total >= limit
     end
     return total
+  end
+
+  def self.import_single(id)
+    record = self.get(identifier: id)&.record
+    history = process_record(record)
+    history.index_record
+    return history
+  end
+
+  def self.process_record(record)
+    if record.header.blank? || record.header.identifier.blank?
+      return false
+    end
+    if record.header.status.to_s == "deleted"
+      # TODO record deletion from solr
+      # Or from Solr - download all the identifiers, put them in an array, and then remove the id that you are indexing from the array. delete the records with the remaining identifiers
+      # delete from solr by id
+      return :deleted
+    end
+    history = OralHistoryItem.find_or_new(record.header.identifier.split('/').last) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
+    history.attributes['id_t'] = record.header.identifier.split('/').last
+
+    if record.header.datestamp
+      history.attributes[:timestamp] = Time.parse(record.header.datestamp)
+    end
+
+    history.attributes["audio_b"] = false
+    if record.metadata
+      record.metadata.children.each do |set|
+        next if set.class == REXML::Text
+
+        history.attributes["children_t"] = []
+        history.attributes["transcripts_t"] = []
+        history.attributes["transcripts_json_t"] = []
+        history.attributes["description_t"] = []
+        history.attributes['person_present_t'] = []
+        history.attributes['place_t'] = []
+        history.attributes['supporting_documents_t'] = []
+        history.attributes['interviewer_history_t'] = []
+        history.attributes['process_interview_t'] = []
+        history.attributes['links_t'] = []
+        set.children.each do |child|
+        next if child.class == REXML::Text
+          if child.name == "titleInfo"
+            child.elements.each('mods:title') do |title|
+              title_text = title.text.to_s.strip
+              if(child.attributes["type"] == "alternative") && title_text.size > 0
+                history.attributes["subtitle_display"] ||= title_text
+                history.attributes["subtitle_t"] ||= []
+                history.attributes["subtitle_t"] << title_text
+              elsif title_text.size > 0
+                history.attributes["title_display"] ||= title_text
+                history.attributes["title_t"] ||= []
+                history.attributes["title_t"] << title_text
+              end
+            end
+          elsif child.name == "abstract"
+            history.attributes[child.name + "_display"] = child.text
+            history.attributes[child.name + "_t"] ||= []
+            history.attributes[child.name + "_t"] << child.text
+          elsif child.name == "typeOfResource"
+            history.attributes["type_of_resource_display"] = child.text
+            history.attributes["type_of_resource_t"] ||= []
+            history.attributes["type_of_resource_t"] << child.text
+            history.attributes["type_of_resource_facet"] ||= []
+            history.attributes["type_of_resource_facet"] << child.text
+          elsif child.name == "accessCondition"
+            history.attributes["rights_display"] = [child.text]
+            history.attributes["rights_t"] = []
+            history.attributes["rights_t"] << child.text
+          elsif child.name == 'language'
+            child.elements.each('mods:languageTerm') do |e|
+              history.attributes["language_facet"] = LanguageList::LanguageInfo.find(e.text).try(:name)
+              history.attributes["language_sort"] = LanguageList::LanguageInfo.find(e.text).try(:name)
+              history.attributes["language_t"] = [LanguageList::LanguageInfo.find(e.text).try(:name)]
+            end
+          elsif child.name == "subject"
+            child.elements.each('mods:topic') do |e|
+              history.attributes["subject_topic_facet"] ||= []
+              history.attributes["subject_topic_facet"] << e.text
+              history.attributes["subject_t"] ||= []
+              history.attributes["subject_t"] << e.text
+            end
+          elsif child.name == "name"
+            if child.elements['mods:role/mods:roleTerm'].text == "interviewer"
+              history.attributes["author_display"] = child.elements['mods:namePart'].text
+              history.attributes["author_t"] ||= []
+              history.attributes["author_t"] << child.elements['mods:namePart'].text
+            elsif child.elements['mods:role/mods:roleTerm'].text == "interviewee"
+              history.attributes["interviewee_display"] = child.elements['mods:namePart'].text
+              history.attributes["interviewee_t"] ||= []
+              history.attributes["interviewee_t"] << child.elements['mods:namePart'].text
+              history.attributes["interviewee_sort"] = child.elements['mods:namePart'].text
+            end
+          elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
+            time_log_url = ''
+            order = child.elements['mods:part'].attributes['order']
+
+            if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
+              time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
+              transcript = self.generate_transcript(time_log_url)
+              history.attributes["transcripts_json_t"] << {
+                "transcript_t": transcript,
+                "order_i": order
+              }.to_json
+              transcript_stripped = ActionController::Base.helpers.strip_tags(transcript)
+              history.attributes["transcripts_t"] << transcript_stripped # TODO check multiples here
+            end
+
+            child_document = {
+              'id': Digest::MD5.hexdigest(child.elements['mods:identifier'].text).to_i(16),
+              "id_t": child.elements['mods:identifier'].text,
+              "url_t": child.attributes['href'],
+              "title_t": child.elements['mods:titleInfo/mods:title'].text,
+              "order_i": order,
+              "description_t": child.elements['mods:tableOfContents'].text,
+              "time_log_t": time_log_url
+            }
+
+            if child.attributes['href'].present?
+              history.attributes["audio_b"] = true
+              history.attributes["audio_display"] = "Yes"
+            end
+            history.attributes["children_t"] << child_document.to_json
+          elsif child.name == "relatedItem" && child.attributes['type'] == "series"
+            history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
+            history.attributes["series_t"] = child.elements['mods:titleInfo/mods:title'].text
+            history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text
+            history.attributes["abstract_display"] = child.elements['mods:abstract'].text
+            history.attributes["abstract_t"] = []
+            history.attributes["abstract_t"] << child.elements['mods:abstract'].text
+          elsif child.name == "note"
+            if child.attributes['type'].to_s.match('biographical')
+              history.attributes["biographical_display"] = child.text
+              history.attributes["biographical_t"] = []
+              history.attributes["biographical_t"] << child.text
+            end
+            if child.attributes['type'].to_s.match('personpresent')
+              history.attributes['person_present_display'] = child.text
+              history.attributes['person_present_t'] << child.text
+            end
+            if child.attributes['type'].to_s.match('place')
+              history.attributes['place_display'] = child.text
+              history.attributes['place_t'] << child.text
+            end
+            if child.attributes['type'].to_s.match('supportingdocuments')
+              history.attributes['supporting_documents_display'] = child.text
+              history.attributes['supporting_documents_t'] << child.text
+            end
+            if child.attributes['type'].to_s.match('interviewerhistory')
+              history.attributes['interviewer_history_display'] = child.text
+              history.attributes['interviewer_history_t'] << child.text
+            end
+            if child.attributes['type'].to_s.match('processinterview')
+              history.attributes['process_interview_display'] = child.text
+              history.attributes['process_interview_t'] << child.text
+            end
+            history.attributes["description_t"] << child.text
+          elsif child.name == 'location'
+            child.elements.each do |f|
+              history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
+              if f.attributes['displayLabel'].match(/Transcript/) # TODO check multiples && history.attributes["transcripts_t"].blank?
+                # make call to solr for extraction
+                debugger
+                tmp_file = Tempfile.new
+                tmp_file.binmode
+                open(f.text) do |url_file|
+                  tmp_file.write(url_file.read)
+                end                
+                result = SolrService.extract(path: tmp_file.path)
+                # put response in this field
+                history.attributes['transcripts_t'] << result[File.basename(tmp_file.path)].to_s.strip
+              end
+            end
+          elsif child.name == 'physicalDescription'
+            history.attributes["extent_display"] = child.elements['mods:extent'].text
+            history.attributes['extent_t'] = []
+            history.attributes['extent_t'] << child.elements['mods:extent'].text
+            
+          end
+        end
+      end
+    end
+    return history
   end
 
   def new_record?
