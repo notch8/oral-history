@@ -12,7 +12,7 @@ module ApplicationHelper
   end
 
   def transcripts_from(document)
-    from_helper "transcripts_json_t", document
+    from_helper "transcripts_t", document
   end
 
   def children_from(document)

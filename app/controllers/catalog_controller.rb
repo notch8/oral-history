@@ -127,7 +127,6 @@ class CatalogController < ApplicationController
     config.add_show_field 'contributor_display', label: 'Interviewer', highlight: true
     config.add_show_field 'author_t', label: 'Interviewer', highlight: true
     config.add_show_field 'interviewee_t', label: 'Interviewee', highlight: true
-    # config.add_show_field 'description_t', label: 'Description', highlight: true, helper_method: :split_multiple
     config.add_show_field 'person_present_t', label: 'Persons Present', highlight: true
     config.add_show_field 'place_t', label: 'Place Conducted', highlight: true
     config.add_show_field 'supporting_documents_t', label: 'Supporting Documents', highlight: true
