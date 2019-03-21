@@ -5,19 +5,24 @@
       <% document_show_fields(document).each do |field_name, field| -%>
         <% if field_name == "links_t" %>
           <% if should_render_show_field? document, field %>
-            <div id="accordion-04-heading-01" class="u-accordion__header accordion-color-primary download-accordion" role="tab">
-              <a class="d-flex collapsed u-link-v5 g-color-main g-color-primary--hover g-font-size-16" href="#accordion-04-body-01" data-toggle="collapse" data-parent="#accordion-04" aria-expanded="false" aria-controls="accordion-04-body-01">
-                <button class="btn btn-xs u-btn-outline-primary">
-                  <i class="fa fa-download"></i>
-                  Available Downloads
-                </button>
-              </a>
-            </div>
-            <div id="accordion-04-body-01" class="collapse" role="tabpanel" aria-labelledby="accordion-04-heading-01" data-parent="#accordion-04">
-              <div class="u-accordion__body g-brd-top g-brd-gray-light-v4 g-color-gray-dark-v5">
-                <%= doc_presenter.field_value field_name %>
+            <% parsed_links = link_parser(document['links_t'])%>
+            <% if not_only_images?(parsed_links) %>
+              <div id="accordion-04-heading-01" class="u-accordion__header accordion-color-primary download-accordion" role="tab">
+                <a class="d-flex collapsed u-link-v5 g-color-main g-color-primary--hover g-font-size-16" href="#accordion-04-body-01" data-toggle="collapse" data-parent="#accordion-04" aria-expanded="false" aria-controls="accordion-04-body-01">
+                  <button class="btn btn-xs u-btn-outline-primary">
+                    <i class="fa fa-download"></i>
+                    Available Downloads
+                  </button>
+                </a>
               </div>
-            </div>
+              <div id="accordion-04-body-01" class="collapse" role="tabpanel" aria-labelledby="accordion-04-heading-01" data-parent="#accordion-04">
+                <div class="u-accordion__body g-brd-top g-brd-gray-light-v4 g-color-gray-dark-v5">
+                  <% no_images(parsed_links).each do |name, link| %>
+                    <%= link_to name, link, target: '_blank'%>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
