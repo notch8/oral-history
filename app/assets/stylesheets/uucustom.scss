@@ -429,7 +429,7 @@ a.footer-link {
     width: 200px;
     clear: left;
     text-align: right;
-    overflow: visible; 
+    overflow: visible;
     text-overflow: initial;
     white-space: normal;
   }
@@ -565,7 +565,7 @@ a.footer-link {
     display: flex;
     align-items: center;
   }
-  
+
   #playhead{
     width: 14px;
     height: 14px;
@@ -574,7 +574,7 @@ a.footer-link {
     box-shadow: 0px 0px 10px rgba(139, 184, 232, 0.5);
     cursor: pointer;
   }
-  
+
   .narrator-image-container {
     display: flex;
     align-items: center;
@@ -596,7 +596,7 @@ a.footer-link {
   .player {
     .pause-button, .play-button {
       top: 70%;
-    
+
       &:before {
         font-size: 60px;
       }
@@ -615,11 +615,6 @@ a.footer-link {
     }
     .time-container {
       margin-bottom: 24px;
-    }
-    .autoscroll-button {
-      position: absolute;
-      top: 70%;
-      left: 4%;
     }
   }
 }
@@ -692,7 +687,7 @@ span.speaker ~ p {
 }
 
 @supports (-ms-accelerator:true) {
-  /* IE Edge 12+ CSS */ 
+  /* IE Edge 12+ CSS */
   .drag-helper {
     display: none;
   }
@@ -703,7 +698,7 @@ span.speaker ~ p {
 }
 
 @supports (-ms-ime-align:auto) {
-  /* IE Edge 16+ CSS */ 
+  /* IE Edge 16+ CSS */
   .drag-helper {
     display: none;
   }
@@ -721,7 +716,7 @@ span.speaker ~ p {
 
 /* ADMIN PAGE */
 .progress-bar {
-  background-color: #3284bf; 
+  background-color: #3284bf;
 }
 
 .well {
@@ -733,6 +728,3 @@ span.speaker ~ p {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-
-
-
