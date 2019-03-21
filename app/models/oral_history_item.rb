@@ -89,7 +89,7 @@ class OralHistoryItem
     if record.metadata
       record.metadata.children.each do |set|
         next if set.class == REXML::Text
-
+        has_xml_transcripts = false
         history.attributes["children_t"] = []
         history.attributes["transcripts_t"] = []
         history.attributes["transcripts_json_t"] = []
@@ -164,8 +164,10 @@ class OralHistoryItem
                 "transcript_t": transcript,
                 "order_i": order
               }.to_json
+              history.attributes["transcripts_t"] = [] if has_xml_transcripts == false
+              has_xml_transcripts = true
               transcript_stripped = ActionController::Base.helpers.strip_tags(transcript)
-              history.attributes["transcripts_t"] << transcript_stripped # TODO check multiples here
+              history.attributes["transcripts_t"] << transcript_stripped
             end
 
             child_document = {
@@ -220,9 +222,8 @@ class OralHistoryItem
           elsif child.name == 'location'
             child.elements.each do |f|
               history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
-              if f.attributes['displayLabel'].match(/Transcript/) # TODO check multiples && history.attributes["transcripts_t"].blank?
+              if f.attributes['displayLabel'] && f.attributes['displayLabel'].match(/Transcript/) && history.attributes["transcripts_t"].blank? && has_xml_transcripts == false
                 # make call to solr for extraction
-                debugger
                 tmp_file = Tempfile.new
                 tmp_file.binmode
                 open(f.text) do |url_file|
