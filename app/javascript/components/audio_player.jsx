@@ -56,8 +56,7 @@ export default class AudioPlayer extends Component {
     return (
       <div className="row player">
         <audio id="audio" ref="audio" src={source} style={{display: 'none'}}></audio>
-        <div className="col-sm-3 narrator-image-container">
-          <img src={image} className='img-responsive' />
+        <div className="col-sm-3 narrator-image-container" style={{backgroundImage: `url(${image})`, backgroundPosition: "center center", backgroundSize: "contain"}}>
           <a onClick={this.handleTogglePlay} className={playPause}></a>
           <div className="volume-container">
             <span className="fa fa-volume-up">
@@ -77,7 +76,7 @@ export default class AudioPlayer extends Component {
         <div className='col-sm-9 wave-box'></div>
         <div className='col-sm-3 autoscroll-button'>
           <button
-            onClick={this.handleToggleIsScrolling}  
+            onClick={this.handleToggleIsScrolling}
             className="btn btn-xs u-btn-outline-primary"
           >
             {isScrolling ? (
@@ -93,7 +92,7 @@ export default class AudioPlayer extends Component {
             onClick={this.handleProgressClick}
             onDragOver={this.handleProgressClick}
           >
-            <div 
+            <div
               id="playhead"
               style={{marginLeft: (isNaN(progressPosition) ? 0 : progressPosition) - 7}}
               draggable
@@ -120,11 +119,11 @@ export default class AudioPlayer extends Component {
       audio.currentTime = percentage
 
       if (!initialPlay || !playing) {
-        audio.play() 
+        audio.play()
         audio.pause()
       }
 
-      this.setState({progressPosition:  position, initialPlay: true})  
+      this.setState({progressPosition:  position, initialPlay: true})
     } catch (error) {
       console.log(error)
     }
@@ -175,7 +174,7 @@ export default class AudioPlayer extends Component {
 
   handleToggleIsScrolling() {
     const { isScrolling } = this.state
-    
+
     this.setState({ isScrolling: !isScrolling })
   }
 
@@ -188,7 +187,7 @@ export default class AudioPlayer extends Component {
         const d = Math.floor(audio.duration)
         let timelineBox = document.getElementById('timeline').getClientRects()[0]
         const progressPosition = (c / d) * timelineBox.width
-      
+
         this.setState({
           currentTime: `00:00:00 / -${formatTime(d-c)}`,
           current: formatTime(c),
@@ -209,7 +208,7 @@ export default class AudioPlayer extends Component {
 
       // NOTE (george): yes, this isn't ideal and queries the DOM every iteration
       // but because the render methods between the file_view and the audio_player aren't
-      // synced it is simpler to constantly check the DOM. 
+      // synced it is simpler to constantly check the DOM.
       // Ideally, we would make this entire page (or at least the player, transcript, and sections)
       // React-ified and use something like React Provider (instead of Redux) to manage the state.
       let mapped = {}
@@ -217,7 +216,7 @@ export default class AudioPlayer extends Component {
       timestamps.map(function (link) { mapped[timeStrToSeconds(link.getAttribute('data-start'))] = link })
 
       let nextScrollTime = getNearestTimeIndex(Object.keys(mapped), c)
-      
+
       if (isScrolling && nextScrollTime != currentScrolledTime) {
         mapped[nextScrollTime].scrollIntoView({
           behavior: "smooth",
@@ -273,7 +272,7 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
 
   wavesurfer.load(audio, peaks);
 
-  
+
   component.setState({
     playing: false,
   })
@@ -281,7 +280,7 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
   audio.oncanplay = () => {
     audio.volume = component.state.volume
     audio.play()
-    
+
     component.setState({
       playing: true
     })
@@ -345,7 +344,7 @@ const getNearestTimeIndex = (haystack, needle) => {
     if (nearest <= needle) {
       nearest = haystack[i]
     }
-    
+
     if (haystack[i+1] > needle) {
       return nearest
     }
