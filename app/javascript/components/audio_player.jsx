@@ -56,8 +56,7 @@ export default class AudioPlayer extends Component {
     return (
       <div className="row player">
         <audio id="audio" ref="audio" src={source} style={{display: 'none'}}></audio>
-        <div className="col-sm-3 col-xs-4 narrator-image-container">
-          <img src={image} className='img-responsive' />
+        <div className="col-sm-3 narrator-image-container" style={{backgroundImage: `url(${image})`, backgroundPosition: "center center", backgroundSize: "contain", backgroundRepeat: "no-repeat"}}>
           <a onClick={this.handleTogglePlay} className={playPause}></a>
           <div className="volume-container">
             <span className="fa fa-volume-up">
@@ -70,7 +69,7 @@ export default class AudioPlayer extends Component {
             onMouseDown={this.changeVol}
             onDragOver={this.changeVol}
           >
-            <div style={{ left: left }} className="marker"></div>
+            <div style={{ left: left }} className="marker" draggable></div>
             <div style={{ width: width }} className="fill"></div>
           </div>
         </div>
@@ -133,14 +132,15 @@ export default class AudioPlayer extends Component {
   changeVol(e) {
     let b = document.getElementById('volume-slider').getClientRects()[0]
     let { audio } = this.refs
-
     const volume = computeVolume(e, b)
 
     audio.volume = volume
 
+    let maxSliderPos = calculateMaxSlider(e, b)
+
     this.setState({
       volume,
-      sliderPos: e.clientX - b.left - 8, // some math to center the mark on the pointer
+      sliderPos: maxSliderPos, // some math to center the mark on the pointer
     })
   }
 
@@ -287,6 +287,17 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
     })
   }
 }
+
+const calculateMaxSlider = (e, b) => {
+  if (e.clientX > b.right){
+    e.clientX = b.right
+  }
+  else if (e.clientX < b.left) {
+    e.clientX = b.left
+  }
+  return e.clientX - b.left - 8
+}
+
 
 const computeVolume = (e, b) => {
   let volume = ((e.clientX - b.left) / b.width)
