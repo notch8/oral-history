@@ -13,6 +13,9 @@ services:
   solr:
     image: "${REGISTRY_HOST}${REGISTRY_URI}/solr:latest"
     build: solr/
+    # environment:
+    #   - JAVA_OPTS='-Xmx6g'
+    #   - SOLR_JAVA_MEM='-Xms10g -Xmx10g'
     ports:
       - '8983:8983'
     volumes:
@@ -51,20 +54,21 @@ services:
     tty: true
     ports:
       - "${DOCKER_PORTS}"
+      - "8000:80"
     environment:
       - VIRTUAL_HOST=oralhistory.docker
       - VIRTUAL_PORT=80
     depends_on:
       - postgres
       - solr
-#      - worker
+      - worker
 
-  # worker:
-  #   extends: main
-  #   command: bin/delayed_job run
-  #   depends_on:
-  #     - postgres
-  #     - solr
+  worker:
+    extends: main
+    command: bin/delayed_job run
+    depends_on:
+      - postgres
+      - solr
 
 volumes:
   postgres:

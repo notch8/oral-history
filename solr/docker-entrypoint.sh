@@ -28,4 +28,4 @@ else
     stop-local-solr
 fi
 
-exec solr -f
+exec solr -f -m 4g
