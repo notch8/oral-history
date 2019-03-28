@@ -9,9 +9,8 @@ class IndexPdfTranscriptJob < ApplicationJob
     tmp_file = Tempfile.new
     
     tmp_file.binmode
-    open(pdf_text) do |url_file|
-      tmp_file.write(url_file.read)
-    end                
+    `curl -o #{tmp_file.path} #{pdf_text}`
+                  
     result = SolrService.extract(path: tmp_file.path)
     # put response in this field 
     item.attributes['transcripts_t'] ||= []
