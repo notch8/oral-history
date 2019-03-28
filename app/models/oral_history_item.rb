@@ -224,7 +224,11 @@ class OralHistoryItem
           elsif child.name == 'location'
             child.elements.each do |f|
               history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
-              if f.attributes['displayLabel'] && f.attributes['displayLabel'].match(/Transcript/) && history.attributes["transcripts_t"].blank? && has_xml_transcripts == false
+              if f.attributes['displayLabel'] && 
+                has_xml_transcripts == false && 
+                history.attributes["transcripts_t"].blank? && 
+                f.attributes['displayLabel'].match(/Transcript/) && 
+                f.text.match(/pdf/i)
                 #call background job here
                 should_process_pdf_transcripts = true
                 pdf_text = f.text
