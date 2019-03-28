@@ -49,7 +49,7 @@
   <requestDispatcher handleSelect="true" >
     <requestParsers 
       enableRemoteStreaming="true" 
-      multipartUploadLimitInKB="2048000000"
+      multipartUploadLimitInKB="81920000"
       formdataUploadLimitInKB="2048"
       addHttpRequestToContext="false"
      />

@@ -90,6 +90,8 @@ class OralHistoryItem
       record.metadata.children.each do |set|
         next if set.class == REXML::Text
         has_xml_transcripts = false
+        should_process_pdf_transcripts = false
+        pdf_text = ''
         history.attributes["children_t"] = []
         history.attributes["transcripts_t"] = []
         history.attributes["transcripts_json_t"] = []
@@ -223,15 +225,9 @@ class OralHistoryItem
             child.elements.each do |f|
               history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
               if f.attributes['displayLabel'] && f.attributes['displayLabel'].match(/Transcript/) && history.attributes["transcripts_t"].blank? && has_xml_transcripts == false
-                # make call to solr for extraction
-                tmp_file = Tempfile.new
-                tmp_file.binmode
-                open(f.text) do |url_file|
-                  tmp_file.write(url_file.read)
-                end                
-                result = SolrService.extract(path: tmp_file.path)
-                # put response in this field
-                history.attributes['transcripts_t'] << result[File.basename(tmp_file.path)].to_s.strip
+                #call background job here
+                should_process_pdf_transcripts = true
+                pdf_text = f.text
               end
             end
           elsif child.name == 'physicalDescription'
@@ -240,6 +236,9 @@ class OralHistoryItem
             history.attributes['extent_t'] << child.elements['mods:extent'].text
             
           end
+        end
+        if !has_xml_transcripts && should_process_pdf_transcripts
+          IndexPdfTranscriptJob.perform_later(history.id, pdf_text)
         end
       end
     end
