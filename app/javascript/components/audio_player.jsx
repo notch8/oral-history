@@ -73,21 +73,8 @@ export default class AudioPlayer extends Component {
             <div style={{ width: width }} className="fill"></div>
           </div>
         </div>
-        <div className='col-sm-9 col-xs-8 wave-box'></div>
-        <div className='col-sm-3 col-xs-4 autoscroll-button'>
-          <button
-            onClick={this.handleToggleIsScrolling}
-            className="btn btn-xs u-btn-outline-primary"
-          >
-            {isScrolling ? (
-              <i className="fa fa fa-check g-font-size-18"></i>
-            ) : (
-              <i className="fa fa-close g-font-size-18"></i>
-            )}
-            &nbsp;Autoscroll
-          </button>
-        </div>
-        <div id="audioplayer" className='col-sm-9 col-xs-8 progress-container'>
+        <div className='col-sm-9 wave-box'></div>
+        <div id="audioplayer" className='col-sm-9 col-sm-offset-3 progress-container'>
           <div id="timeline"
             onClick={this.handleProgressClick}
             onDragOver={this.handleProgressClick}
@@ -103,6 +90,19 @@ export default class AudioPlayer extends Component {
             <div>{current}</div>
             <div>{duration}</div>
           </div>
+        </div>
+        <div className='col-sm-3 autoscroll-button'>
+          <button
+            onClick={this.handleToggleIsScrolling}
+            className="btn btn-xs u-btn-outline-primary"
+          >
+            {isScrolling ? (
+              <i className="fa fa fa-check g-font-size-18"></i>
+            ) : (
+              <i className="fa fa-close g-font-size-18"></i>
+            )}
+            &nbsp;Autoscroll
+          </button>
         </div>
       </div>
     )
