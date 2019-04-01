@@ -18,6 +18,8 @@ services:
     #   - SOLR_JAVA_MEM='-Xms10g -Xmx10g'
     ports:
       - '8983:8983'
+    environment:
+      - SOLR_HEAP = 4g
     volumes:
       - solr:/solr_home
 
