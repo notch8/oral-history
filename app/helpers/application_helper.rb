@@ -23,6 +23,23 @@ module ApplicationHelper
     link_to options[:value][0], root_path(f: {series_facet: options[:document]["series_t"]})
   end
 
+  def link_parser(links)
+    result = {}
+    links.each do |link|
+      parsed = JSON.parse(link)
+      result[parsed[1]] = parsed[0]
+    end
+    return result
+  end
+
+  def no_images(links)
+    links.reject {|name, value| name.match('Narrator')}
+  end
+
+  def not_only_images?(links)
+    no_images(links).size > 0
+  end
+
   def file_links(options = {})
     links = options[:value].map do |f|
       f = JSON.parse(f)
