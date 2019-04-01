@@ -41,6 +41,10 @@ a:hover, a:focus {
   background-color: #3284bf !important;
 }
 
+.g-color-primary {
+  color: #3284bf !important;
+}
+
 .g-color-primary--hover:hover {
   color: #3284bf !important;
 }
@@ -108,8 +112,7 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
 /**/
 
 /* BUTTON STYLES */
-
-.btn-primary {
+.btn-primary  {
   background-color: #3284bf !important;
   border-color: #3284bf !important;
 }
@@ -117,6 +120,18 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   border-color: #ffe800 !important;
   background-color: #ffe800 !important;
   color: #555 !important;
+}
+
+.u-btn-outline-primary {
+  border-color: #3284bf !important;
+  color: #3284bf !important;
+  background-color: transparent !important;
+}
+
+.u-btn-outline-primary:hover, .u-btn-outline-primary.active {
+  border-color: #1e4b87 !important;
+  color: #1e4b87 !important;
+  background-color: transparent !important;
 }
 
 .submit-search-text:hover {
@@ -405,6 +420,22 @@ a.footer-link {
   display: none; }
 
 
+@media (min-width: 768px) {
+  .dl-horizontal dd {
+    margin-left: 220px;
+  }
+  .dl-horizontal dt {
+    float: left;
+    width: 200px;
+    clear: left;
+    text-align: right;
+    overflow: visible;
+    text-overflow: initial;
+    white-space: normal;
+  }
+}
+
+
 /* PLAYER */
 .play-icon {
   cursor: pointer;
@@ -412,11 +443,11 @@ a.footer-link {
 
 .player {
   .volume-slider {
-    position: absolute;
-    top: 90%;
-    left: 50%;
+    position: relative;
     height: 10px;
     width: 40%;
+    margin-bottom: 16px;
+    margin-right: 8px;
     background-color: rgba(255,255,255,0.6);
     border-radius: 10px;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
@@ -451,23 +482,17 @@ a.footer-link {
 
   .volume-container {
     color: #fff;
-    position: absolute;
-    top: 84%;
-    left: 40%;
     font-size:30px;
     text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
   }
 
   .pause-button, .play-button {
-    position: absolute;
-    top: 65%;
-    left: 10%;
+    margin-bottom: -23px;
 
     &:before {
       font-family: FontAwesome;
       font-size: 85px;
       color: #fff;
-      opacity: .8;
       cursor: pointer;
       text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
       transform: translate(-50%, -50%);
@@ -497,7 +522,7 @@ a.footer-link {
   }
 
   .wave-box {
-    height: 340px;
+    height: 285px;
     padding: 0;
     background-image: image-url('ucla_media_background.jpg');
     background-repeat: no-repeat;
@@ -519,6 +544,10 @@ a.footer-link {
     padding:0;
   }
 
+  .autoscroll-button {
+    padding: 0;
+  }
+
   .time-container {
     display: flex;
     flex-direction: row;
@@ -535,7 +564,7 @@ a.footer-link {
     display: flex;
     align-items: center;
   }
-  
+
   #playhead{
     width: 14px;
     height: 14px;
@@ -544,18 +573,60 @@ a.footer-link {
     box-shadow: 0px 0px 10px rgba(139, 184, 232, 0.5);
     cursor: pointer;
   }
+
+  .narrator-image-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    background-color: #1e4b87;
+    padding:0 16px 16px 16px;
+    min-height: 285px;
+
+  }
 }
+
+// 768 992 1200
+@media (min-width: 768px) {
+  div.player {
+    max-width: 100%;
+  }
+  .player {
+    .pause-button, .play-button {
+
+
+      &:before {
+        font-size: 60px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .player {
+
+    .time-container {
+      margin-bottom: 24px;
+    }
+  }
+}
+
 /* END PLAYER */
 
 /* TRANSCRIPTS */
+
+.download-accordion {
+  padding-left: 0;
+}
+
 div.transcript-container {
-  margin: 50px 20px;
+  margin: 0 20px 10px 20px;
   padding: 20px;
   width: auto;
   height: 200px;
   overflow-y: scroll;
   resize: vertical;
 }
+
 .transcript-container-loading {
   margin: 50px 20px;
   padding: 20px;
@@ -588,8 +659,63 @@ span.speaker ~ p {
   cursor: pointer;
 }
 
+.drag-helper {
+  padding-right: 18px;
+  margin-top: -10px;
+  color: #3284bf;
+}
+ /* increase size of transcript window and
+    hide drag helper text in ie and edge */
+ /* IE10+ CSS */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .drag-helper {
+    display: none;
+  }
+
+  div.transcript-container {
+    height: 400px;
+  }
+}
+
+@supports (-ms-accelerator:true) {
+  /* IE Edge 12+ CSS */
+  .drag-helper {
+    display: none;
+  }
+
+  div.transcript-container {
+    height: 400px;
+  }
+}
+
+@supports (-ms-ime-align:auto) {
+  /* IE Edge 16+ CSS */
+  .drag-helper {
+    display: none;
+  }
+
+  div.transcript-container {
+    height: 400px;
+  }
+}
+
 /* STATIC PAGES */
 
 .u-heading-v1-4::before {
   top:70%;
+}
+
+/* ADMIN PAGE */
+.progress-bar {
+  background-color: #3284bf;
+}
+
+.well {
+  padding: 0;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }

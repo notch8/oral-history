@@ -12,8 +12,8 @@ const waveOptions = {
   cursorColor: '#ffffff',
   fillParent: true,
   audioRate: 1,
-  height: 340,
-  barWidth: 2,
+  height: 285,
+  barWidth: 2
 }
 
 export default class AudioPlayer extends Component {
@@ -33,17 +33,20 @@ export default class AudioPlayer extends Component {
       currentTime: '--:--:-- / --:--:--',
       current: '--:--:--',
       duration: '--:--:--',
-      progressPosition: 0
+      progressPosition: 0,
+      isSrolling: false,
+      currentScrolledTime: 0,
     }
 
     this.handleTogglePlay = this.handleTogglePlay.bind(this)
     this.changeVol = this.changeVol.bind(this)
     this.changeSource = changeSource.bind(this)
+    this.handleToggleIsScrolling = this.handleToggleIsScrolling.bind(this)
     this.handleProgressClick = this.handleProgressClick.bind(this)
   }
 
   render() {
-    const { volume, source, playing, sliderPos, currentTime, progressPosition, current, duration } = this.state
+    const { volume, source, playing, sliderPos, currentTime, progressPosition, current, duration, isScrolling } = this.state
     const { image } = this.props
 
     const width = `${(volume * 100)}%` || '50%'
@@ -51,9 +54,9 @@ export default class AudioPlayer extends Component {
     const playPause = (playing ? 'pause-button' : 'play-button')
 
     return (
-      <div className="player col-xs-12">
-        <div className="col-xs-4">
-          <img src={image} className='img-responsive' />
+      <div className="row player">
+        <audio id="audio" ref="audio" src={source} style={{display: 'none'}}></audio>
+        <div className="col-sm-3 narrator-image-container" style={{backgroundImage: `url(${image})`, backgroundPosition: "center center", backgroundSize: "contain", backgroundRepeat: "no-repeat"}}>
           <a onClick={this.handleTogglePlay} className={playPause}></a>
           <div className="volume-container">
             <span className="fa fa-volume-up">
@@ -64,20 +67,19 @@ export default class AudioPlayer extends Component {
             className="volume-slider"
             onClick={this.changeVol}
             onMouseDown={this.changeVol}
-            onDrag={this.changeVol}
+            onDragOver={this.changeVol}
           >
-            <div style={{left: left}} className="marker"></div>
-            <div style={{width: width}} className="fill"></div>
+            <div style={{ left: left }} className="marker" draggable></div>
+            <div style={{ width: width }} className="fill"></div>
           </div>
         </div>
-        <div className='col-xs-8 wave-box'>
-        </div>
-        <div id="audioplayer" className='col-xs-8 col-xs-offset-4 progress-container'>
+        <div className='col-sm-9 wave-box'></div>
+        <div id="audioplayer" className='col-sm-9 col-sm-offset-3 progress-container'>
           <div id="timeline"
             onClick={this.handleProgressClick}
             onDragOver={this.handleProgressClick}
           >
-            <div 
+            <div
               id="playhead"
               style={{marginLeft: (isNaN(progressPosition) ? 0 : progressPosition) - 7}}
               draggable
@@ -89,7 +91,19 @@ export default class AudioPlayer extends Component {
             <div>{duration}</div>
           </div>
         </div>
-        <audio id="audio" ref="audio" src={source}></audio>
+        <div className='col-sm-3 autoscroll-button'>
+          <button
+            onClick={this.handleToggleIsScrolling}
+            className="btn btn-xs u-btn-outline-primary"
+          >
+            {isScrolling ? (
+              <i className="fa fa fa-check g-font-size-18"></i>
+            ) : (
+              <i className="fa fa-close g-font-size-18"></i>
+            )}
+            &nbsp;Autoscroll
+          </button>
+        </div>
       </div>
     )
   }
@@ -105,11 +119,11 @@ export default class AudioPlayer extends Component {
       audio.currentTime = percentage
 
       if (!initialPlay || !playing) {
-        audio.play() 
+        audio.play()
         audio.pause()
       }
 
-      this.setState({progressPosition:  position, initialPlay: true})  
+      this.setState({progressPosition:  position, initialPlay: true})
     } catch (error) {
       console.log(error)
     }
@@ -118,14 +132,15 @@ export default class AudioPlayer extends Component {
   changeVol(e) {
     let b = document.getElementById('volume-slider').getClientRects()[0]
     let { audio } = this.refs
-
     const volume = computeVolume(e, b)
 
     audio.volume = volume
 
+    let maxSliderPos = calculateMaxSlider(e, b)
+
     this.setState({
       volume,
-      sliderPos: e.clientX - b.left - 8, // some math to center the mark on the pointer
+      sliderPos: maxSliderPos, // some math to center the mark on the pointer
     })
   }
 
@@ -158,17 +173,22 @@ export default class AudioPlayer extends Component {
     this.setState({ playing, initialPlay: true })
   }
 
+  handleToggleIsScrolling() {
+    const { isScrolling } = this.state
+
+    this.setState({ isScrolling: !isScrolling })
+  }
+
   componentDidMount() {
     const { id, source, peaks } = this.state
     let { audio } = this.refs
-
     const interval = setInterval(() => {
       if(audio.duration > 0) {
         const c = Math.floor(audio.currentTime)
         const d = Math.floor(audio.duration)
         let timelineBox = document.getElementById('timeline').getClientRects()[0]
         const progressPosition = (c / d) * timelineBox.width
-      
+
         this.setState({
           currentTime: `00:00:00 / -${formatTime(d-c)}`,
           current: formatTime(c),
@@ -181,13 +201,34 @@ export default class AudioPlayer extends Component {
     }, 200)
 
     audio.ontimeupdate = () => {
+      let { currentScrolledTime, isScrolling } = this.state
       const c = Math.floor(audio.currentTime)
       const d = Math.floor(audio.duration)
       let timelineBox = document.getElementById('timeline').getClientRects()[0]
       const progressPosition = (c / d) * timelineBox.width
 
+      // NOTE (george): yes, this isn't ideal and queries the DOM every iteration
+      // but because the render methods between the file_view and the audio_player aren't
+      // synced it is simpler to constantly check the DOM.
+      // Ideally, we would make this entire page (or at least the player, transcript, and sections)
+      // React-ified and use something like React Provider (instead of Redux) to manage the state.
+      let mapped = {}
+      let timestamps = Array.from(document.getElementsByClassName('audio-timestamp-link'))
+      timestamps.map(function (link) { mapped[timeStrToSeconds(link.getAttribute('data-start'))] = link })
+
+      let nextScrollTime = getNearestTimeIndex(Object.keys(mapped), c)
+
+      if (isScrolling && nextScrollTime != currentScrolledTime) {
+        mapped[nextScrollTime].scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        })
+      }
+
       this.setState({
         currentTime: `${formatTime(c)} / -${formatTime(d-c)}`,
+        currentScrolledTime: nextScrollTime,
         current: formatTime(c),
         duration: formatTime(d-c),
         progressPosition: progressPosition
@@ -223,13 +264,15 @@ export default class AudioPlayer extends Component {
 }
 
 const changeSource = (component, hls, wavesurfer, audio) => (e) => {
-  const { id, src, peaks } = e.detail
+  const { src, peaks } = e.detail
+  const { mapped } = component.state
 
   hls.detachMedia()
   hls.loadSource(src)
   hls.attachMedia(audio)
 
   wavesurfer.load(audio, peaks);
+
 
   component.setState({
     playing: false,
@@ -240,10 +283,21 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
     audio.play()
 
     component.setState({
-      playing: true,
+      playing: true
     })
   }
 }
+
+const calculateMaxSlider = (e, b) => {
+  if (e.clientX > b.right){
+    e.clientX = b.right
+  }
+  else if (e.clientX < b.left) {
+    e.clientX = b.left
+  }
+  return e.clientX - b.left - 8
+}
+
 
 const computeVolume = (e, b) => {
   let volume = ((e.clientX - b.left) / b.width)
@@ -260,13 +314,19 @@ const computeVolume = (e, b) => {
 }
 
 const jumpTo = (audio) => (e) => {
-  let parts = e.detail.jump_to.split(':').reverse()
+  const seconds = timeStrToSeconds(e.detail.jump_to)
 
-  let seconds = parts.reduce((acc, val, i) => {
+  audio.currentTime = seconds
+}
+
+const timeStrToSeconds = (str) => {
+  let parts = str.split(':').reverse()
+
+  const seconds = parts.reduce((acc, val, i) => {
     return acc + (parseInt(val) * (i > 0 ? 60 ** i : 1))
   }, 0)
 
-  audio.currentTime = seconds
+  return seconds
 }
 
 const formatTime = (seconds) => {
@@ -287,4 +347,20 @@ const pad = (num) => {
   }
 
   return num > 9 ? `${num}` : `0${num}`
+}
+
+const getNearestTimeIndex = (haystack, needle) => {
+  let nearest = haystack[0]
+
+  for (let i = 0; i < haystack.length; i++) {
+    if (nearest <= needle) {
+      nearest = haystack[i]
+    }
+
+    if (haystack[i+1] > needle) {
+      return nearest
+    }
+  }
+
+  return nearest
 }

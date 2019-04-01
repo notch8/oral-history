@@ -27,6 +27,7 @@ gem 'mods'
 gem 'oai'
 gem 'pg', '~> 0.18'
 gem 'progress_bar'
+gem 'progress_job'
 gem 'puma', '~> 3.7'
 gem 'rsolr', '>= 1.0'
 gem 'rspec-rails', '~> 3.8', group: [:development, :test]

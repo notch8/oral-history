@@ -4,13 +4,11 @@ Rails.application.routes.draw do
 
   get 'pages/contact', to: 'pages#contact', as: 'contact'
 
-  get 'pages/permissions', to: 'pages#permissions', as: 'permissions'
+  get 'pages/copyright_and_permissions', to: 'pages#copyright_and_permissions', as: 'copyright_and_permissions'
 
-  get 'pages/copyrightinformation', to: 'pages#copyrightinformation', as: 'copyrightinformation'
+  get 'pages/interview_guidelines', to: 'pages#interview_guidelines', as: 'interview_guidelines'
 
-  get 'pages/interviewguidelines', to: 'pages#interviewguidelines', as: 'interviewguidelines'
-
-  get 'pages/familyhistory', to: 'pages#familyhistory', as: 'familyhistory'
+  get 'pages/family_history', to: 'pages#family_history', as: 'family_history'
 
   get 'pages/programs', to: 'pages#programs', as: 'programs'
 
@@ -19,6 +17,10 @@ Rails.application.routes.draw do
   get 'pages/training', to: 'pages#training', as: 'training'
 
   get 'pages/bibliography', to: 'pages#bibliography', as: 'bibliography'
+
+  get '/admin', to: 'admin#index', as: 'admin'
+
+  post 'admin/run_import', to: 'admin#run_import', as: 'run_import'
 
   mount Blacklight::Engine => '/'
   Blacklight::Marc.add_routes(self)
