@@ -229,7 +229,6 @@ class OralHistoryItem
                 history.attributes["transcripts_t"].blank? && 
                 f.attributes['displayLabel'].match(/Transcript/) && 
                 f.text.match(/pdf/i)
-                #call background job here
                 should_process_pdf_transcripts = true
                 pdf_text = f.text
               end
