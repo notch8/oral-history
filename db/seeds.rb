@@ -6,6 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+##################################################################
+##### SEED FILE GETS RUN AUTOMATICALLY IN STAGING/PRODUCTION #####
+##################################################################
+
 # seed the database with users who can access the admin page
 [
   { email: 'rob@notch8.com', password: 'testing123'},
