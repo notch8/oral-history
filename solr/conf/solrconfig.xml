@@ -32,6 +32,8 @@
 
   <lib dir="${solr.install.dir:../../../..}/contrib/analysis-extras/lib" />
   <lib dir="${solr.install.dir:../../../..}/contrib/analysis-extras/lucene-libs" />
+  <lib dir="${solr.install.dir:../../..}/contrib/extraction/lib" regex=".*\.jar" />
+  <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-cell-\d.*\.jar" />
 
   <directoryFactory name="DirectoryFactory"
                     class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}">
@@ -45,7 +47,12 @@
   <dataDir>${solr.blacklight-core.data.dir:}</dataDir>
 
   <requestDispatcher handleSelect="true" >
-    <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048" />
+    <requestParsers 
+      enableRemoteStreaming="true" 
+      multipartUploadLimitInKB="81920000"
+      formdataUploadLimitInKB="2048"
+      addHttpRequestToContext="false"
+     />
   </requestDispatcher>
 
   <requestHandler name="/analysis/field" startup="lazy" class="solr.FieldAnalysisRequestHandler" />
@@ -311,6 +318,21 @@
       <str name="fl">*</str>
       <str name="rows">1</str>
       <str name="q">{!term f=id v=$id}</str> <!-- use id=666 instead of q=id:666 -->
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="/update/extract" 
+                  startup="lazy"
+                  class="solr.extraction.ExtractingRequestHandler" >
+    <lst name="defaults">
+      <str name="lowernames">true</str>
+      <str name="uprefix">ignored_</str>
+      <str name="fmap.content">_text_</str>
+
+      <!-- capture link hrefs but ignore div attributes -->
+      <str name="captureAttr">true</str>
+      <str name="fmap.a">links</str>
+      <str name="fmap.div">ignored_</str>
     </lst>
   </requestHandler>
 
