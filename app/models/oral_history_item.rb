@@ -47,15 +47,19 @@ class OralHistoryItem
       if record.metadata
         record.metadata.children.each do |set|
           next if set.class == REXML::Text
+
           history.attributes["children_t"] = []
           history.attributes["transcripts_t"] = []
+          history.attributes["transcripts_json_t"] = []
+          history.attributes["description_t"] = []
           history.attributes['person_present_t'] = []
           history.attributes['place_t'] = []
           history.attributes['supporting_documents_t'] = []
           history.attributes['interviewer_history_t'] = []
           history.attributes['process_interview_t'] = []
+          history.attributes['links_t'] = []
           set.children.each do |child|
-            next if child.class == REXML::Text
+          next if child.class == REXML::Text
             if child.name == "titleInfo"
               child.elements.each('mods:title') do |title|
                 title_text = title.text.to_s.strip
@@ -69,8 +73,7 @@ class OralHistoryItem
                   history.attributes["title_t"] << title_text
                 end
               end
-            elsif child.name == "abstract" ||
-                  child.name == "extent"
+            elsif child.name == "abstract"
               history.attributes[child.name + "_display"] = child.text
               history.attributes[child.name + "_t"] ||= []
               history.attributes[child.name + "_t"] << child.text
@@ -114,11 +117,13 @@ class OralHistoryItem
 
               if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
                 time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
-
-                history.attributes["transcripts_t"] << {
-                  "transcript_t": self.generate_transcript(time_log_url),
+                transcript = self.generate_transcript(time_log_url)
+                history.attributes["transcripts_json_t"] << {
+                  "transcript_t": transcript,
                   "order_i": order
                 }.to_json
+                transcript_stripped = ActionController::Base.helpers.strip_tags(transcript)
+                history.attributes["transcripts_t"] << transcript_stripped
               end
 
               child_document = {
@@ -135,7 +140,6 @@ class OralHistoryItem
                 history.attributes["audio_b"] = true
                 history.attributes["audio_display"] = "Yes"
               end
-
               history.attributes["children_t"] << child_document.to_json
             elsif child.name == "relatedItem" && child.attributes['type'] == "series"
               history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
@@ -147,7 +151,7 @@ class OralHistoryItem
             elsif child.name == "note"
               if child.attributes['type'].to_s.match('biographical')
                 history.attributes["biographical_display"] = child.text
-                history.attributes["biographical_t"] ||= []
+                history.attributes["biographical_t"] = []
                 history.attributes["biographical_t"] << child.text
               end
               if child.attributes['type'].to_s.match('personpresent')
@@ -170,11 +174,9 @@ class OralHistoryItem
                 history.attributes['process_interview_display'] = child.text
                 history.attributes['process_interview_t'] << child.text
               end
-              history.attributes["description_t"] ||= []
               history.attributes["description_t"] << child.text
             elsif child.name == 'location'
               child.elements.each do |f|
-                history.attributes['links_t'] = []
                 history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
               end
             elsif child.name == 'physicalDescription'
