@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'net/http'
 
 class OralHistoryItem
-  attr_accessor :attributes, :new_record
+  attr_accessor :attributes, :new_record, :should_process_pdf_transcripts
 
   def initialize(attr={})
     if attr.is_a?(Hash)
@@ -90,7 +90,6 @@ class OralHistoryItem
       record.metadata.children.each do |set|
         next if set.class == REXML::Text
         has_xml_transcripts = false
-        should_process_pdf_transcripts = false
         pdf_text = ''
         history.attributes["children_t"] = []
         history.attributes["transcripts_t"] = []
@@ -229,7 +228,7 @@ class OralHistoryItem
                 history.attributes["transcripts_t"].blank? && 
                 f.attributes['displayLabel'].match(/Transcript/) && 
                 f.text.match(/pdf/i)
-                should_process_pdf_transcripts = true
+                history.should_process_pdf_transcripts = true
                 pdf_text = f.text
               end
             end
@@ -240,7 +239,7 @@ class OralHistoryItem
             
           end
         end
-        if !has_xml_transcripts && should_process_pdf_transcripts
+        if !has_xml_transcripts && history.should_process_pdf_transcripts
           IndexPdfTranscriptJob.perform_later(history.id, pdf_text)
         end
       end
@@ -258,6 +257,11 @@ class OralHistoryItem
 
   def id=(value)
     self.attributes[:id] = value
+  end
+
+  def should_process_pdf_transcripts
+    @should_process_pdf_transcripts ||= false
+    @should_process_pdf_transcripts && !Delayed::Job.where("handler LIKE ? ", "%job_class: IndexPdfTranscriptJob%#{self.id}%").first
   end
 
   def to_solr
