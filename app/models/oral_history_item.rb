@@ -33,32 +33,39 @@ class OralHistoryItem
   end
 
   def self.import(args)
-    progress = args[:progress] || true
-    limit = args[:limit] || 20000000  # essentially no limit
-    response = self.fetch(args)
+    begin
+      create_import_tmp_file
+      progress = args[:progress] || true
+      limit = args[:limit] || 20000000  # essentially no limit
+      response = self.fetch(args)
 
-    if progress
-      bar = ProgressBar.new(response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i)
-    end
-    total = 0
-    response.full.each do |record|
-      history = process_record(record)
-      history.index_record
-      if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.new_record?
-        ProcessPeakJob.perform_later(history.id)
-      end
-  
-      if true
-        yield(total) if block_given?        
-      end
-  
       if progress
-        bar.increment!
+        bar = ProgressBar.new(response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i)
       end
-      total += 1
-      break if total >= limit
+      total = 0
+      response.full.each do |record|
+        history = process_record(record)
+        history.index_record
+        if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.new_record?
+          ProcessPeakJob.perform_later(history.id)
+        end
+    
+        if true
+          yield(total) if block_given?        
+        end
+    
+        if progress
+          bar.increment!
+        end
+        total += 1
+        break if total >= limit
+      end
+      return total
+    rescue => exception
+      Raven.capture_exception(exception)
+    ensure
+      remove_import_tmp_file
     end
-    return total
   end
 
   def self.import_single(id)
@@ -310,6 +317,18 @@ class OralHistoryItem
     client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
     response = client.list_records(set: set, metadata_prefix: 'mods')
     response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i
+  end
+
+  def self.create_import_tmp_file
+    FileUtils.touch(Rails.root.join('tmp/importer.tmp'))
+  end
+
+  def self.remove_import_tmp_file
+    FileUtils.rm(Rails.root.join('tmp/importer.tmp'))
+  end
+
+  def self.check_for_tmp_file
+    File.exist?(File.join('tmp/importer.tmp'))
   end
 end
 
