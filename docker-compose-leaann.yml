@@ -15,8 +15,6 @@ services:
     build: solr/
     ports:
       - '8983:8983'
-    environment:
-      - SOLR_HEAP = 4g
     volumes:
       - solr:/solr_home
 
@@ -60,14 +58,14 @@ services:
     depends_on:
       - postgres
       - solr
-      - worker
+#      - worker
 
-  worker:
-    extends: main
-    command: bin/delayed_job run
-    depends_on:
-      - postgres
-      - solr
+  # worker:
+  #   extends: main
+  #   command: bin/delayed_job run
+  #   depends_on:
+  #     - postgres
+  #     - solr
 
 volumes:
   postgres:

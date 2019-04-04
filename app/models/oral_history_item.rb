@@ -33,6 +33,7 @@ class OralHistoryItem
   end
 
   def self.import(args)
+    return false if !args[:override] && check_for_tmp_file
     begin
       create_import_tmp_file
       progress = args[:progress] || true
