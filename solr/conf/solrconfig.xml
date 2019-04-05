@@ -100,6 +100,7 @@
          subject_unstem_search^50000
          subject_topic_facet^25000
          subject_t^10000
+         series_t^10000
          title_series_unstem_search^100000
          title_series_t^50000
          title_addl_unstem_search^5000
@@ -107,15 +108,16 @@
          title_added_entry_unstem_search^1500
          title_added_entry_t^1250
          author_unstem_search^250
-         interviewee_addl_unstem_search^250
-         interviewee_t^100
-         transcripts_t^100
+         interviewee_addl_unstem_search^10000
+         interviewee_t^9000
+         description_t^8000
+         transcripts_t^7000
          interviewee_addl_t^50
-         interviewee_unstem_search^250
+         interviewee_unstem_search^9000
          author_addl_unstem_search^250
          author_t^100
          author_addl_t^50
-         subject_addl_unstem_search^250
+         subject_addl_unstem_search^10000
          subject_addl_t^50
          language_t
          biographical_t
@@ -129,12 +131,15 @@
          subtitle_t^100000
          title_series_unstem_search^100000
          title_series_t^250000
+         series_t^25000
          interviewee_unstem_search^50000
          interviewee_t^25000
-         subject_topic_unstem_search^100000
+         subject_topic_unstem_search^200000
          subject_unstem_search^50000
          subject_topic_facet^25000
          subject_t^25000
+         interviewee_t^20000
+         description_t^15000
          title_addl_unstem_search^50000
          title_addl_t^25000
          title_added_entry_unstem_search^15000
@@ -145,7 +150,7 @@
          author_addl_t^500
          subject_addl_unstem_search^2500
          subject_addl_t^500
-         transcripts_t^400
+         transcripts_t^10000
          biographical_t^10
          language_t^10
          text^10
