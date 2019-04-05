@@ -131,7 +131,7 @@
          subtitle_t^100000
          title_series_unstem_search^100000
          title_series_t^250000
-         series_t^25000
+         series_t^250000
          interviewee_unstem_search^50000
          interviewee_t^25000
          subject_topic_unstem_search^200000
