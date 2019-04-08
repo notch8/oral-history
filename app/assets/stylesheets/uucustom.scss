@@ -444,8 +444,8 @@ a.footer-link {
 .player {
   .volume-slider {
     position: relative;
-    height: 10px;
-    width: 40%;
+    height: 15px;
+    width: 50%;
     margin-bottom: 16px;
     margin-right: 8px;
     background-color: rgba(255,255,255,0.6);
@@ -459,8 +459,8 @@ a.footer-link {
     }
 
     .fill {
-      height: 10px;
-      min-width: 10px;
+      height: 15px;
+      min-width: 15px;
       width: 50%;
       padding-right: 5px;
       -webkit-transition: width 0.35s; /* For Safari 3.1 to 6.0 */
@@ -469,8 +469,8 @@ a.footer-link {
     }
 
     .marker {
-      height: 15px;
-      min-width: 15px;
+      height: 25px;
+      min-width: 25px;
       box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
       transform: translate(0%, -18%);
       left: 46%;
@@ -603,9 +603,20 @@ a.footer-link {
 
 @media (max-width: 768px) {
   .player {
-
-    .time-container {
-      margin-bottom: 24px;
+    .volume-slider {
+      height: 19px;
+      width: 50%;
+      .fill {
+        height: 19px;
+        min-width: 19px;
+      }
+      .marker {
+        height: 32px;
+        min-width: 32px;
+      }
+      .time-container {
+        margin-bottom: 24px;
+      }
     }
   }
 }
@@ -739,5 +750,3 @@ body.blacklight-full_text.blacklight-full_text-index .page_entries {
 body.blacklight-full_text.blacklight-full_text-index h3.index_title.document-title-heading {
   font-size: 14px;
 }
-
-
