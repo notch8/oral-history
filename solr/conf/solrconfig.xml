@@ -106,9 +106,9 @@
          interviewee_addl_unstem_search^10000
          subject_addl_unstem_search^10000
          interviewee_t^9000
+         interviewee_unstem_search^9000
          description_t^8000
          transcripts_t^7000
-         interviewee_unstem_search^9000
          title_addl_unstem_search^5000
          title_addl_t^2500
          title_added_entry_unstem_search^1500
@@ -129,7 +129,6 @@
          subtitle_unstem_search^500000
          title_t^250000
          title_series_t^250000
-         series_t^250000
          subject_topic_unstem_search^200000
          subtitle_t^100000
          title_series_unstem_search^100000
@@ -139,8 +138,8 @@
          interviewee_t^25000
          subject_topic_facet^25000
          subject_t^25000
+         series_t^25000
          title_addl_t^25000
-         interviewee_t^20000
          title_added_entry_unstem_search^15000
          description_t^15000
          title_added_entry_t^12500
