@@ -44,6 +44,8 @@ class OralHistoryItem
       end
       total = 0
       new_record_ids = []
+      byebug
+
       response.full.each do |record|
         begin
           history = process_record(record)
@@ -65,8 +67,10 @@ class OralHistoryItem
         total += 1
         break if total >= limit
       end
-      #TODO need to verify there is no limit argument which will delete all records after the limited import
-      remove_deleted_records(new_record_ids)
+      #verify there is no limit argument which would allow deletion of all records after the limit
+      if args[:limit] == 20000000
+        remove_deleted_records(new_record_ids)
+      end
       return total
     rescue => exception
       Raven.capture_exception(exception)
