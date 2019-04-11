@@ -15,4 +15,11 @@ describe OralHistoryItem do
     record = OralHistoryItem.find_or_new(document_id)
     expect(record.new_record?).to eq false
   end
+
+  it "can import a specific single item" do 
+    document_id = OralHistoryItem.fetch_first_id
+    imported_record = OralHistoryItem.import_single(document_id)
+    expect(imported_record.id).to match document_id
+  end
+
 end
