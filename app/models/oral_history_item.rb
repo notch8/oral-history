@@ -44,7 +44,6 @@ class OralHistoryItem
       end
       total = 0
       new_record_ids = []
-      byebug
 
       response.full.each do |record|
         begin
