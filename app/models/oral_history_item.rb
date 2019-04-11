@@ -288,7 +288,6 @@ class OralHistoryItem
   end
 
   def self.remove_deleted_records(new_record_ids)
-    byebug
     current_records = all_ids 
     new_record_ids.each do |id|
       current_records.delete(id)
