@@ -33,7 +33,7 @@ module ApplicationHelper
   end
 
   def no_images(links)
-    links.reject {|name, value| name.match('Narrator')}
+    links.reject {|name, value| name.match('Narrator') if name.present? }
   end
 
   def not_only_images?(links)
