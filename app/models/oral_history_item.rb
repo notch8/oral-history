@@ -39,27 +39,36 @@ class OralHistoryItem
       progress = args[:progress] || true
       limit = args[:limit] || 20000000  # essentially no limit
       response = self.fetch(args)
-
       if progress
         bar = ProgressBar.new(response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i)
       end
       total = 0
+      new_record_ids = []
+
       response.full.each do |record|
-        history = process_record(record)
-        history.index_record
-        if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.new_record?
-          ProcessPeakJob.perform_later(history.id)
+        begin
+          history = process_record(record)
+          history.index_record
+          if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.new_record?
+            ProcessPeakJob.perform_later(history.id)
+          end
+          new_record_ids << history.id
+        rescue => exception
+          Raven.capture_exception(exception)
         end
-    
         if true
           yield(total) if block_given?        
         end
-    
+        
         if progress
           bar.increment!
         end
         total += 1
         break if total >= limit
+      end
+      #verify there is no limit argument which would allow deletion of all records after the limit
+      if args[:limit] == 20000000
+        remove_deleted_records(new_record_ids)
       end
       return total
     rescue => exception
@@ -80,15 +89,9 @@ class OralHistoryItem
     if record.header.blank? || record.header.identifier.blank?
       return false
     end
-    if record.header.status.to_s == "deleted"
-      # TODO record deletion from solr
-      # Or from Solr - download all the identifiers, put them in an array, and then remove the id that you are indexing from the array. delete the records with the remaining identifiers
-      # delete from solr by id
-      return :deleted
-    end
+    
     history = OralHistoryItem.find_or_new(record.header.identifier.split('/').last) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
     history.attributes['id_t'] = record.header.identifier.split('/').last
-
     if record.header.datestamp
       history.attributes[:timestamp] = Time.parse(record.header.datestamp)
     end
@@ -285,6 +288,28 @@ class OralHistoryItem
   def remove_from_index
     SolrService.delete_by_id(self.id)
     SolrService.commit
+  end
+
+  def self.remove_deleted_records(new_record_ids)
+    current_records = all_ids 
+    new_record_ids.each do |id|
+      current_records.delete(id)
+    end
+    if current_records.present?
+      current_records.each do |id|
+        SolrService.delete_by_id(id)
+        SolrService.commit 
+      end
+    end
+  end
+
+  def self.all_ids
+    return @all_ids if @all_ids.present?
+    @all_ids ||= []
+    SolrService.all_records do |record|
+      @all_ids << record["id"]
+    end
+    @all_ids
   end
 
   def generate_peaks
