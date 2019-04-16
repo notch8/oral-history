@@ -127,10 +127,6 @@ class OralHistoryItem
                 history.attributes["title_t"] << title_text
               end
             end
-          elsif child.name == "abstract"
-            history.attributes[child.name + "_display"] = child.text
-            history.attributes[child.name + "_t"] ||= []
-            history.attributes[child.name + "_t"] << child.text
           elsif child.name == "typeOfResource"
             history.attributes["type_of_resource_display"] = child.text
             history.attributes["type_of_resource_t"] ||= []
