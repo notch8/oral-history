@@ -102,6 +102,8 @@ class OralHistoryItem
         next if set.class == REXML::Text
         has_xml_transcripts = false
         pdf_text = ''
+        history.attributes["author_t"] = []
+        history.attributes["interviewee_t"] = []
         history.attributes["children_t"] = []
         history.attributes["transcripts_t"] = []
         history.attributes["transcripts_json_t"] = []
@@ -157,11 +159,9 @@ class OralHistoryItem
           elsif child.name == "name"
             if child.elements['mods:role/mods:roleTerm'].text == "interviewer"
               history.attributes["author_display"] = child.elements['mods:namePart'].text
-              history.attributes["author_t"] ||= []
               history.attributes["author_t"] << child.elements['mods:namePart'].text
             elsif child.elements['mods:role/mods:roleTerm'].text == "interviewee"
               history.attributes["interviewee_display"] = child.elements['mods:namePart'].text
-              history.attributes["interviewee_t"] ||= []
               history.attributes["interviewee_t"] << child.elements['mods:namePart'].text
               history.attributes["interviewee_sort"] = child.elements['mods:namePart'].text
             end
