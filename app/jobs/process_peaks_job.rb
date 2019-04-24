@@ -1,5 +1,5 @@
 class ProcessPeaksJob < ApplicationJob
-  queue_as :default
+  queue_as :peaks
 
   def perform(*args)
     SolrService.all_records do |ref|

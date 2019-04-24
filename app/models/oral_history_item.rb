@@ -103,7 +103,6 @@ class OralHistoryItem
         has_xml_transcripts = false
         pdf_text = ''
         history.attributes["children_t"] = []
-        history.attributes["transcripts_t"] = []
         history.attributes["transcripts_json_t"] = []
         history.attributes["description_t"] = []
         history.attributes['person_present_t'] = []
