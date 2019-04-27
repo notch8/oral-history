@@ -49,7 +49,7 @@ class OralHistoryItem
         begin
           history = process_record(record)
           history.index_record
-          if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.new_record?
+          if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.should_process_peaks?
             ProcessPeakJob.perform_later(history.id)
           end
           new_record_ids << history.id
@@ -344,6 +344,14 @@ class OralHistoryItem
     response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i
   end
 
+  def has_peaks?
+    JSON.parse(self.attributes["children_t"][0])['peaks'].present?
+  end
+
+  def should_process_peaks?
+    !has_peaks? && !Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").first
+  end
+
   def self.create_import_tmp_file
     FileUtils.touch(Rails.root.join('tmp/importer.tmp'))
   end
@@ -356,33 +364,3 @@ class OralHistoryItem
     File.exist?(File.join('tmp/importer.tmp'))
   end
 end
-
-
-#           elsif child.name == "date"
-#              if child.content.length == 4
-#                pub_date = child.content.to_i
-#              else
-#                pub_date = Time.parse(child.content).year rescue nil
-#              end
-#              history.attributes["pub_date"] = pub_date
-#              history.attributes["pub_date_sort"] = pub_date
-            #elsif child.name == "coverage" # TODO
-            #  child_name = child.name + "_t"
-            #  history.attributes[child_name] ||= []
-            #  history.attributes[child_name] << child.content####
-#          elsif child.name == "format"
-#              history.attributes["format"] = child.content
-#              history.attributes[child.name + "_display"] = child.content
-#              history.attributes[child.name + "_t"] ||= []
-#              history.attributes[child.name + "_t"] << child.content
-#            elsif child.name == "description"
-#              history.attributes[child.name + "_display"] = child.content
-#              history.attributes[child.name + "_t"] ||= []
-#              history.attributes[child.name + "_t"] << child.content
-#              if child.content.match(/BIOGRAPHICAL/)
-#                history.attributes["description_facet"] = [child.content.to_s.truncate(10)]
-#              end
-#            else
-#              history.attributes[child.name + "_display"] = child.content
-#              history.attributes[child.name + "_t"] ||= []
-#              history.attributes[child.name + "_t"] << child.content
