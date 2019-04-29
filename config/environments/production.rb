@@ -74,7 +74,7 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = {
     :host => 'oral-history-balancer-1368671073.us-west-2.elb.amazonaws.com'
-    :protocol => 'https'
+    :protocol => 'http'
   }
 
 
