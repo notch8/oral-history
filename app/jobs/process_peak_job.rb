@@ -1,5 +1,5 @@
 class ProcessPeakJob < ApplicationJob
-  queue_as :default
+  queue_as :peaks
 
   def perform(id)
     puts "Processing peaks for: #{id}"
