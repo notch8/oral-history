@@ -61,8 +61,11 @@ export default class AudioPlayer extends Component {
           <div className="volume-container">
             <span className="fa fa-volume-up">
             </span>
+            <div className="volbox">
+              <input id="volume-slider" type="range" min="0" max="1" value="1" step="0.1" onChange={this.changeVol} />
+            </div>
           </div>
-          <div
+          {/* <div
             id="volume-slider"
             className="volume-slider"
             onClick={this.changeVol}
@@ -71,8 +74,9 @@ export default class AudioPlayer extends Component {
           >
             <div style={{ left: left }} className="marker" draggable></div>
             <div style={{ width: width }} className="fill"></div>
-          </div>
-        </div>
+          </div>*/}
+        </div> 
+        
         <div className='col-sm-9 wave-box'></div>
         <div id="audioplayer" className='col-sm-9 col-sm-offset-3 progress-container'>
           <div id="timeline"
