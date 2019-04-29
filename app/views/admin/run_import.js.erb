@@ -1,11 +1,11 @@
 var interval;
   $('.well').show();
+  $('#run-import-button').attr("disabled", "disabled");
   interval = setInterval(function(){
     $.ajax({
       url: '/progress-job/' + "<%= @job.id %>",
       success: function(job){
         var stage, progress;
-
         // If there are errors
         if (job.last_error != null) {
           $('.progress-status').addClass('text-danger').text(job.progress_stage);
@@ -31,4 +31,4 @@ var interval;
         clearInterval(interval);
       }
     })
-  }, 3000);
+  }, 2000);
