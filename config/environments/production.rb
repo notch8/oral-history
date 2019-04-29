@@ -70,11 +70,12 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     :address          => "em.library.ucla.edu",
     :port             => 25,
+    :domain           => 'oral-history-balancer-1368671073.us-west-2.elb.amazonaws.com'
   }
 
   config.action_mailer.default_url_options = {
     :host => 'oral-history-balancer-1368671073.us-west-2.elb.amazonaws.com'
-    :protocol => 'http'
+    :protocol => 'https'
   }
 
 
