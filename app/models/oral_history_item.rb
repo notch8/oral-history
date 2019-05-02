@@ -195,6 +195,8 @@ class OralHistoryItem
               history.attributes["audio_b"] = true
               history.attributes["audio_display"] = "Yes"
             end
+            history.attributes["peaks_t"] ||= []
+            history.attributes["peaks_t"] << child_document.to_json
             history.attributes["children_t"] << child_document.to_json
           elsif child.name == "relatedItem" && child.attributes['type'] == "series"
             history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
@@ -345,7 +347,7 @@ class OralHistoryItem
   end
 
   def has_peaks?
-    JSON.parse(self.attributes["children_t"][0])['peaks'].present?
+    JSON.parse(self.attributes["peaks_t"][0])['peaks'].present?
   end
 
   def should_process_peaks?

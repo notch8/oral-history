@@ -5,12 +5,13 @@
   <%# TODO: this feels really gross -- needs to be refactored %>
   <% parsed_transcripts = transcripts_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if transcripts_from(document) %>
   <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document) %>
+  <% parsed_peaks = peaks_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if peaks_from(document) %>
   
   <%= react_component(
     'AudioPlayer',
     id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'),
     src: parsed_children.try(:first).try(:[], "url_t"),
-    peaks: parsed_children.try(:first).try(:[], "peaks"),
+    peaks: parsed_peaks.try(:first).try(:[], "peaks"),
     transcript: parsed_transcripts.try(:first).try(:[], "transcript_t"),
     image: narrator_image(document)
   ) %>
