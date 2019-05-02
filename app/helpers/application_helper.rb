@@ -21,6 +21,7 @@ module ApplicationHelper
 
   def peaks_from(document)
     from_helper "peaks_t", document
+  end
 
   def highlightable_series_link(options={})
     link_to options[:value][0], root_path(f: {series_facet: options[:document]["series_t"]})
