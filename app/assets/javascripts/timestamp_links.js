@@ -21,7 +21,7 @@ $(document).ready(function() {
         detail: {
           jump_to: e.currentTarget.getAttribute('data-start')
         }
-      },
+      }
     )
     window.dispatchEvent(event);
     return !event.defaultPrevented;
