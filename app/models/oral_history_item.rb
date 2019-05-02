@@ -39,27 +39,36 @@ class OralHistoryItem
       progress = args[:progress] || true
       limit = args[:limit] || 20000000  # essentially no limit
       response = self.fetch(args)
-
       if progress
         bar = ProgressBar.new(response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i)
       end
       total = 0
+      new_record_ids = []
+
       response.full.each do |record|
-        history = process_record(record)
-        history.index_record
-        if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.new_record?
-          ProcessPeakJob.perform_later(history.id)
+        begin
+          history = process_record(record)
+          history.index_record
+          if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.should_process_peaks?
+            ProcessPeakJob.perform_later(history.id)
+          end
+          new_record_ids << history.id
+        rescue => exception
+          Raven.capture_exception(exception)
         end
-    
         if true
           yield(total) if block_given?        
         end
-    
+        
         if progress
           bar.increment!
         end
         total += 1
         break if total >= limit
+      end
+      #verify there is no limit argument which would allow deletion of all records after the limit
+      if args[:limit] == 20000000
+        remove_deleted_records(new_record_ids)
       end
       return total
     rescue => exception
@@ -80,15 +89,9 @@ class OralHistoryItem
     if record.header.blank? || record.header.identifier.blank?
       return false
     end
-    if record.header.status.to_s == "deleted"
-      # TODO record deletion from solr
-      # Or from Solr - download all the identifiers, put them in an array, and then remove the id that you are indexing from the array. delete the records with the remaining identifiers
-      # delete from solr by id
-      return :deleted
-    end
+    
     history = OralHistoryItem.find_or_new(record.header.identifier.split('/').last) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
     history.attributes['id_t'] = record.header.identifier.split('/').last
-
     if record.header.datestamp
       history.attributes[:timestamp] = Time.parse(record.header.datestamp)
     end
@@ -100,7 +103,6 @@ class OralHistoryItem
         has_xml_transcripts = false
         pdf_text = ''
         history.attributes["children_t"] = []
-        history.attributes["transcripts_t"] = []
         history.attributes["transcripts_json_t"] = []
         history.attributes["description_t"] = []
         history.attributes['person_present_t'] = []
@@ -124,10 +126,6 @@ class OralHistoryItem
                 history.attributes["title_t"] << title_text
               end
             end
-          elsif child.name == "abstract"
-            history.attributes[child.name + "_display"] = child.text
-            history.attributes[child.name + "_t"] ||= []
-            history.attributes[child.name + "_t"] << child.text
           elsif child.name == "typeOfResource"
             history.attributes["type_of_resource_display"] = child.text
             history.attributes["type_of_resource_t"] ||= []
@@ -155,11 +153,15 @@ class OralHistoryItem
             if child.elements['mods:role/mods:roleTerm'].text == "interviewer"
               history.attributes["author_display"] = child.elements['mods:namePart'].text
               history.attributes["author_t"] ||= []
-              history.attributes["author_t"] << child.elements['mods:namePart'].text
+              if !history.attributes["author_t"].include?(child.elements['mods:namePart'].text)
+                history.attributes["author_t"] << child.elements['mods:namePart'].text
+              end
             elsif child.elements['mods:role/mods:roleTerm'].text == "interviewee"
               history.attributes["interviewee_display"] = child.elements['mods:namePart'].text
               history.attributes["interviewee_t"] ||= []
-              history.attributes["interviewee_t"] << child.elements['mods:namePart'].text
+              if !history.attributes["interviewee_t"].include?(child.elements['mods:namePart'].text)
+                history.attributes["interviewee_t"] << child.elements['mods:namePart'].text
+              end
               history.attributes["interviewee_sort"] = child.elements['mods:namePart'].text
             end
           elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
@@ -287,6 +289,28 @@ class OralHistoryItem
     SolrService.commit
   end
 
+  def self.remove_deleted_records(new_record_ids)
+    current_records = all_ids 
+    new_record_ids.each do |id|
+      current_records.delete(id)
+    end
+    if current_records.present?
+      current_records.each do |id|
+        SolrService.delete_by_id(id)
+        SolrService.commit 
+      end
+    end
+  end
+
+  def self.all_ids
+    return @all_ids if @all_ids.present?
+    @all_ids ||= []
+    SolrService.all_records do |record|
+      @all_ids << record["id"]
+    end
+    @all_ids
+  end
+
   def generate_peaks
     @peaks = Peaks::Processor.new()
 
@@ -320,6 +344,14 @@ class OralHistoryItem
     response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i
   end
 
+  def has_peaks?
+    JSON.parse(self.attributes["children_t"][0])['peaks'].present?
+  end
+
+  def should_process_peaks?
+    !has_peaks? && !Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").first
+  end
+
   def self.create_import_tmp_file
     FileUtils.touch(Rails.root.join('tmp/importer.tmp'))
   end
@@ -332,33 +364,3 @@ class OralHistoryItem
     File.exist?(File.join('tmp/importer.tmp'))
   end
 end
-
-
-#           elsif child.name == "date"
-#              if child.content.length == 4
-#                pub_date = child.content.to_i
-#              else
-#                pub_date = Time.parse(child.content).year rescue nil
-#              end
-#              history.attributes["pub_date"] = pub_date
-#              history.attributes["pub_date_sort"] = pub_date
-            #elsif child.name == "coverage" # TODO
-            #  child_name = child.name + "_t"
-            #  history.attributes[child_name] ||= []
-            #  history.attributes[child_name] << child.content####
-#          elsif child.name == "format"
-#              history.attributes["format"] = child.content
-#              history.attributes[child.name + "_display"] = child.content
-#              history.attributes[child.name + "_t"] ||= []
-#              history.attributes[child.name + "_t"] << child.content
-#            elsif child.name == "description"
-#              history.attributes[child.name + "_display"] = child.content
-#              history.attributes[child.name + "_t"] ||= []
-#              history.attributes[child.name + "_t"] << child.content
-#              if child.content.match(/BIOGRAPHICAL/)
-#                history.attributes["description_facet"] = [child.content.to_s.truncate(10)]
-#              end
-#            else
-#              history.attributes[child.name + "_display"] = child.content
-#              history.attributes[child.name + "_t"] ||= []
-#              history.attributes[child.name + "_t"] << child.content
