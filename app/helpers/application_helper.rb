@@ -51,7 +51,7 @@ module ApplicationHelper
   end
 
   def audio_icon options={}
-    "<dd class='blacklight-audio_b'><span class='glyphicon #{ options[:value][0] == "T" || options[:value][0] == true ? 'glyphicon-headphones' : 'glyphicon-ban-circle' }'></span></dd>".html_safe
+    "<span class='glyphicon #{ options[:value][0] == "T" || options[:value][0] == true ? 'glyphicon-headphones' : 'glyphicon-ban-circle' }'></span>".html_safe
   end
 
   def audio_icon_with_text options={}

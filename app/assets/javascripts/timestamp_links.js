@@ -1,6 +1,16 @@
 $(document).ready(function() {
   $('body').on('click', '.audio-timestamp-link', function(e) {
-    if ( typeof window.CustomEvent === "function" ) return false; //If not IE
+    CustomEvent = window.CustomEvent;
+
+    if (typeof CustomEvent !== 'function') {
+      CustomEvent = function(event, params) {
+        var evt;
+        evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+        return evt;
+      };
+      CustomEvent.prototype = window.Event.prototype;
+    }
     var event = new CustomEvent(
       'jump_to_audio_time',
       {
