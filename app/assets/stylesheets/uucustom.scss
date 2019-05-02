@@ -209,7 +209,7 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   font-family: "Times New Roman";
 }
 
-@media screen and (min-width: 768px) and (max-width: 991px) {
+@media screen and (min-width: 768px) and (max-width: 1201px) {
   #header-navbar .navbar-brand {
     overflow: hidden;
   }
@@ -585,7 +585,7 @@ a.footer-link {
   }
 }
 
-// 768 992 1200
+// MEDIA QUERIES FOR PLAYER
 @media (min-width: 768px) {
   div.player {
     max-width: 100%;
@@ -633,7 +633,7 @@ div.transcript-container {
   margin: 0 20px 10px 20px;
   padding: 20px;
   width: auto;
-  height: 200px;
+  height: 300px;
   overflow-y: scroll;
   resize: vertical;
 }
@@ -697,6 +697,7 @@ span.speaker ~ p {
   div.transcript-container {
     height: 400px;
   }
+
 }
 
 @supports (-ms-ime-align:auto) {
@@ -704,11 +705,13 @@ span.speaker ~ p {
   .drag-helper {
     display: none;
   }
-
-  div.transcript-container {
-    height: 400px;
+}
+  @media screen and (min-width: 767px) {
+    div.transcript-container {
+    height: 200px;
   }
 }
+
 
 /* STATIC PAGES */
 
@@ -759,4 +762,10 @@ body.blacklight-full_text.blacklight-full_text-index h3.index_title.document-tit
 
 .show-for-ie {
   display: none;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .show-for-ie {
+    display: block;
+  }
 }
