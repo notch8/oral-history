@@ -7,13 +7,14 @@ class FullTextController < ApplicationController
   configure_blacklight do |config|
     
     config.default_solr_params = {
-      rows: 3,
+      rows: 100000,
       :"hl" => true,
       :"hl.fl" => ["description_t", "transcripts_t"],
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.snippets" => 50,
-      :"hl.fragsize" => 300
+      :"hl.fragsize" => 300,
+      :"hl.requireFieldMatch" => true
     }
 
     # solr field configuration for search results/index views
@@ -61,6 +62,48 @@ class FullTextController < ApplicationController
 
     config.add_field_configuration_to_solr_request!
 
+  end
+
+  # Override index method
+   # get search results from the solr index
+  def index
+    # params[:rows] = 100000
+    # blacklight_config.max_per_page = 100000
+    # (@response, @document_list) = search_results(params)
+
+    
+    params[:page] ||= 1
+    @document_list = []
+    highlight_count = 0
+    while(highlight_count < 30)
+      (@response, @documents) = search_results(params)
+      @document_list += @documents
+      highlight_count += @response['highlighting'].sum { |highlit| highlit[1].size }
+      #dubugger - need number of highlights here
+      params[:page] = params[:page].to_i + 1
+    end
+
+    # TODO 
+    # get rid of bottom pagination
+    # make params[:page] a separate variable
+    # page is where we are in search set
+    # another params for where we are in highlight pages
+    # when you go to page 2, keep track of something
+    # when previous next works, place partial at bottom of page
+  
+    respond_to do |format|
+      format.html { store_preferred_view }
+      format.rss  { render :layout => false }
+      format.atom { render :layout => false }
+      format.json do
+        @presenter = Blacklight::JsonPresenter.new(@response,
+                                                   @document_list,
+                                                   facets_from_request,
+                                                   blacklight_config)
+      end
+      additional_response_formats(format)
+      document_export_formats(format)
+    end
   end
 
   # Override to add highlighing to show
