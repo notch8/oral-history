@@ -141,6 +141,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'audio_b', label: 'Audio', helper_method: 'audio_icon'
     config.add_show_field 'links_t', label: 'Files', helper_method: 'file_links'
     config.add_show_field 'abstract_t', label: 'Series Statement'
+    config.add_show_field 'interview_abstract_t', label: 'Abstract'
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'
  #   config.add_show_field 'url_fulltext_display', label: 'URL'
