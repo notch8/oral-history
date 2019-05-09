@@ -119,11 +119,15 @@ class OralHistoryItem
               if(child.attributes["type"] == "alternative") && title_text.size > 0
                 history.attributes["subtitle_display"] ||= title_text
                 history.attributes["subtitle_t"] ||= []
-                history.attributes["subtitle_t"] << title_text
+                if !history.attributes["subtitle_t"].include?(title_text)
+                  history.attributes["subtitle_t"] << title_text
+                end
               elsif title_text.size > 0
                 history.attributes["title_display"] ||= title_text
                 history.attributes["title_t"] ||= []
-                history.attributes["title_t"] << title_text
+                if !history.attributes["title_t"].include?(title_text)
+                  history.attributes["title_t"] << title_text
+                end
               end
             end
           elsif child.name == "typeOfResource"
