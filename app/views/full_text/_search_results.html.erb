@@ -18,7 +18,6 @@
 <%- elsif render_grouped_response? %>
   <%= render_grouped_document_index %>
 <%- else %>
-  <%= render_document_index %>
+<%# render_document_index renders full_text/_document_list.html.erb %>
+  <%= render_document_index %>  
 <%- end %>
-
-<%= render 'results_pagination' %>
