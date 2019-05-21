@@ -3,8 +3,8 @@
 <% @page_title = t('blacklight.search.page_title.title', :constraints => render_search_to_page_title(params), :application_name => application_name) %>
 
 <% content_for(:head) do -%>
-  <%= render_opensearch_response_metadata %>
-  <%= rss_feed_link_tag %>
+<%= render_opensearch_response_metadata %>
+<%= rss_feed_link_tag %>
   <%= atom_feed_link_tag %>
   <%= json_api_link_tag %>
 <% end %>
@@ -21,3 +21,7 @@
 <%# render_document_index renders full_text/_document_list.html.erb %>
   <%= render_document_index %>  
 <%- end %>
+
+<% if @more %>
+  <%= link_to 'Load More Results', request.params.merge(highlight_page: @highlight_page + 1) %>
+<% end %>

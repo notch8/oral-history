@@ -7,7 +7,7 @@ class FullTextController < ApplicationController
   configure_blacklight do |config|
     
     config.default_solr_params = {
-      rows: 100000,
+      rows: 5,
       :"hl" => true,
       :"hl.fl" => ["description_t", "transcripts_t"],
       :"hl.simple.pre" => "<span class='label label-warning'>",
@@ -68,34 +68,32 @@ class FullTextController < ApplicationController
   # Override index method
    # get search results from the solr index
   def index
-    # params[:rows] = 100000
+    params[:rows] = 5
     # blacklight_config.max_per_page = 100000
     # (@response, @document_list) = search_results(params)
-
-    params[:page] ||= 1
-    page_params = params[:page]
-    @document_list = []
+    @highlight_page = params[:highlight_page] || 1
+    @highlight_page = @highlight_page.to_i
     highlight_count = 0
-    all_highlight_count = 0
-    while(highlight_count < 30)
+    @results_page = 1
+    results_count = 1
+    @document_list = []
+    more_results = true
+    while(highlight_count < (50 * @highlight_page) && results_count > 0) do
+      Rails.logger.error("page: #{@results_page} - highlight_count: #{highlight_count} - results_count: #{results_count}")
+      params[:page] = @results_page
       (@response, @documents) = search_results(params)
       highlights = @response['highlighting'].values
       @document_list += @documents
-      highlight_count += @response['highlighting'].sum { |highlit| highlit[1].size }
-      highlights.each { |t| all_highlight_count += t['transcripts_t'].count unless t['transcripts_t'].nil? }
-      # fail #- need number of highlights here
-      # solr crashes when go to page that has no records right now
-      params[:page] = params[:page].to_i + 1
+      results_count = @documents.size
+      additional_highlight_count = 0
+      highlights.each { |t| additional_highlight_count += t['transcripts_t'].count unless t['transcripts_t'].nil? }
+      highlight_count += additional_highlight_count
+      @results_page += 1
     end
 
-    # TODO 
-    # get rid of bottom pagination DONE
-    # make params[:page] a separate variable
-    # page is where we are in search set
-    # another params for where we are in highlight pages
-    # when you go to page 2, keep track of something
-    # maybe - when previous next works, place partial at bottom of page
-  
+    @more = (results_count > 0)
+    Rails.logger.error("page: #{@results_page} - highlight_count: #{highlight_count} - results_count: #{results_count}")
+
     respond_to do |format|
       format.html { store_preferred_view }
       format.rss  { render :layout => false }
