@@ -14,8 +14,8 @@ class FullTextController < ApplicationController
       :"hl.simple.post" => "</span>",
       :"hl.snippets" => 50,
       :"hl.fragsize" => 300,
-      :"hl.requireFieldMatch" => true,
-      :"hl.maxAnalyzedChars" => -1
+      :"hl.requireFieldMatch" => true
+      # :"hl.maxAnalyzedChars" => -1
     }
 
     # solr field configuration for search results/index views
@@ -77,7 +77,7 @@ class FullTextController < ApplicationController
     @document_list = []
     highlight_count = 0
     all_highlight_count = 0
-    while(all_highlight_count < 30)
+    while(highlight_count < 30)
       (@response, @documents) = search_results(params)
       highlights = @response['highlighting'].values
       @document_list += @documents
@@ -94,7 +94,7 @@ class FullTextController < ApplicationController
     # page is where we are in search set
     # another params for where we are in highlight pages
     # when you go to page 2, keep track of something
-    # when previous next works, place partial at bottom of page
+    # maybe - when previous next works, place partial at bottom of page
   
     respond_to do |format|
       format.html { store_preferred_view }
