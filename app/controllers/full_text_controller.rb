@@ -14,7 +14,8 @@ class FullTextController < ApplicationController
       :"hl.simple.post" => "</span>",
       :"hl.snippets" => 50,
       :"hl.fragsize" => 300,
-      :"hl.requireFieldMatch" => true
+      :"hl.requireFieldMatch" => true,
+      :"hl.maxAnalyzedChars" => -1
     }
 
     # solr field configuration for search results/index views
@@ -71,20 +72,24 @@ class FullTextController < ApplicationController
     # blacklight_config.max_per_page = 100000
     # (@response, @document_list) = search_results(params)
 
-    
     params[:page] ||= 1
+    page_params = params[:page]
     @document_list = []
     highlight_count = 0
-    while(highlight_count < 30)
+    all_highlight_count = 0
+    while(all_highlight_count < 30)
       (@response, @documents) = search_results(params)
+      highlights = @response['highlighting'].values
       @document_list += @documents
       highlight_count += @response['highlighting'].sum { |highlit| highlit[1].size }
-      #dubugger - need number of highlights here
+      highlights.each { |t| all_highlight_count += t['transcripts_t'].count unless t['transcripts_t'].nil? }
+      # fail #- need number of highlights here
+      # solr crashes when go to page that has no records right now
       params[:page] = params[:page].to_i + 1
     end
 
     # TODO 
-    # get rid of bottom pagination
+    # get rid of bottom pagination DONE
     # make params[:page] a separate variable
     # page is where we are in search set
     # another params for where we are in highlight pages
