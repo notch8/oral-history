@@ -68,7 +68,7 @@ class FullTextController < ApplicationController
   # Override index method
    # get search results from the solr index
   def index
-    # params[:rows] = 1
+    params[:rows] = 1
     # blacklight_config.max_per_page = 100000
     # (@response, @document_list) = search_results(params)
 
