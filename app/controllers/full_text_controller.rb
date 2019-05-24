@@ -12,8 +12,8 @@ class FullTextController < ApplicationController
       :"hl.fl" => ["description_t", "transcripts_t"],
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
-      :"hl.snippets" => 50,
-      :"hl.fragsize" => 300,
+      :"hl.snippets" => 30,
+      :"hl.fragsize" => 200,
       :"hl.requireFieldMatch" => true,
       :"hl.maxAnalyzedChars" => 100000
     }
@@ -66,14 +66,12 @@ class FullTextController < ApplicationController
   end
 
   # Override index method
-   # get search results from the solr index
+  # get search results from the solr index
   def index
+    #this is the number of rows to return (documents)
     params[:rows] = 1
-    # blacklight_config.max_per_page = 100000
-    # (@response, @document_list) = search_results(params)
-
     
-    # highlight page is what we want to use for our pagination ( or load_more option )
+    # highlight_page is what we want to use for our pagination ( or load_more option )
     # we start highlight page at 1 and it increments in the view
     @highlight_page = params[:highlight_page] || 1 
     @highlight_page = @highlight_page.to_i
@@ -96,37 +94,27 @@ class FullTextController < ApplicationController
     # initializes and sets to an empty array
     @document_list = []
 
-    #never used. probably should get rid of it. I think this was going to determine the load_more option
-    more_results = true 
-
-
-    while(highlight_count < (30 * @highlight_page) && results_count > 0) do
+    while(highlight_count < (50 * @highlight_page) && results_count > 0) do
       
       # page number sent from solr
       params[:page] = @results_page
 
       # gets the response and documents from params
       (@response, @documents) = search_results(params)
+      
+      # these are docs returned in params, the number of docs returned is equal to the value of params[:rows]
+      @document_list += @documents
+
+      # setting the value to count of @documents, also params[:rows]
+      results_count = @documents.size
 
       # this is an array of records with highlight matches on transcript_t and description_t
       # [ { highlighting: { doc: [transcript_t, description_t] } } ]
       highlights = @response['highlighting'].values 
 
-      # these are docs returned in params, the number of docs returned is equal to the value of params[:rows]
-      @document_list += @documents 
-
-      # setting the value to count of @documents, also params[:rows]
-      results_count = @documents.size 
-
-      # initialize and set default count to zero for variable which will hold total number of highlights in @response['highlighting'].values
-      additional_highlight_count = 0
-
       # adds the total number of highlights in @response['highlighting'].values 
-      highlights.each { |t| additional_highlight_count += t['transcripts_t'].count unless t['transcripts_t'].nil? }
-      highlights.each { |t| additional_highlight_count += t['description_t'].count unless t['description_t'].nil? } 
-      
-      #increments highlight_count to be the number of highlighted items in @response
-      highlight_count += additional_highlight_count #can make the highlight count way more than 30 here
+      highlights.each { |t| highlight_count += t['transcripts_t'].count unless t['transcripts_t'].nil? }
+      highlights.each { |t| highlight_count += t['description_t'].count unless t['description_t'].nil? } 
       
       # increments the results page at end of the iteration
       #this should then make this page 2, the second group of params[:rows]
