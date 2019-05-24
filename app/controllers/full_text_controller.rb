@@ -14,8 +14,8 @@ class FullTextController < ApplicationController
       :"hl.simple.post" => "</span>",
       :"hl.snippets" => 50,
       :"hl.fragsize" => 300,
-      :"hl.requireFieldMatch" => true
-      # :"hl.maxAnalyzedChars" => -1
+      :"hl.requireFieldMatch" => true,
+      :"hl.maxAnalyzedChars" => 100000
     }
 
     # solr field configuration for search results/index views
@@ -68,31 +68,74 @@ class FullTextController < ApplicationController
   # Override index method
    # get search results from the solr index
   def index
-    params[:rows] = 5
+    # params[:rows] = 1
     # blacklight_config.max_per_page = 100000
     # (@response, @document_list) = search_results(params)
-    @highlight_page = params[:highlight_page] || 1
+
+    
+    # highlight page is what we want to use for our pagination ( or load_more option )
+    # we start highlight page at 1 and it increments in the view
+    @highlight_page = params[:highlight_page] || 1 
     @highlight_page = @highlight_page.to_i
+
+    # highlight count is how many highlights we are displaying on each page
+    # initialize highlight_count to zero
     highlight_count = 0
+
+    # results page is the page that solr sends back in the response.
+    # this value currently increments based on the params[:rows] value
+    # initialize results_page to start on page 1
     @results_page = 1
+
+    # results_count is the number of documents returned
+    # initializes results_count and sets the initial value to 1
+    # this value ends up being the same as params[:rows]
     results_count = 1
+
+    # document_list is the items we send to the presenter/view
+    # initializes and sets to an empty array
     @document_list = []
-    more_results = true
-    while(highlight_count < (50 * @highlight_page) && results_count > 0) do
-      Rails.logger.error("page: #{@results_page} - highlight_count: #{highlight_count} - results_count: #{results_count}")
+
+    #never used. probably should get rid of it. I think this was going to determine the load_more option
+    more_results = true 
+
+
+    while(highlight_count < (30 * @highlight_page) && results_count > 0) do
+      # Rails.logger.error("page: #{@results_page} - highlight_count: #{highlight_count} - results_count: #{results_count}")
+      
+      # page number sent from solr
       params[:page] = @results_page
+
+      # gets the response and documents from params
       (@response, @documents) = search_results(params)
-      highlights = @response['highlighting'].values
-      @document_list += @documents
-      results_count = @documents.size
+
+      # this is an array of records with highlight matches on transcript_t and description_t
+      # [ { highlighting: { doc: [transcript_t, description_t] } } ]
+      highlights = @response['highlighting'].values 
+
+      # these are docs returned in params, the number of docs returned is equal to the value of params[:rows]
+      @document_list += @documents 
+
+      # setting the value to count of @documents, also params[:rows]
+      results_count = @documents.size 
+
+      # initialize and set default count to zero for variable which will hold total number of highlights in @response['highlighting'].values
       additional_highlight_count = 0
+
+      # adds the total number of highlights in @response['highlighting'].values 
       highlights.each { |t| additional_highlight_count += t['transcripts_t'].count unless t['transcripts_t'].nil? }
-      highlight_count += additional_highlight_count
-      @results_page += 1
+      highlights.each { |t| additional_highlight_count += t['description_t'].count unless t['description_t'].nil? } 
+      
+      #increments highlight_count to be the number of highlighted items in @response
+      highlight_count += additional_highlight_count #can make the highlight count way more than 30 here
+      
+      # increments the results page at end of the iteration
+      #this should then make this page 2, the second group of params[:rows]
+      @results_page += 1 
     end
 
-    @more = (results_count > 0)
-    Rails.logger.error("page: #{@results_page} - highlight_count: #{highlight_count} - results_count: #{results_count}")
+    @more = (results_count > 0) #not sure how results_count could become 0.
+    # Rails.logger.error("page: #{@results_page} - highlight_count: #{highlight_count} - results_count: #{results_count}")
 
     respond_to do |format|
       format.html { store_preferred_view }
