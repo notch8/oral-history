@@ -101,7 +101,6 @@ class FullTextController < ApplicationController
 
 
     while(highlight_count < (30 * @highlight_page) && results_count > 0) do
-      # Rails.logger.error("page: #{@results_page} - highlight_count: #{highlight_count} - results_count: #{results_count}")
       
       # page number sent from solr
       params[:page] = @results_page
@@ -134,8 +133,7 @@ class FullTextController < ApplicationController
       @results_page += 1 
     end
 
-    @more = (results_count > 0) #not sure how results_count could become 0.
-    # Rails.logger.error("page: #{@results_page} - highlight_count: #{highlight_count} - results_count: #{results_count}")
+    @more = (results_count > 0) 
 
     respond_to do |format|
       format.html { store_preferred_view }
