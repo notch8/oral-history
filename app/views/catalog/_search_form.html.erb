@@ -6,7 +6,9 @@
     <span class="input-group-addon for-search-field">
       <label for="search_field" class="sr-only"><%= t('blacklight.search.form.search_field.label') %></label>
       <%= select_tag("search_params", options_for_select(["Interview Information", "Full Text"], :selected => params[:search_params]), id: "search_field", class: "search_field") %>
+      <span class="caret"></span>
     </span>
+
     <span class="input-group-btn">
       <button type="submit" class="btn btn-primary search-btn" id="search">
         <span class="submit-search-text">Search </span>
