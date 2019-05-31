@@ -753,3 +753,19 @@ body.blacklight-full_text.blacklight-full_text-index .page_entries {
 body.blacklight-full_text.blacklight-full_text-index h3.index_title.document-title-heading {
   font-size: 14px;
 }
+
+/* Internet Explorer warning alert */
+
+.ie-alert {
+  margin-bottom: 0;
+}
+
+.show-for-ie {
+  display: none;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .show-for-ie {
+    display: block;
+  }
+}
