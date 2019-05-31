@@ -442,48 +442,15 @@ a.footer-link {
 }
 
 .player {
-  .volume-slider {
-    position: relative;
-    height: 15px;
-    width: 50%;
-    margin-bottom: 16px;
-    margin-right: 8px;
-    background-color: rgba(255,255,255,0.6);
-    border-radius: 10px;
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
-    cursor: pointer;
-
-    .marker, .fill {
-      position: absolute;
-      border-radius: 15px;
-    }
-
-    .fill {
-      height: 15px;
-      min-width: 15px;
-      width: 50%;
-      padding-right: 5px;
-      -webkit-transition: width 0.35s; /* For Safari 3.1 to 6.0 */
-      transition: width 0.35s;
-      background-color: rgba(255, 255, 255, .5);
-    }
-
-    .marker {
-      height: 25px;
-      min-width: 25px;
-      box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
-      transform: translate(0%, -18%);
-      left: 46%;
-      -webkit-transition: left 0.35s; /* For Safari 3.1 to 6.0 */
-      transition: left 0.35s;
-      background-color: #ffffff;
-    }
-  }
-
   .volume-container {
-    color: #fff;
-    font-size:30px;
-    text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: space-between;
+    .fa.fa-volume-up {
+      color: #fff;
+      font-size:30px;
+      text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
+      margin: 0 8px;
+    }
   }
 
   .pause-button, .play-button {
@@ -581,10 +548,100 @@ a.footer-link {
     background-color: #1e4b87;
     padding:0 16px 16px 16px;
     min-height: 285px;
-
   }
 }
 
+/* NEW VOLUME SLIDER CSS */
+.player {
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 10px;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 12px;
+    cursor: pointer;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(13, 13, 13, 0.3);
+    background: rgba(255, 255, 255, 0.78);
+    border-radius: 10px;
+    border: 0px solid rgba(255, 255, 255, 0);
+  }
+  input[type=range]::-webkit-slider-thumb {
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(13, 13, 13, 0.3);
+    border: 0px solid rgba(255, 255, 255, 0);
+    height: 26px;
+    width: 26px;
+    border-radius: 15px;
+    background: #ffffff;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -8px;
+  }
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: rgba(255, 255, 255, 0.78);
+  }
+  input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 16px;
+    cursor: pointer;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(13, 13, 13, 0.3);
+    background: rgba(255, 255, 255, 0.78);
+    border-radius: 10px;
+    border: 0px solid rgba(255, 255, 255, 0);
+  }
+  input[type=range]::-moz-range-thumb {
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(13, 13, 13, 0.3);
+    border: 0px solid rgba(255, 255, 255, 0);
+    height: 26px;
+    width: 26px;
+    border-radius: 15px;
+    background: #ffffff;
+    cursor: pointer;
+  }
+  input[type=range]::-ms-track {
+    width: 100%;
+    height: 12px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+  input[type=range]::-ms-fill-lower {
+    background: rgba(235, 235, 235, 0.78);
+    border: 0px solid rgba(255, 255, 255, 0);
+    border-radius: 20px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(13, 13, 13, 0.3);
+  }
+  input[type=range]::-ms-fill-upper {
+    background: rgba(255, 255, 255, 0.78);
+    border: 0px solid rgba(255, 255, 255, 0);
+    border-radius: 20px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(13, 13, 13, 0.3);
+  }
+  input[type=range]::-ms-thumb {
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(13, 13, 13, 0.3);
+    border: 0px solid rgba(255, 255, 255, 0);
+    height: 26px;
+    width: 26px;
+    border-radius: 15px;
+    background: #ffffff;
+    cursor: pointer;
+    height: 12px;
+  }
+  input[type=range]:focus::-ms-fill-lower {
+    background: rgba(255, 255, 255, 0.78);
+  }
+  input[type=range]:focus::-ms-fill-upper {
+    background: rgba(255, 255, 255, 0.78);
+  }
+  
+}
+  
 // MEDIA QUERIES FOR PLAYER
 @media (min-width: 768px) {
   div.player {

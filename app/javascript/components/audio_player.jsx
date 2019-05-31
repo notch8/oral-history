@@ -30,7 +30,6 @@ export default class AudioPlayer extends Component {
       playing: false,
       initialPlay: false,
       volume: 1,
-      currentTime: '--:--:-- / --:--:--',
       current: '--:--:--',
       duration: '--:--:--',
       progressPosition: 0,
@@ -46,11 +45,8 @@ export default class AudioPlayer extends Component {
   }
 
   render() {
-    const { volume, source, playing, sliderPos, currentTime, progressPosition, current, duration, isScrolling } = this.state
+    const { volume, source, playing, progressPosition, current, duration, isScrolling } = this.state
     const { image } = this.props
-
-    const width = `${(volume * 100)}%` || '50%'
-    const left = sliderPos || '96%'
     const playPause = (playing ? 'pause-button' : 'play-button')
 
     return (
@@ -61,18 +57,19 @@ export default class AudioPlayer extends Component {
           <div className="volume-container">
             <span className="fa fa-volume-up">
             </span>
+            <input 
+              id="volume-slider" 
+              ref="volume" 
+              type="range" 
+              min="0" 
+              max="1" 
+              value={volume} 
+              step="0.01" 
+              onChange={this.changeVol}
+            />
           </div>
-          <div
-            id="volume-slider"
-            className="volume-slider"
-            onClick={this.changeVol}
-            onMouseDown={this.changeVol}
-            onDragOver={this.changeVol}
-          >
-            <div style={{ left: left }} className="marker" draggable></div>
-            <div style={{ width: width }} className="fill"></div>
-          </div>
-        </div>
+        </div> 
+        
         <div className='col-sm-9 wave-box'></div>
         <div id="audioplayer" className='col-sm-9 col-sm-offset-3 progress-container'>
           <div id="timeline"
@@ -130,17 +127,11 @@ export default class AudioPlayer extends Component {
   }
 
   changeVol(e) {
-    let b = document.getElementById('volume-slider').getClientRects()[0]
-    let { audio } = this.refs
-    const volume = computeVolume(e, b)
-
-    audio.volume = volume
-
-    let maxSliderPos = calculateMaxSlider(e, b)
-
+    let { audio, volume } = this.refs
+    audio.volume = volume.value
+    
     this.setState({
-      volume,
-      sliderPos: maxSliderPos, // some math to center the mark on the pointer
+      volume: volume.value,
     })
   }
 
@@ -286,31 +277,6 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
       playing: true
     })
   }
-}
-
-const calculateMaxSlider = (e, b) => {
-  if (e.clientX > b.right){
-    e.clientX = b.right
-  }
-  else if (e.clientX < b.left) {
-    e.clientX = b.left
-  }
-  return e.clientX - b.left - 8
-}
-
-
-const computeVolume = (e, b) => {
-  let volume = ((e.clientX - b.left) / b.width)
-
-  if (volume < 0) {
-    volume = 0
-  }
-
-  if (volume > 1) {
-    volume = 1
-  }
-
-  return volume
 }
 
 const jumpTo = (audio) => (e) => {
