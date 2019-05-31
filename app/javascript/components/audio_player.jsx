@@ -57,7 +57,16 @@ export default class AudioPlayer extends Component {
           <div className="volume-container">
             <span className="fa fa-volume-up">
             </span>
-            <input id="volume-slider" ref="volume" type="range" min="0" max="1" value={volume} step="0.01" onChange={this.changeVol} />
+            <input 
+              id="volume-slider" 
+              ref="volume" 
+              type="range" 
+              min="0" 
+              max="1" 
+              value={volume} 
+              step="0.01" 
+              onChange={this.changeVol}
+            />
           </div>
         </div> 
         
