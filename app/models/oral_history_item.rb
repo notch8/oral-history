@@ -358,7 +358,7 @@ class OralHistoryItem
   end
 
   def should_process_peaks?
-    !has_peaks? && !Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").first
+    !has_peaks? #&& !Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").first
   end
 
   def self.create_import_tmp_file
