@@ -246,7 +246,10 @@ class OralHistoryItem
             history.attributes["extent_display"] = child.elements['mods:extent'].text
             history.attributes['extent_t'] = []
             history.attributes['extent_t'] << child.elements['mods:extent'].text
-            
+          elsif child.name == 'abstract'
+            history.attributes['interview_abstract_display'] = child.text
+            history.attributes["interview_abstract_t"] = []
+            history.attributes["interview_abstract_t"] << child.text
           end
         end
         if !has_xml_transcripts && history.should_process_pdf_transcripts
