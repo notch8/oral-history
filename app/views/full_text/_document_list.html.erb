@@ -30,4 +30,8 @@
       <% end %>
     <% end %>
   <% end %>
+  <% if @more %>
+    <%= link_to 'Load More Results', request.params.merge(highlight_page: @highlight_page + 1), class: 'load-more' %>
+  <% end %>
 </div>
+

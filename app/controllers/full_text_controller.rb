@@ -124,7 +124,13 @@ class FullTextController < ApplicationController
     @more = (results_count > 0) 
 
     respond_to do |format|
-      format.html { store_preferred_view }
+      format.html do |html| 
+        if params[:partial]
+          render partial: 'document_list', locals: { documents: @document_list } 
+        else
+          store_preferred_view 
+        end
+      end
       format.rss  { render :layout => false }
       format.atom { render :layout => false }
       format.json do

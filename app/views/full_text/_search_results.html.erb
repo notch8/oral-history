@@ -18,9 +18,6 @@
   <%= render_grouped_document_index %>
 <%- else %>
 <%# render_document_index renders full_text/_document_list.html.erb %>
-  <%= render_document_index %>  
+  <%= render_document_index %> 
 <%- end %>
 
-<% if @more %>
-  <%= link_to 'Load More Results', request.params.merge(highlight_page: @highlight_page + 1) %>
-<% end %>
