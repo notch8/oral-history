@@ -67,14 +67,19 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
 
-  config.action_mailer.smtp_settings = {
-    :address          => "em.library.ucla.edu",
-    :port             => 25,
+  config.action_mailer.default_url_options = {
+    :host => ENV['SMTP_HOST'],
+    :protocol => 'https'
   }
 
-  config.action_mailer.default_url_options = {
-    :host => 'oral-history-balancer-1368671073.us-west-2.elb.amazonaws.com',
-    :protocol => 'https'
+  config.action_mailer.smtp_settings = {
+    address: "email-smtp.us-east-1.amazonaws.com",
+    port: 587,
+    domain: ENV['SMTP_DOMAIN'],
+    authentication: "plain",
+    enable_starttls_auto: true,
+    user_name: ENV['SMTP_USER'],
+    password: ENV['SMTP_PASSWORD']
   }
 
 
