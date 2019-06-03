@@ -354,11 +354,12 @@ class OralHistoryItem
   end
 
   def has_peaks?
+    #TODO check for the last item having peaks rather than the first? byebug
     JSON.parse(self.attributes["peaks_t"][0])['peaks'].present?
   end
 
   def should_process_peaks?
-    !has_peaks? #&& !Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").first
+    !has_peaks? && !Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").first
   end
 
   def self.create_import_tmp_file
