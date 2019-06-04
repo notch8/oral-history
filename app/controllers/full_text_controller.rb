@@ -15,7 +15,7 @@ class FullTextController < ApplicationController
       :"hl.snippets" => 30,
       :"hl.fragsize" => 200,
       :"hl.requireFieldMatch" => true,
-      :"hl.maxAnalyzedChars" => 100000
+      :"hl.maxAnalyzedChars" => -1
     }
 
     # solr field configuration for search results/index views
