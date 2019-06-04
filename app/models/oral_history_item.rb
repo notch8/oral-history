@@ -200,8 +200,9 @@ class OralHistoryItem
               history.attributes["audio_display"] = "Yes"
             end
             history.attributes["peaks_t"] ||= []
-            history.attributes["peaks_t"] << child_document.to_json
-            history.attributes["children_t"] << child_document.to_json
+            child_doc_json = child_document.to_json
+            history.attributes["peaks_t"] <<  child_doc_json unless history.attributes["peaks_t"].include? child_doc_json
+            history.attributes["children_t"] << child_doc_json
           elsif child.name == "relatedItem" && child.attributes['type'] == "series"
             history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
             history.attributes["series_t"] = child.elements['mods:titleInfo/mods:title'].text
@@ -354,12 +355,19 @@ class OralHistoryItem
   end
 
   def has_peaks?
-    #TODO check for the last item having peaks rather than the first? byebug
-    JSON.parse(self.attributes["peaks_t"][0])['peaks'].present?
+    self.attributes["peaks_t"].each_with_index do |peak, i|
+      return false unless JSON.parse(peak)['peaks'].present?
+    end
+    
+    true
+  end
+  
+  def peak_job_queued?
+    Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").first.present?
   end
 
   def should_process_peaks?
-    !has_peaks? && !Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").first
+    !has_peaks? && !peak_job_queued?
   end
 
   def self.create_import_tmp_file
