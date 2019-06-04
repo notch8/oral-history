@@ -7,7 +7,7 @@ class FullTextController < ApplicationController
   configure_blacklight do |config|
     
     config.default_solr_params = {
-      rows: 5,
+      rows: 1,
       :"hl" => true,
       :"hl.fl" => ["description_t", "transcripts_t"],
       :"hl.simple.pre" => "<span class='label label-warning'>",
