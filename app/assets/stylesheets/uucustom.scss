@@ -811,6 +811,20 @@ body.blacklight-full_text.blacklight-full_text-index h3.index_title.document-tit
   font-size: 14px;
 }
 
+.spinner {
+  border: 4px solid #3284bf;
+  border-top: 4px solid #ffe800;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Internet Explorer warning alert */
 
 .ie-alert {
