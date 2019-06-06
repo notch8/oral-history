@@ -2,7 +2,6 @@
   <%= javascript_pack_tag "audio_player" %>
 <% end %>
 <div class="container">
-  <%# TODO: this feels really gross -- needs to be refactored %>
   <% parsed_transcripts = transcripts_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if transcripts_from(document) %>
   <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document) %>
   <% parsed_peaks = peaks_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if peaks_from(document) %>
@@ -45,7 +44,7 @@
                   <span class="g-valign-middle"><%= child["title_t"] %></span>
                 </a>
 
-                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: child["peaks"], transcript: parsed_transcripts ? parsed_transcripts[i]["transcript_t"] : '' ) %>
+                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: parsed_peaks ? parsed_peaks[i]["peaks"] : '', transcript: parsed_transcripts ? parsed_transcripts[i]["transcript_t"] : '' ) %>
               </h5>
             </div>
             <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
