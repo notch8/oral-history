@@ -67,10 +67,21 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
 
-  config.action_mailer.smtp_settings = {
-    :address          => "em.library.ucla.edu",
-    :port             => 25,
+  config.action_mailer.default_url_options = {
+    :host => ENV['SMTP_HOST'],
+    :protocol => ENV['SMTP_PROTOCOL']
   }
+
+  config.action_mailer.smtp_settings = {
+    address: "email-smtp.us-east-1.amazonaws.com",
+    port: 587,
+    domain: ENV['SMTP_DOMAIN'],
+    authentication: "plain",
+    enable_starttls_auto: true,
+    user_name: ENV['SMTP_USER'],
+    password: ENV['SMTP_PASSWORD']
+  }
+
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
