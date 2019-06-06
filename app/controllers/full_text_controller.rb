@@ -13,7 +13,8 @@ class FullTextController < ApplicationController
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.snippets" => 50,
-      :"hl.fragsize" => 300
+      :"hl.fragsize" => 300,
+      :"hl.maxAnalyzedChars" => -1
     }
 
     # solr field configuration for search results/index views
