@@ -14,6 +14,9 @@ $(document).ready(function() {
       url: this.href + "&partial=true",
       success: function(e) {
         $('#documents').replaceWith(e);
+      },
+      fail: function(){
+       alert('request failed');
       }
     });
     return false;
