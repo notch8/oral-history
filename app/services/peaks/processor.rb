@@ -31,17 +31,18 @@ module Peaks
 
     # takes a solr document and attempts to create the peaks file
     def from_solr_document(doc)
-      return unless doc.attributes["children_t"]
+      return unless doc.attributes["peaks_t"]
 
       # children_t is where all the non-indexed fields (i.e. audo_url) lives
-      doc.attributes["children_t"].each_with_index do |child, i|
+      # peaks_t is a duplicate of non-indexed fields for peak generation
+      doc.attributes["peaks_t"].each_with_index do |child, i|
         raw = JSON.parse(child)
         next unless raw["url_t"]
 
         puts "Processing #{raw["url_t"]}"
         raw["peaks"] = generate(raw["url_t"])
 
-        doc.attributes["children_t"][i] = raw.to_json
+        doc.attributes["peaks_t"][i] = raw.to_json
       end
 
       doc.index_record
