@@ -1,5 +1,4 @@
 <h2 class="sr-only top-content-title"><%= t('blacklight.search.search_results_header') %></h2>
-
 <% @page_title = t('blacklight.search.page_title.title', :constraints => render_search_to_page_title(params), :application_name => application_name) %>
 
 <% content_for(:head) do -%>
@@ -18,7 +17,7 @@
 <%- elsif render_grouped_response? %>
   <%= render_grouped_document_index %>
 <%- else %>
-  <%= render_document_index %>
+  <%# render_document_index renders full_text/_document_list.html.erb %>
+  <%= render_document_index %> 
 <%- end %>
 
-<%= render 'results_pagination' %>
