@@ -109,8 +109,8 @@
          interviewee_unstem_search^25000
          interviewee_addl_unstem_search^25000
          interviewee_addl_t^25000
-         description_t^15000
-         transcripts_t^10000
+         transcripts_t^15000
+         description_t^10000
          title_addl_unstem_search^5000
          title_addl_t^2500
          title_added_entry_unstem_search^1500
@@ -140,8 +140,8 @@
          subject_addl_t^50000
          interviewee_unstem_search^25000
          interviewee_t^25000
-         description_t^15000
-         transcripts_t^10000
+         transcripts_t^15000
+         description_t^10000
          title_addl_unstem_search^5000
          title_addl_t^2500
          title_added_entry_unstem_search^1500
