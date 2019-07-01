@@ -31,8 +31,8 @@ class FullTextController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
-    config.add_index_field 'description_t', label: 'Description', highlight: true 
     config.add_index_field 'transcripts_t', label: 'Transcript', highlight: true, helper_method: :split_multiple
+    config.add_index_field 'description_t', label: 'Description', highlight: true 
     
     config.add_search_field 'all_fields', label: 'All Fields'
 
