@@ -41,7 +41,7 @@ class CatalogController < ApplicationController
       :"hl" => true,
       :"hl.fragsize" => 0,
       :"hl.preserveMulti" => true,
-      :"hl.fl" => "biographical_t, subject_t, description_t, person_present_t, place_t, supporting_documents_t, interviewer_history_t, process_interview_t, audio_b, extent_t, rights_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t, links_t",
+      :"hl.fl" => "biographical_t, subject_t, description_t, person_present_t, place_t, supporting_documents_t, interviewer_history_t, process_interview_t, audio_b, extent_t, rights_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t, links_t, abstract_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.alternateField" => "dd"
@@ -141,7 +141,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'rights_t', label: 'Copyright', highlight: true
     config.add_show_field 'audio_b', label: 'Audio', helper_method: 'audio_icon'
     config.add_show_field 'links_t', label: 'Files', helper_method: 'file_links'
-    config.add_show_field 'abstract_t', label: 'Series Statement'
+    config.add_show_field 'abstract_t', label: 'Series Statement', highlight: true
     config.add_show_field 'interview_abstract_t', label: 'Abstract'
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'

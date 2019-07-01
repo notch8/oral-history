@@ -480,7 +480,7 @@
    <field name="audio_display" type="string" indexed="false" stored="true" multiValued="false"/>
    <field name="publisher_display" type="string" indexed="false" stored="true" multiValued="false"/>
    <field name="publisher_vern_display" type="string" indexed="false" stored="true" multiValued="false"/>
-   <field name="abstract_t" type="string" indexed="true" store="true" multiValued="false">
+   <field name="abstract_t" type="string" indexed="true" stored="true" multiValued="false"/>
 
 
    <!-- these fields are also used for display, so they must be stored -->

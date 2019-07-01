@@ -121,8 +121,17 @@
          author_addl_t^50
          language_t
          biographical_t
+         abstract_t
          isbn_t
          text
+         extent_t
+         id_t
+         links_t
+         person_present_t
+         place_t
+         process_interview_t
+         rights_t
+         type_of_resource_t
        </str>
        <str name="pf">
          title_unstem_search^100000
@@ -151,8 +160,17 @@
          author_t^100
          author_addl_t^500
          biographical_t^10
+         abstract_t^10
          language_t^10
          text^10
+         extent_t^10
+         id_t^10
+         links_t^10
+         person_present_t^10
+         place_t^10
+         process_interview_t^10
+         rights_t^10
+         type_of_resource_t^10
        </str>
        <str name="author_qf">
          author_unstem_search^200
