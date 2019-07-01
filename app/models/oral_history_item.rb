@@ -82,6 +82,9 @@ class OralHistoryItem
     record = self.get(identifier: id)&.record
     history = process_record(record)
     history.index_record
+    if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.should_process_peaks?
+      ProcessPeakJob.perform_later(history.id)
+    end
     return history
   end
 
