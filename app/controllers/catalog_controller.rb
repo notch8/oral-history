@@ -41,7 +41,7 @@ class CatalogController < ApplicationController
       :"hl" => true,
       :"hl.fragsize" => 0,
       :"hl.preserveMulti" => true,
-      :"hl.fl" => "biographical_t, subject_t, description_t, person_present_t, place_t, supporting_documents_t, interviewer_history_t, process_interview_t, audio_b, extent_t, rights_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t, links_t, abstract_t",
+      :"hl.fl" => "biographical_t, subject_t, description_t, person_present_t, place_t, supporting_documents_t, interviewer_history_t, process_interview_t, audio_b, extent_t, rights_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t, links_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.alternateField" => "dd"
@@ -119,7 +119,6 @@ class CatalogController < ApplicationController
     config.add_index_field 'subtitle_t', label: 'Subtitle', highlight: true #only show if highlight has results
     config.add_index_field 'series_t', label: 'Series Name', highlight: true #only show if highlight has results
     config.add_index_field 'description_t', label: 'Description', highlight: true #only show if highlight has results
-    config.add_index_field 'abstract_t', label: 'Series Statement', highlight: true #only show if highlight has results
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'subtitle_t', label: 'Subtitle', highlight: true
