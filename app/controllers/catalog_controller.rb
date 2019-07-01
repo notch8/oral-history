@@ -18,7 +18,7 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       rows: 10,
       :"hl" => true,
-      :"hl.fl" => "biographical_t, subject_t, description_t, audio_b, extent_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t ",
+      :"hl.fl" => "biographical_t, subject_t, description_t, audio_b, extent_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t abstract_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>"
     }
@@ -119,6 +119,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'subtitle_t', label: 'Subtitle', highlight: true #only show if highlight has results
     config.add_index_field 'series_t', label: 'Series Name', highlight: true #only show if highlight has results
     config.add_index_field 'description_t', label: 'Description', highlight: true #only show if highlight has results
+    config.add_index_field 'abstract_t', label: 'Series Statement', highlight: true #only show if highlight has results
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'subtitle_t', label: 'Subtitle', highlight: true
