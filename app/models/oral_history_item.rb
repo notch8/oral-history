@@ -82,6 +82,9 @@ class OralHistoryItem
     record = self.get(identifier: id)&.record
     history = process_record(record)
     history.index_record
+    if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.should_process_peaks?
+      ProcessPeakJob.perform_later(history.id)
+    end
     return history
   end
 
@@ -363,7 +366,7 @@ class OralHistoryItem
   end
   
   def peak_job_queued?
-    Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%")
+    Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").present?
   end
 
   def should_process_peaks?
