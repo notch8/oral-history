@@ -18,7 +18,7 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       rows: 10,
       :"hl" => true,
-      :"hl.fl" => " abstract_t, biographical_t, subject_t, description_t, audio_b, extent_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
+      :"hl.fl" => "abstract_t, biographical_t, subject_t, description_t, audio_b, extent_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.fragsize" => 200,
