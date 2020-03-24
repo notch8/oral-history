@@ -1332,7 +1332,7 @@ hr {
 .u-header__section--light .navbar-toggler,
 .u-header__section--light--shift.js-header-change-moment .navbar-brand,
 .u-header__section--light--shift.js-header-change-moment .navbar-toggler {
-  color: #595959555; }
+  color: #595959; }
 
 .u-header__section--light .navbar-brand:focus,
 .u-header__section--light .navbar-brand:hover,
@@ -1342,17 +1342,17 @@ hr {
 .u-header__section--light--shift.js-header-change-moment .navbar-brand:hover,
 .u-header__section--light--shift.js-header-change-moment .navbar-toggler:focus,
 .u-header__section--light--shift.js-header-change-moment .navbar-toggler:hover {
-  color: #595959555; }
+  color: #595959; }
 
 .u-header__section--light .navbar-nav:not([class*="u-main-nav-v"]) .nav-link,
 .u-header__section--light--shift.js-header-change-moment .navbar-nav:not([class*="u-main-nav-v"]) .nav-link {
-  color: #595959555; }
+  color: #595959; }
 
 .u-header__section--light .navbar-nav:not([class*="u-main-nav-v"]) .nav-link:focus,
 .u-header__section--light .navbar-nav:not([class*="u-main-nav-v"]) .nav-link:hover,
 .u-header__section--light--shift.js-header-change-moment .navbar-nav:not([class*="u-main-nav-v"]) .nav-link:focus,
 .u-header__section--light--shift.js-header-change-moment .navbar-nav:not([class*="u-main-nav-v"]) .nav-link:hover {
-  color: #595959555; }
+  color: #595959; }
 
 .u-header__section--light .navbar-nav:not([class*="u-main-nav-v"]) .nav-link.disabled,
 .u-header__section--light--shift.js-header-change-moment .navbar-nav:not([class*="u-main-nav-v"]) .nav-link.disabled {
