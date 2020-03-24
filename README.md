@@ -25,7 +25,7 @@ sc up
 
 Then visit http://0.0.0.0:8000 in your browser.  You should see a rails error page suggesting a migration.
 
-6) Load database and import data
+6) Load database and import data[100]
 
 ``` bash
 sc be rake db:migrate import
