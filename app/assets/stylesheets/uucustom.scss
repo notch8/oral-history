@@ -14,7 +14,7 @@ body {
 }
 
 a {
-  color: #3284bf;
+  color: #1D4B87;
 }
 a:hover, a:focus {
   color: #1c6897;
@@ -122,6 +122,10 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   color: #555 !important;
 }
 
+.dropdown-toggle {
+  color: #1e4b87 !important;
+}
+
 .u-btn-outline-primary {
   border-color: #3284bf !important;
   color: #3284bf !important;
@@ -144,7 +148,7 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
 }
 
 .pagination > li > a, .pagination > li > span {
-  color: #3284bf;
+  color: #1e4b87;
 }
 
 .pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus, .pagination > .active > span, .pagination > .active > span:hover, .pagination > .active > span:focus {
