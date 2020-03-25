@@ -2,19 +2,30 @@
 
 1) Install Docker.app
 
-2) gem install stack_car
+2) Install SC
+``` bash
+gem install stack_car
+```
 
 3) We recommend committing .env to your repo with good defaults. .env.development, .env.production etc can be used for local overrides and should not be in the repo.
 
-4) sc up
-
+4) Confirm or configure settings.  Sub your information for the examples.
 ``` bash
-gem install stack_car
-sc up
-
+git config --global user.name example
+git config --global user.email example@example.com
+docker login registry.gitlab.com
 ```
 
-5) Load database and import data
+5) Build project and start up
+
+``` bash
+sc build
+sc up
+```
+
+Then visit http://0.0.0.0:8000 in your browser.  You should see a rails error page suggesting a migration.
+
+6) Load database and import data
 
 ``` bash
 sc be rake db:migrate import[100]

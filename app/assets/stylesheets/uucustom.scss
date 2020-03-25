@@ -14,7 +14,7 @@ body {
 }
 
 a {
-  color: #3284bf;
+  color: #1D4B87;
 }
 a:hover, a:focus {
   color: #1c6897;
@@ -119,7 +119,15 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
 .btn-primary:hover, .btn-primary.active {
   border-color: #ffe800 !important;
   background-color: #ffe800 !important;
-  color: #555 !important;
+  color: #595959 !important;
+}
+
+#sort-dropdown .dropdown-toggle {
+  color: #1e4b87;
+}
+
+#per_page-dropdown .dropdown-toggle {
+  color: #1e4b87;
 }
 
 .u-btn-outline-primary {
@@ -135,7 +143,7 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
 }
 
 .submit-search-text:hover {
-  color: #555;
+  color: #595959;
 }
 
 .input-group select {
@@ -144,7 +152,7 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
 }
 
 .pagination > li > a, .pagination > li > span {
-  color: #3284bf;
+  color: #1e4b87;
 }
 
 .pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus, .pagination > .active > span, .pagination > .active > span:hover, .pagination > .active > span:focus {
@@ -185,7 +193,7 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
 }
 
 .nav > li > a:hover, .nav > li > a:focus {
-  color: #555;
+  color: #595959;
   background-color: #ffe800;
 }
 
@@ -194,8 +202,12 @@ h2>.hero-ribbon-blue, h3>.hero-ribbon-gray {
   padding: 15px 8px;
 }
 
-.navbar-inverse .navbar-nav > li > a {
+.navbar-nav > a {
   color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #1e4b87;
 }
 
 .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
@@ -297,7 +309,7 @@ footer {
 }
 
 a.footer-link {
-  color: #1e4b87;
+  color: #C3D7EE;
   font-weight: bold;
   line-height: 2.25;
   font-size: 12px;
@@ -333,11 +345,11 @@ a.footer-link {
 /* HIGHLIGHT COLORS */
 
 ::-moz-selection {
-  color: #fff;
+  color: #003B5C;
   background-color: #ffe800; }
 
 ::selection {
-  color: #fff;
+  color: #003B5C;
   background-color: #ffe800; }
 
   /* FACETS */
@@ -393,6 +405,7 @@ a.footer-link {
 
 .dl-invert dt {
   font-weight: 700;
+  color: #595959;
 }
 
 .d-block {
