@@ -23,6 +23,10 @@ module ApplicationHelper
     from_helper "peaks_t", document
   end
 
+  def index_filter options={}
+    "<span><p>#{ options[:value][0] }...</p></span>".html_safe
+  end
+
   def highlightable_series_link(options={})
     link_to options[:value][0], root_path(f: {series_facet: options[:document]["series_t"]})
   end
