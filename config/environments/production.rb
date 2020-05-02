@@ -67,7 +67,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
 
-  config.action_mailer.default(from: "support@notch8.com")
+  config.action_mailer.default_options={from: "support@notch8.com"}
 
   config.action_mailer.default_url_options = {
     :host => ENV['SMTP_HOST'],
