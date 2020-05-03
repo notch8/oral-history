@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Hls from 'hls.js'
 import WaveSurfer from 'wavesurfer.js'
+import ReactHLS from 'react-hls-player'
 
 const waveOptions = {
   container: '.wave-box',
@@ -42,7 +43,37 @@ export default class MediaPlayer extends Component {
     this.handleProgressClick = this.handleProgressClick.bind(this)
   }
 
-  render() {
+  render(){
+    const { typeOfResource } = this.props
+    switch (typeOfResource){
+      case "moving image":
+        return this.renderVideo();
+        break;
+      default:
+        return this.renderAudio();
+    }
+  }
+
+  renderVideo() {
+    const { image } = this.props
+    const { source } = this.state
+    return(
+      <div className="row player">
+        <ReactHLS 
+          url={source} 
+          poster={image} 
+          width="100%" 
+        />
+        <audio 
+          id="audio" 
+          ref="audio" 
+          style={{display: 'none'}}
+        ></audio>
+      </div>
+    )
+  }
+
+  renderAudio(){
     const { volume, source, playing, progressPosition, current, duration, isScrolling } = this.state
     const { image } = this.props
     const playPause = (playing ? 'pause-button' : 'play-button')
@@ -169,7 +200,9 @@ export default class MediaPlayer extends Component {
   }
 
   componentDidMount() {
+    let wavesurfer
     const { id, source, peaks } = this.state
+    const { typeOfResource } = this.props
     let { audio } = this.refs
     const interval = setInterval(() => {
       if(audio.duration > 0) {
@@ -228,9 +261,10 @@ export default class MediaPlayer extends Component {
     hls.loadSource(source)
     hls.attachMedia(audio)
 
-    let wavesurfer = WaveSurfer.create(waveOptions)
-
-    wavesurfer.load(audio, peaks);
+    if(typeOfResource === "audio"){
+      let wavesurfer = WaveSurfer.create(waveOptions)
+      wavesurfer.load(audio, peaks);
+    }
 
     let sourceHandler = changeSource(this, hls, wavesurfer, audio, id)
     window.addEventListener('set_audio_player_src', sourceHandler)
@@ -253,6 +287,7 @@ export default class MediaPlayer extends Component {
 }
 
 const changeSource = (component, hls, wavesurfer, audio) => (e) => {
+  const { typeOfResource } = this.props
   const { src, peaks } = e.detail
   const { mapped } = component.state
 
@@ -260,8 +295,9 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
   hls.loadSource(src)
   hls.attachMedia(audio)
 
-  wavesurfer.load(audio, peaks);
-
+  if(typeOfResource === "audio"){
+    wavesurfer.load(audio, peaks);
+  }
 
   component.setState({
     playing: false,
