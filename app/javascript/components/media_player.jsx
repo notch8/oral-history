@@ -14,7 +14,7 @@ const waveOptions = {
   barWidth: 2
 }
 
-export default class AudioPlayer extends Component {
+export default class MediaPlayer extends Component {
   constructor(props) {
     super(props)
 
