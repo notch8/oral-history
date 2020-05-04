@@ -173,7 +173,7 @@ class OralHistoryItem
             end
           elsif child.name == "relatedItem" && child.attributes['type'] == "constituent"
             time_log_url = ''
-            order = child.elements['mods:part'].attributes['order']
+            order = child.elements['mods:part'].present? ? child.elements['mods:part'].attributes['order'] : 1
 
             if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
               time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
@@ -194,7 +194,7 @@ class OralHistoryItem
               "url_t": child.attributes['href'],
               "title_t": child.elements['mods:titleInfo/mods:title'].text,
               "order_i": order,
-              "description_t": child.elements['mods:tableOfContents'].text,
+              "description_t": child.elements['mods:tableOfContents'].present? ? child.elements['mods:tableOfContents'].text : "Content",
               "time_log_t": time_log_url
             }
 
