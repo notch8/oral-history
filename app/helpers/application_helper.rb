@@ -11,6 +11,10 @@ module ApplicationHelper
     end
   end
 
+  def type_of_resource(document)
+    document._source["type_of_resource_t"][0]
+  end
+
   def transcripts_from(document)
     from_helper "transcripts_json_t", document
   end

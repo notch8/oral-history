@@ -1,10 +1,15 @@
 <%= content_for(:head) do %>
-  <%= javascript_pack_tag "audio_player" %>
+  <%= javascript_pack_tag "media_player" %>
 <% end %>
 <div class="container">
   <%# TODO: this feels really gross -- needs to be refactored %>
   <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document).present? %>
-  <%= react_component('AudioPlayer', id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'), src: parsed_children.try(:first).try(:[], "url_t"), peaks: parsed_children.try(:first).try(:[], "peaks"), image: "/avatar.jpg") %>
+  <%= react_component('MediaPlayer', 
+    id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'), 
+    src: parsed_children.try(:first).try(:[], "url_t"), 
+    peaks: parsed_children.try(:first).try(:[], "peaks"), image: "/avatar.jpg"),
+    typeOfResource: type_of_resource(document)
+  %>
 </div>
 <div class="container shortcode-html">
   <div class="col-sm-12">

@@ -1,5 +1,5 @@
 <%= content_for(:head) do %>
-  <%= javascript_pack_tag "audio_player" %>
+  <%= javascript_pack_tag "media_player" %>
 <% end %>
 <div class="container">
   <% parsed_transcripts = transcripts_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if transcripts_from(document) %>
@@ -7,12 +7,13 @@
   <% parsed_peaks = peaks_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if peaks_from(document) %>
   
   <%= react_component(
-    'AudioPlayer',
+    'MediaPlayer',
     id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'),
     src: parsed_children.try(:first).try(:[], "url_t"),
     peaks: parsed_peaks.try(:first).try(:[], "peaks"),
     transcript: parsed_transcripts.try(:first).try(:[], "transcript_t"),
-    image: narrator_image(document)
+    image: narrator_image(document),
+    typeOfResource: type_of_resource(document)
   ) %>
 </div>
 <%= render :partial => 'download_transcript_panel', locals: {document: document} %>
