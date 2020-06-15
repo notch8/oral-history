@@ -29,35 +29,6 @@
   </div>
          
   <div id="accordion-10" class="u-accordion u-accordion-color-primary u-accordion-brd-primary" role="tablist" aria-multiselectable="true">
-    <% if parsed_children.present? %>
-      <% parsed_children.each_with_index do |child, i| %>
-        <div class="col-sm-12">
-          <!-- Card -->
-          <div class="card rounded-0 g-brd-none">
-            <div id="accordion-10-heading-<%= child['order_i'] %>" class="u-accordion__header g-pa-0" role="tab">
-              <h5 class="mb-0 g-font-weight-600 g-font-size-default g-brd-bottom g-brd-gray-light-v4 g-pa-15-0">
-                <a class="d-block g-color-main g-text-underline--none--hover collapsed" href="#accordion-10-body-<%= child['order_i'] %>" data-toggle="collapse" data-parent="#accordion-10" aria-expanded="false"  aria-controls="accordion-10-body-<%= child['order_i'] %>">
-                  <span class="u-accordion__control-icon g-ml-10">
-                    <i class="fa fa-angle-right"></i>
-                    <i class="fa fa-angle-down"></i>
-
-                  </span>
-                  <span class="g-valign-middle"><%= child["title_t"] %></span>
-                </a>
-
-                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: parsed_peaks ? parsed_peaks[i]["peaks"] : '', transcript: parsed_transcripts ? parsed_transcripts[i]["transcript_t"] : '' ) %>
-              </h5>
-            </div>
-            <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
-              <div class="u-accordion__body g-color-gray-dark-v5 g-pa-15-0">
-                <%= child["description_t"] %>
-              </div>
-            </div>
-          </div>
-          <!-- End Card -->
-        </div> <!-- end div for accordion card-->
-      <% end %> <!-- end parsed children loop with accordion -->
-    <% end %>
     <div class="col-sm-12">
       <!-- Card -->
       <div class="card rounded-0 g-brd-none">
@@ -92,6 +63,36 @@
       </div>
       <!-- End Card -->
     </div>
+    <% if parsed_children.present? %>
+      <% parsed_children.each_with_index do |child, i| %>
+        <div class="col-sm-12">
+          <!-- Card -->
+          <div class="card rounded-0 g-brd-none">
+            <div id="accordion-10-heading-<%= child['order_i'] %>" class="u-accordion__header g-pa-0" role="tab">
+              <h5 class="mb-0 g-font-weight-600 g-font-size-default g-brd-bottom g-brd-gray-light-v4 g-pa-15-0">
+                <a class="d-block g-color-main g-text-underline--none--hover collapsed" href="#accordion-10-body-<%= child['order_i'] %>" data-toggle="collapse" data-parent="#accordion-10" aria-expanded="false"  aria-controls="accordion-10-body-<%= child['order_i'] %>">
+                  <span class="u-accordion__control-icon g-ml-10">
+                    <i class="fa fa-angle-right"></i>
+                    <i class="fa fa-angle-down"></i>
+
+                  </span>
+                  <span class="g-valign-middle"><%= child["title_t"] %></span>
+                </a>
+
+                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: parsed_peaks ? parsed_peaks[i]["peaks"] : '', transcript: parsed_transcripts ? parsed_transcripts[i]["transcript_t"] : '' ) %>
+              </h5>
+            </div>
+            <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
+              <div class="u-accordion__body g-color-gray-dark-v5 g-pa-15-0">
+                <%= child["description_t"] %>
+              </div>
+            </div>
+          </div>
+          <!-- End Card -->
+        </div> <!-- end div for accordion card-->
+      <% end %> <!-- end parsed children loop with accordion -->
+    <% end %>
+    
 
   </div> <!-- end accordion -->
 </div> <!-- end container -->
