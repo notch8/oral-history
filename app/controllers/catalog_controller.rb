@@ -114,7 +114,6 @@ class CatalogController < ApplicationController
     config.add_index_field 'extent_t', label: 'Length', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'language_t', label: 'Language', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }, helper_method: 'audio_icon'
-    config.add_index_field 'author_t', label: 'Interviewer', highlight: true, solr_params: { :"hl.alternateField" => "dd" } 
     config.add_index_field 'interviewee_t', label: 'Interviewee', highlight: true, solr_params: { :"hl.alternateField" => "dd" } 
     # config.add_index_field 'title_t', label: 'Title', highlight: true, solr_params: { :"hl.alternateField" => "dd" } 
     # config.add_index_field 'series_t', label: 'Series Name', highlight: true, solr_params: { :"hl.alternateField" => "dd" } 
