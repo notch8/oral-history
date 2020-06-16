@@ -12,7 +12,12 @@ module ApplicationHelper
   end
 
   def type_of_resource(document)
-    document._source["type_of_resource_t"][0]
+    if document._source["type_of_resource_t"] == nil
+      type = "audio"
+    else
+      type = document._source["type_of_resource_t"][0]
+    end
+    type.downcase
   end
 
   def transcripts_from(document)
