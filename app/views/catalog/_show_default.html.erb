@@ -13,13 +13,16 @@
     peaks: parsed_peaks.try(:first).try(:[], "peaks"),
     transcript: parsed_transcripts.try(:first).try(:[], "transcript_t"),
     image: narrator_image(document),
-    typeOfResource: type_of_resource(document)
+    typeOfResource: type_of_resource(document),
   ) %>
 </div>
 <%= render :partial => 'download_transcript_panel', locals: {document: document} %>
 
 <div class="container">
-  <%= react_component('FileView', transcript: parsed_transcripts.try(:first).try(:[], "transcript_t")) %>
+  <%= react_component('FileView', 
+                      transcript: parsed_transcripts.try(:first).try(:[], "transcript_t"),
+                      userQuery: @user_query
+  ) %>
 </div>
 <div class="container shortcode-html">
   <div class="col-sm-12">

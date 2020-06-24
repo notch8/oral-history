@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Hls from 'hls.js'
 import WaveSurfer from 'wavesurfer.js'
-import ReactHLS from 'react-hls-player'
+import VideoPlayer from './video_player'
 
 const waveOptions = {
   container: '.wave-box',
@@ -59,10 +59,9 @@ export default class MediaPlayer extends Component {
     const { source } = this.state
     return(
       <div className="row player">
-        <ReactHLS 
-          url={source} 
-          poster={image} 
-          width="100%" 
+        <VideoPlayer
+          source={source} 
+          image={image} 
         />
         <audio 
           id="audio" 
@@ -204,23 +203,25 @@ export default class MediaPlayer extends Component {
     const { id, source, peaks } = this.state
     const { typeOfResource } = this.props
     let { audio } = this.refs
-    const interval = setInterval(() => {
-      if(audio.duration > 0) {
-        const c = Math.floor(audio.currentTime)
-        const d = Math.floor(audio.duration)
-        let timelineBox = document.getElementById('timeline').getClientRects()[0]
-        const progressPosition = (c / d) * timelineBox.width
+    if(typeOfResource === "audio"){
+      const interval = setInterval(() => {
+        if(audio.duration > 0) {
+          const c = Math.floor(audio.currentTime)
+          const d = Math.floor(audio.duration)
+          let timelineBox = document.getElementById('timeline').getClientRects()[0]
+          const progressPosition = (c / d) * timelineBox.width
 
-        this.setState({
-          currentTime: `00:00:00 / -${formatTime(d-c)}`,
-          current: formatTime(c),
-          duration: formatTime(d-c),
-          progressPosition: progressPosition || 0
-        })
+          this.setState({
+            currentTime: `00:00:00 / -${formatTime(d-c)}`,
+            current: formatTime(c),
+            duration: formatTime(d-c),
+            progressPosition: progressPosition || 0
+          })
 
-        clearInterval(interval)
-      }
-    }, 200)
+          clearInterval(interval)
+        }
+      }, 200)
+    }
 
     audio.ontimeupdate = () => {
       let { currentScrolledTime, isScrolling } = this.state
