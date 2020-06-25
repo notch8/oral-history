@@ -35,12 +35,6 @@ export default class MediaPlayer extends Component {
       isSrolling: false,
       currentScrolledTime: 0,
     }
-
-    this.handleTogglePlay = this.handleTogglePlay.bind(this)
-    this.changeVol = this.changeVol.bind(this)
-    this.changeSource = changeSource.bind(this)
-    this.handleToggleIsScrolling = this.handleToggleIsScrolling.bind(this)
-    this.handleProgressClick = this.handleProgressClick.bind(this)
   }
 
   render(){
@@ -54,7 +48,7 @@ export default class MediaPlayer extends Component {
     }
   }
 
-  renderVideo() {
+  renderVideo = ()=> {
     const { image } = this.props
     const { source } = this.state
     return(
@@ -72,7 +66,7 @@ export default class MediaPlayer extends Component {
     )
   }
 
-  renderAudio(){
+  renderAudio = ()=> {
     const { volume, source, playing, progressPosition, current, duration, isScrolling } = this.state
     const { image } = this.props
     const playPause = (playing ? 'pause-button' : 'play-button')
@@ -95,6 +89,14 @@ export default class MediaPlayer extends Component {
               step="0.01" 
               onChange={this.changeVol}
             />
+            <select onChange={this.handleSpeedChange}>
+              <option value="0.5">0.5</option>
+              <option value="1.0" selected>1.0</option>
+              <option value="1.5">1.5</option>
+              <option value="2.0">2.0</option>
+            </select>
+
+
           </div>
         </div> 
         
@@ -133,7 +135,12 @@ export default class MediaPlayer extends Component {
     )
   }
 
-  handleProgressClick(e) {
+  handleSpeedChange = (e)=>{
+    let { audio } = this.refs
+    audio.playbackRate = e.target.value
+  }
+
+  handleProgressClick = (e)=> {
     try {
       const { initialPlay, playing } = this.state
       let { audio } = this.refs
@@ -154,7 +161,7 @@ export default class MediaPlayer extends Component {
     }
   }
 
-  changeVol(e) {
+  changeVol = (e)=> {
     let { audio, volume } = this.refs
     audio.volume = volume.value
     
@@ -163,7 +170,7 @@ export default class MediaPlayer extends Component {
     })
   }
 
-  handleTogglePlay() {
+  handleTogglePlay = ()=> {
     let { playing, initialPlay } = this.state
     let { audio } = this.refs
     const { id, src, peaks, transcript } = this.props
@@ -192,7 +199,7 @@ export default class MediaPlayer extends Component {
     this.setState({ playing, initialPlay: true })
   }
 
-  handleToggleIsScrolling() {
+  handleToggleIsScrolling = () => {
     const { isScrolling } = this.state
 
     this.setState({ isScrolling: !isScrolling })
