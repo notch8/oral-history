@@ -25,7 +25,7 @@ class FullTextController < ApplicationController
     config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
     config.add_facet_field 'language_facet', label: 'Language', limit: true
     config.add_facet_field 'series_facet', label: 'Series'
-    config.add_facet_field 'audio_b', label: 'Has Audio', helper_method: 'audio_icon_with_text'
+    config.add_facet_field 'audio_b', label: 'Has Media', helper_method: 'audio_icon_with_text'
 
     config.add_facet_fields_to_solr_request!
 

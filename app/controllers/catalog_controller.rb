@@ -91,7 +91,7 @@ class CatalogController < ApplicationController
 #    config.add_facet_field 'subject_era_facet', label: 'Era'
     config.add_facet_field 'series_facet', label: 'Series'
     #config.add_facet_field 'type_of_resource_facet', label: 'Type of Resource'
-    config.add_facet_field 'audio_b', label: 'Has Audio', helper_method: 'audio_icon_with_text'
+    config.add_facet_field 'audio_b', label: 'Has Media', helper_method: 'audio_icon_with_text'
     #config.add_facet_field 'example_pivot_field', label: 'Pivot Field', :pivot => ['format', 'language_facet']
 
 #    config.add_facet_field 'example_query_facet_field', label: 'Publish Date', :query => {
