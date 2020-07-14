@@ -6,7 +6,7 @@
         <% if field_name == "links_t" %>
           <% if should_render_show_field? document, field %>
             <% parsed_links = link_parser(document['links_t'])%>
-            <% if not_only_images?(parsed_links) %>
+            <% if allowed_links_present?(parsed_links) %>
               <div id="accordion-04-heading-01" class="u-accordion__header accordion-color-primary download-accordion" role="tab">
                 <a class="d-flex collapsed u-link-v5 g-color-main g-color-primary--hover g-font-size-16" href="#accordion-04-body-01" data-toggle="collapse" data-parent="#accordion-04" aria-expanded="false" aria-controls="accordion-04-body-01">
                   <button class="btn btn-xs u-btn-outline-primary">
@@ -17,7 +17,7 @@
               </div>
               <div id="accordion-04-body-01" class="collapse" role="tabpanel" aria-labelledby="accordion-04-heading-01" data-parent="#accordion-04">
                 <div class="u-accordion__body g-brd-top g-brd-gray-light-v4 g-color-gray-dark-v5">
-                  <% no_images(parsed_links).each do |name, link| %>
+                  <% allowed_links(parsed_links).each do |name, link| %>
                     <%= link_to name, link, target: '_blank'%> <br />
                   <% end %>
                 </div>
