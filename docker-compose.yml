@@ -20,23 +20,10 @@ services:
     volumes:
       - solr:/solr_home
 
-  base:
-    image: "${REGISTRY_HOST}${REGISTRY_URI}/base:latest"
-    build:
-      context: .
-      dockerfile: Dockerfile.base
-      args:
-        DEPLOY_KEY: "${DEPLOY_KEY}"
-    env_file:
-     - .env.development
-     - .env
- 
   main:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - BRANCH=${BRANCH:-master}
     image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
     env_file:
       - .env.development
