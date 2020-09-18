@@ -3,6 +3,7 @@ class CatalogController < ApplicationController
 
   include Blacklight::Catalog
   include Blacklight::Marc::Catalog
+  before_action :setup_negative_captcha, only: [:email]
 
   configure_blacklight do |config|
     ## Class for sending and receiving requests from a search index
@@ -251,5 +252,65 @@ class CatalogController < ApplicationController
       format.json { render json: { response: { document: @document } } }
       additional_export_formats(@document, format)
     end
+  end
+
+  # override from blacklight 6.12 to handle captcha
+  def email
+    @response, @documents = action_documents
+
+    if request.post? && validate_email_params
+      email_action(@documents)
+      flash[:success] ||= I18n.t("blacklight.email.success", default: nil)
+
+      respond_to do |format|
+        format.html do
+          return render "email_success", layout: false if request.xhr?
+          redirect_to action_success_redirect_path
+        end
+      end
+    else
+      respond_to do |format|
+        format.html do
+          return render layout: false if request.xhr?
+          # Otherwise draw the full page
+        end
+      end
+    end
+  end
+
+  private
+  def setup_negative_captcha
+    @captcha = NegativeCaptcha.new(
+      # A secret key entered in environment.rb. 'rake secret' will give you a good one.
+      secret: ENV["NEGATIVE_CAPTCHA_SECRET"],
+      spinner: request.remote_ip,
+      # Whatever fields are in your form
+      fields: [:to, :message],
+      # If you wish to override the default CSS styles (position: absolute; left: -2000px;) used to position the fields off-screen
+      # css: "display: none",
+      params: params
+    )
+  end
+
+  # Email Action (this will render the appropriate view on GET requests and process the form and send the email on POST requests)
+  def email_action documents
+    mail = RecordMailer.email_record(documents, {:to => @captcha.values[:to], :message => @captcha.values[:message]}, url_options)
+    if mail.respond_to? :deliver_now
+      mail.deliver_now
+    else
+      mail.deliver
+    end
+  end
+
+  def validate_email_params
+    if !@captcha.valid?
+      flash[:error] = @captcha.message
+    elsif @captcha.values[:to].blank?
+      flash[:error] = I18n.t('blacklight.email.errors.to.blank')
+    elsif !@captcha.values[:to].match(Blacklight::Engine.config.email_regexp)
+      flash[:error] = I18n.t('blacklight.email.errors.to.invalid', :to => @captcha.values[:to])
+    end
+
+    flash[:error].blank?
   end
 end
