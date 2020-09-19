@@ -24,6 +24,7 @@ gem 'language_list'
 gem 'libxml-ruby'
 gem 'listen', '>= 3.0.5', '< 3.2', group: [:development]
 gem 'mods'
+gem 'negative_captcha'
 gem 'oai'
 gem 'pg', '~> 0.18'
 gem 'progress_bar'
