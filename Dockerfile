@@ -42,10 +42,6 @@ ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
 COPY --chown=app:app Gemfile* $APP_HOME/
 RUN /sbin/setuser app bash -l -c "bundle check || bundle install"
 
-RUN touch /var/log/worker.log && chmod 666 /var/log/worker.log
-RUN mkdir /etc/service/worker
-COPY ops/worker.sh /etc/service/worker/run
-RUN chmod +x /etc/service/worker/run
 COPY ops/nginx.sh /etc/service/nginx/run
 RUN chmod +x /etc/service/nginx/run
 RUN rm -f /etc/service/nginx/down
