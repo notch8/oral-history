@@ -14,7 +14,7 @@ gem 'byebug', platforms: [:mri, :mingw, :x64_mingw], group: [:development, :test
 gem 'coffee-rails', '~> 4.2'
 gem 'daemons'
 gem 'delayed_job_active_record'
-gem 'devise'
+gem 'devise', '~> 4.4.0'
 gem 'devise-guests', '~> 0.6'
 gem 'font-awesome-rails'
 gem 'jbuilder', '~> 2.5'
