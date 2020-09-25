@@ -29,7 +29,7 @@ gem 'oai', '>=1.1.0'
 gem 'pg', '~> 0.18'
 gem 'progress_bar'
 gem 'progress_job'
-gem 'puma', '~> 3.7'
+gem 'puma', '~> 4.3.5'
 gem 'rsolr', '>= 1.0'
 gem 'rspec-rails', '~> 3.8', group: [:development, :test]
 gem 'ruby-audio', '~> 1.6.0'

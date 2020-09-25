@@ -198,7 +198,8 @@ GEM
       options (~> 2.3.0)
     progress_job (0.0.4)
       delayed_job
-    puma (3.11.0)
+    puma (4.3.6)
+      nio4r (~> 2.0)
     rack (2.2.3)
     rack-protection (2.0.3)
       rack
@@ -366,7 +367,7 @@ DEPENDENCIES
   pg (~> 0.18)
   progress_bar
   progress_job
-  puma (~> 3.7)
+  puma (~> 4.3.5)
   rails (~> 5.1.4)
   rsolr (>= 1.0)
   rspec-rails (~> 3.8)
