@@ -25,7 +25,7 @@ gem 'libxml-ruby'
 gem 'listen', '>= 3.0.5', '< 3.2', group: [:development]
 gem 'mods'
 gem 'negative_captcha'
-gem 'oai'
+gem 'oai', '>=1.1.0'
 gem 'pg', '~> 0.18'
 gem 'progress_bar'
 gem 'progress_job'
