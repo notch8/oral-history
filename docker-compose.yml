@@ -20,7 +20,7 @@ services:
     volumes:
       - solr:/solr_home
 
-  main:
+  web:
     build:
       context: .
       dockerfile: Dockerfile
@@ -30,9 +30,6 @@ services:
       - .env
     volumes:
       - .:/home/app/webapp
-
-  web:
-    extends: main
     # Keep the stdin open, so we can attach to our app container's process
     # and do things such as byebug, etc:
     stdin_open: true
@@ -50,7 +47,15 @@ services:
       - worker
 
   worker:
-    extends: main
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
+    env_file:
+      - .env.development
+      - .env
+    volumes:
+      - .:/home/app/webapp
     command: bin/delayed_job run
     depends_on:
       - postgres
