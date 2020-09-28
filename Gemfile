@@ -8,7 +8,7 @@ end
 gem 'rails', '~> 5.1.4'
 
 gem "delayed_job_web"
-gem 'blacklight', '>= 6.1'
+gem 'blacklight', '~> 6.23'
 gem 'blacklight-marc', '~> 6.1'
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw], group: [:development, :test]
 gem 'coffee-rails', '~> 4.2'
