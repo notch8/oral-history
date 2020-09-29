@@ -5,7 +5,7 @@ class FullTextController < ApplicationController
   include Blacklight::Marc::Catalog
 
   configure_blacklight do |config|
-    
+
     config.default_solr_params = {
       rows: 5,
       :"hl" => true,
@@ -21,7 +21,7 @@ class FullTextController < ApplicationController
     # solr field configuration for search results/index views
     config.index.title_field = 'title_display'
     config.index.display_type_field = 'format'
-    
+
     config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
     config.add_facet_field 'language_facet', label: 'Language', limit: true
     config.add_facet_field 'series_facet', label: 'Series'
@@ -32,8 +32,8 @@ class FullTextController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field 'transcripts_t', label: 'Transcript', highlight: true, helper_method: :split_multiple
-    config.add_index_field 'description_t', label: 'Description', highlight: true 
-    
+    config.add_index_field 'description_t', label: 'Description', highlight: true
+
     config.add_search_field 'all_fields', label: 'All Fields'
 
     config.add_search_field('title') do |field|
@@ -70,10 +70,10 @@ class FullTextController < ApplicationController
   def index
     #this is the number of rows to return (documents)
     params[:rows] = 1
-    
+
     # highlight_page is what we want to use for our pagination ( or load_more option )
     # we start highlight page at 1 and it increments in the view
-    @highlight_page = params[:highlight_page] || 1 
+    @highlight_page = params[:highlight_page] || 1
     @highlight_page = @highlight_page.to_i
 
     # highlight count is how many highlights we are displaying on each page
@@ -95,13 +95,14 @@ class FullTextController < ApplicationController
     @document_list = []
 
     while(highlight_count < (50 * @highlight_page) && results_count > 0) do
-      
+
       # page number sent from solr
       params[:page] = @results_page
 
       # gets the response and documents from params
-      (@response, @documents) = search_results(params)
-      
+      search_service = Blacklight::SearchService.new(config: blacklight_config, user_params: params)
+      (@response, @documents) = search_service.search_results
+
       # these are docs returned in params, the number of docs returned is equal to the value of params[:rows]
       @document_list += @documents
 
@@ -110,25 +111,25 @@ class FullTextController < ApplicationController
 
       # this is an array of records with highlight matches on transcript_t and description_t
       # [ { highlighting: { doc: [transcript_t, description_t] } } ]
-      highlights = @response['highlighting'].values 
+      highlights = @response['highlighting'].values
 
-      # adds the total number of highlights in @response['highlighting'].values 
+      # adds the total number of highlights in @response['highlighting'].values
       highlights.each { |t| highlight_count += t['transcripts_t'].count unless t['transcripts_t'].nil? }
-      highlights.each { |t| highlight_count += t['description_t'].count unless t['description_t'].nil? } 
-      
+      highlights.each { |t| highlight_count += t['description_t'].count unless t['description_t'].nil? }
+
       # increments the results page at end of the iteration
       #this should then make this page 2, the second group of params[:rows]
-      @results_page += 1 
+      @results_page += 1
     end
 
-    @more = (results_count > 0) 
+    @more = (results_count > 0)
 
     respond_to do |format|
-      format.html do |html| 
+      format.html do |html|
         if params[:partial]
-          render partial: 'document_list', locals: { documents: @document_list } 
+          render partial: 'document_list', locals: { documents: @document_list }
         else
-          store_preferred_view 
+          store_preferred_view
         end
       end
       format.rss  { render :layout => false }

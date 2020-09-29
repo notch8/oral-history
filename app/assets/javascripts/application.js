@@ -10,16 +10,16 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require rails-ujs
-//= require turbolinks
-//
 // Required by Blacklight
 //= require jquery
+//= require rails-ujs
+//= require turbolinks
 //= require vendor/jquery-migrate/jquery-migrate.min
 //= require vendor/jquery.easing/js/jquery.easing.min
-
-//= require bootstrap-sprockets
+//= require popper
+//= require bootstrap
 //= require blacklight/blacklight
+
 
 //= require_tree ./main
 //= require ./timestamp_links

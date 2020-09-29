@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   post 'admin/run_import', to: 'admin#run_import', as: 'run_import'
 
   mount Blacklight::Engine => '/'
-  Blacklight::Marc.add_routes(self)
+
   root to: "catalog#index"
   concern :searchable, Blacklight::Routes::Searchable.new
 
@@ -41,9 +41,10 @@ Rails.application.routes.draw do
 
   devise_for :users
   concern :exportable, Blacklight::Routes::Exportable.new
+  concern :marc_viewable, Blacklight::Marc::Routes::MarcViewable.new
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
-    concerns :exportable
+    concerns [:exportable, :marc_viewable]
   end
 
   resources :bookmarks do

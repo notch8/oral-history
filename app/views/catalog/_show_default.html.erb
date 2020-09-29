@@ -5,7 +5,7 @@
   <% parsed_transcripts = transcripts_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if transcripts_from(document) %>
   <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document) %>
   <% parsed_peaks = peaks_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if peaks_from(document) %>
-  
+
   <%= react_component(
     'MediaPlayer',
     id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'),
@@ -19,7 +19,7 @@
 <%= render :partial => 'download_transcript_panel', locals: {document: document} %>
 
 <div class="container">
-  <%= react_component('FileView', 
+  <%= react_component('FileView',
                       transcript: parsed_transcripts.try(:first).try(:[], "transcript_t"),
                       userQuery: @user_query
   ) %>
@@ -30,7 +30,7 @@
       <%= document["biographical_display"].first if document["biographical_display"].present? %>
     </div>
   </div>
-         
+
   <div id="accordion-10" class="u-accordion u-accordion-color-primary u-accordion-brd-primary" role="tablist" aria-multiselectable="true">
     <div class="col-sm-12">
       <!-- Card -->
@@ -52,11 +52,11 @@
             <%# default partial to display solr document fields in catalog show view -%>
             <dl class="dl-horizontal dl-invert show-page">
 
-              <% document_show_fields(document).each do |field_name, field| -%>
+              <% doc_presenter.fields_to_render.each do |field_name, field, field_presenter| -%>
                 <% if should_render_show_field? document, field %>
                   <% unless field_name == "links_t"%>
-                    <dt class="blacklight-<%= field_name.parameterize %>"><%= render_document_show_field_label document, field: field_name %></dt>
-                    <dd class="blacklight-<%= field_name.parameterize %>"><%= doc_presenter.field_value field_name %></dd>
+                    <dt class="blacklight-<%= field_name.parameterize %>"><%= render_document_show_field_label document, label: field_presenter.label, field: field_name %></dt>
+                    <dd class="blacklight-<%= field_name.parameterize %>"><%= field_presenter.render %></dd>
                   <% end -%>
                 <% end -%>
               <% end %>
@@ -95,7 +95,7 @@
         </div> <!-- end div for accordion card-->
       <% end %> <!-- end parsed children loop with accordion -->
     <% end %>
-    
+
 
   </div> <!-- end accordion -->
 </div> <!-- end container -->
