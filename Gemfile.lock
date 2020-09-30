@@ -347,7 +347,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  blacklight (~> 6.22)
+  blacklight (~> 6.23)
   blacklight-marc (~> 6.1)
   byebug
   coffee-rails (~> 4.2)
