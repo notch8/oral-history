@@ -12,7 +12,7 @@ VOLUMES=('/home/app/webapp/tmp/cache', '/home/app/webapp/public/assets', '/home/
 for volume in "${VOLUMES[@]}"
 do
   if [ -d "$volume" ]; then
-      /bin/bash -l -c 'chown -fR app:app $volume' # mounted volume may have wrong permissions
+      /bin/bash -l -c "chown -fR app:app $volume" # mounted volume may have wrong permissions
   fi
 done
 
