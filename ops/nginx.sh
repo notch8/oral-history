@@ -10,9 +10,11 @@ rm -rf /home/app/webapp/.ruby*
 VOLUMES=('/home/app/webapp/tmp/cache', '/home/app/webapp/public/assets', '/home/app/webapp/public/packs', '/home/app/webapp/public/system', '/home/app/webapp/node_modules')
 
 for volume in "${VOLUMES[@]}"
-if [ -d "$volume" ]; then
-    /bin/bash -l -c 'chown -fR app:app $volume' # mounted volume may have wrong permissions
-fi
+do
+  if [ -d "$volume" ]; then
+      /bin/bash -l -c 'chown -fR app:app $volume' # mounted volume may have wrong permissions
+  fi
+done
 
 declare -p | grep -Ev 'BASHOPTS|PWD|BASH_VERSINFO|EUID|PPID|SHELLOPTS|UID' > /container.env
 
