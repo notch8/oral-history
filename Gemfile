@@ -8,13 +8,13 @@ end
 gem 'rails', '~> 5.1.4'
 
 gem "delayed_job_web"
-gem 'blacklight', '>= 6.1'
+gem 'blacklight', '~> 6.23'
 gem 'blacklight-marc', '~> 6.1'
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw], group: [:development, :test]
 gem 'coffee-rails', '~> 4.2'
 gem 'daemons'
-gem 'delayed_job_active_record'
-gem 'devise', '~> 4.4.0'
+gem 'delayed_job_active_record', '~> 4.1.4'
+gem 'devise', '~> 4.7.2'
 gem 'devise-guests', '~> 0.6'
 gem 'font-awesome-rails'
 gem 'jbuilder', '~> 2.5'
@@ -25,11 +25,11 @@ gem 'libxml-ruby'
 gem 'listen', '>= 3.0.5', '< 3.2', group: [:development]
 gem 'mods'
 gem 'negative_captcha'
-gem 'oai'
+gem 'oai', '>=1.1.0'
 gem 'pg', '~> 0.18'
 gem 'progress_bar'
 gem 'progress_job'
-gem 'puma', '~> 3.7'
+gem 'puma', '~> 4.3.5'
 gem 'rsolr', '>= 1.0'
 gem 'rspec-rails', '~> 3.8', group: [:development, :test]
 gem 'ruby-audio', '~> 1.6.0'
