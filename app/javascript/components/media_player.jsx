@@ -249,7 +249,6 @@ export default class MediaPlayer extends Component {
 
       if (isScrolling && nextScrollTime != currentScrolledTime) {
         mapped[nextScrollTime].scrollIntoView({
-          behavior: "smooth",
           block: "center",
           inline: "nearest",
         })
