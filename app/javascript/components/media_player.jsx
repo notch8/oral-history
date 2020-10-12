@@ -135,18 +135,18 @@ export default class MediaPlayer extends Component {
   }
 
   handleSpeedChange = (e) => {
-    let { audio } = this.refs
+    const { audio } = this.refs
     audio.playbackRate = e.target.value
   }
 
   handleProgressClick = (e) => {
     try {
       const { initialPlay, playing } = this.state
-      let { audio } = this.refs
+      const { audio } = this.refs
       const { clientX } = e
-      let timelineBox = document.getElementById('timeline').getClientRects()[0]
-      let position = clientX - timelineBox.left
-      let percentage = ( position / timelineBox.width) * audio.duration
+      const timelineBox = document.getElementById('timeline').getClientRects()[0]
+      const position = clientX - timelineBox.left
+      const percentage = ( position / timelineBox.width) * audio.duration
       audio.currentTime = percentage
 
       if (!initialPlay || !playing) {
@@ -154,14 +154,14 @@ export default class MediaPlayer extends Component {
         audio.pause()
       }
 
-      this.setState({progressPosition:  position, initialPlay: true})
+      this.setState({ progressPosition:  position, initialPlay: true })
     } catch (error) {
       console.log(error)
     }
   }
 
   changeVol = (e) => {
-    let { audio, volume } = this.refs
+    const { audio, volume } = this.refs
     audio.volume = volume.value
 
     this.setState({
@@ -170,8 +170,8 @@ export default class MediaPlayer extends Component {
   }
 
   handleTogglePlay = () => {
-    let { playing, initialPlay } = this.state
-    let { audio } = this.refs
+    const { playing, initialPlay } = this.state
+    const { audio } = this.refs
     const { id, src, peaks, transcript } = this.props
 
     playing = !playing
@@ -208,13 +208,13 @@ export default class MediaPlayer extends Component {
     let wavesurfer
     const { id, source, peaks } = this.state
     const { typeOfResource } = this.props
-    let { audio } = this.refs
+    const { audio } = this.refs
     if (typeOfResource === "audio") {
       const interval = setInterval(() => {
         if (audio.duration > 0) {
           const c = Math.floor(audio.currentTime)
           const d = Math.floor(audio.duration)
-          let timelineBox = document.getElementById('timeline').getClientRects()[0]
+          const timelineBox = document.getElementById('timeline').getClientRects()[0]
           const progressPosition = (c / d) * timelineBox.width
 
           this.setState({
@@ -230,10 +230,10 @@ export default class MediaPlayer extends Component {
     }
 
     audio.ontimeupdate = () => {
-      let { currentScrolledTime, isScrolling } = this.state
+      const { currentScrolledTime, isScrolling } = this.state
       const c = Math.floor(audio.currentTime)
       const d = Math.floor(audio.duration)
-      let timelineBox = document.getElementById('timeline').getClientRects()[0]
+      const timelineBox = document.getElementById('timeline').getClientRects()[0]
       const progressPosition = (c / d) * timelineBox.width
 
       // NOTE (george): yes, this isn't ideal and queries the DOM every iteration
@@ -242,10 +242,10 @@ export default class MediaPlayer extends Component {
       // Ideally, we would make this entire page (or at least the player, transcript, and sections)
       // React-ified and use something like React Provider (instead of Redux) to manage the state.
       let mapped = {}
-      let timestamps = Array.from(document.getElementsByClassName('audio-timestamp-link'))
+      const timestamps = Array.from(document.getElementsByClassName('audio-timestamp-link'))
       timestamps.map(function (link) { mapped[timeStrToSeconds(link.getAttribute('data-start'))] = link })
 
-      let nextScrollTime = getNearestTimeIndex(Object.keys(mapped), c)
+      const nextScrollTime = getNearestTimeIndex(Object.keys(mapped), c)
 
       if (isScrolling && nextScrollTime != currentScrolledTime) {
         mapped[nextScrollTime].scrollIntoView({
@@ -301,6 +301,7 @@ const changeSource = (component, hls, wavesurfer, audio, typeOfResource) => (e) 
   hls.loadSource(src)
   hls.attachMedia(audio)
 
+  let wavesurfer
   if (typeOfResource === "audio") {
     wavesurfer.load(audio, peaks);
   }
@@ -326,7 +327,7 @@ const jumpTo = (audio) => (e) => {
 }
 
 const timeStrToSeconds = (str) => {
-  let parts = str.split(':').reverse()
+  const parts = str.split(':').reverse()
 
   const seconds = parts.reduce((acc, val, i) => {
     return acc + (parseInt(val) * (i > 0 ? 60 ** i : 1))
@@ -356,7 +357,7 @@ const pad = (num) => {
 }
 
 const getNearestTimeIndex = (haystack, needle) => {
-  let nearest = haystack[0]
+  const nearest = haystack[0]
 
   for (let i = 0; i < haystack.length; i++) {
     if (nearest <= needle) {

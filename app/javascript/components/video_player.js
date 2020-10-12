@@ -4,48 +4,48 @@ import Clappr from 'clappr'
 import PlaybackRatePlugin from 'clappr-playback-rate-plugin'
 
 export default class VideoPlayer extends Component{
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.state = {player: null}
+    this.state = { player: null }
   }
 
-  componentDidUpdate(prevProps){
-    const{ source, image} = this.props
-    const{ player } = this.state
-    if(player){
+  componentDidUpdate(prevProps) {
+    const { source, image } = this.props
+    const { player } = this.state
+
+    if (player) {
+      // NOTE(dewey4iv @ 2020/10/12): this was commented out when we found it
       //player.destroy()
     }
-    if(source != prevProps.source || (!player && source)){
+
+    if (source != prevProps.source || (!player && source)) {
       const player = new Clappr.Player({
-	source: source,
+        source: source,
         poster: image,
         plugins: [Clappr.FlasHLS, PlaybackRatePlugin],
         width: 800,
-        baseUrl: "/assets/clappr",
+        baseUrl: '/assets/clappr',
         parent: this.refs.player,
-	hlsjsConfig: {
-	  enableWorker: true
-	}
-      });
+        hlsjsConfig: { enableWorker: true }
+      })
 
-      this.setState({player: player})
-      console.log("HELLOOOOOOOO", player)
+      this.setState({ player: player })
     }
   }
 
   componentWillUnmount() {
-    this.destroyPlayer();
-  }
-  
-  destroyPlayer() {
-    const{ player } = this.state
-    if (player) {
-      player.destroy();
-    }
-    this.setState({player: null})
+    this.destroyPlayer()
   }
 
-  render(){
+  destroyPlayer() {
+    const { player } = this.state
+    if (player) {
+      player.destroy()
+    }
+    this.setState({ player: null })
+  }
+
+  render() {
     return (
       <div ref="player"></div>
     )
