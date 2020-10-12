@@ -66,7 +66,7 @@ export default class MediaPlayer extends Component {
   }
 
   renderAudio = () => {
-    const { volume, source, playing, progressPosition, current, duration, isScrolling } = this.state
+    let { volume, source, playing, progressPosition, current, duration, isScrolling } = this.state
     const { image } = this.props
     const playPause = (playing ? 'pause-button' : 'play-button')
 
@@ -170,7 +170,7 @@ export default class MediaPlayer extends Component {
   }
 
   handleTogglePlay = () => {
-    const { playing, initialPlay } = this.state
+    let { playing, initialPlay } = this.state
     const { audio } = this.refs
     const { id, src, peaks, transcript } = this.props
 
@@ -357,7 +357,7 @@ const pad = (num) => {
 }
 
 const getNearestTimeIndex = (haystack, needle) => {
-  const nearest = haystack[0]
+  let nearest = haystack[0]
 
   for (let i = 0; i < haystack.length; i++) {
     if (nearest <= needle) {
