@@ -8,7 +8,7 @@ class OralHistoryItem
     if attr.is_a?(Hash)
       @attributes = attr.with_indifferent_access
     else
-      @attributes = attr
+      @attributes = attr.to_h
     end
   end
 
@@ -57,9 +57,9 @@ class OralHistoryItem
           Raven.capture_exception(exception)
         end
         if true
-          yield(total) if block_given?        
+          yield(total) if block_given?
         end
-        
+
         if progress
           bar.increment!
         end
@@ -92,7 +92,7 @@ class OralHistoryItem
     if record.header.blank? || record.header.identifier.blank?
       return false
     end
-    
+
     history = OralHistoryItem.find_or_new(record.header.identifier.split('/').last) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
     history.attributes['id_t'] = record.header.identifier.split('/').last
     if record.header.datestamp
@@ -243,10 +243,10 @@ class OralHistoryItem
           elsif child.name == 'location'
             child.elements.each do |f|
               history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
-              if f.attributes['displayLabel'] && 
-                has_xml_transcripts == false && 
-                history.attributes["transcripts_t"].blank? && 
-                f.attributes['displayLabel'].match(/Transcript/) && 
+              if f.attributes['displayLabel'] &&
+                has_xml_transcripts == false &&
+                history.attributes["transcripts_t"].blank? &&
+                f.attributes['displayLabel'].match(/Transcript/) &&
                 f.text.match(/pdf/i)
                 history.should_process_pdf_transcripts = true
                 pdf_text = f.text
@@ -303,14 +303,14 @@ class OralHistoryItem
   end
 
   def self.remove_deleted_records(new_record_ids)
-    current_records = all_ids 
+    current_records = all_ids
     new_record_ids.each do |id|
       current_records.delete(id)
     end
     if current_records.present?
       current_records.each do |id|
         SolrService.delete_by_id(id)
-        SolrService.commit 
+        SolrService.commit
       end
     end
   end
@@ -361,10 +361,10 @@ class OralHistoryItem
     self.attributes["peaks_t"].each_with_index do |peak, i|
       return false unless JSON.parse(peak)['peaks'].present?
     end
-    
+
     true
   end
-  
+
   def peak_job_queued?
     Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").present?
   end
