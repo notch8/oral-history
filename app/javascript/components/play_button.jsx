@@ -16,7 +16,7 @@ export default class PlayButton extends Component {
 
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: 'smooth'
     })
 
     var event = new CustomEvent(

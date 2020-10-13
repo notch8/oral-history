@@ -37,37 +37,36 @@ export default class MediaPlayer extends Component {
     }
   }
 
-  render(){
+  render() {
     const { typeOfResource } = this.props
-    switch (typeOfResource){
+    switch (typeOfResource) {
       case "moving image":
         return this.renderVideo();
-        break;
       default:
         return this.renderAudio();
     }
   }
 
-  renderVideo = ()=> {
+  renderVideo = () => {
     const { image } = this.props
     const { source } = this.state
     return(
       <div className="row player">
         <VideoPlayer
-          source={source} 
-          image={image} 
+          source={source}
+          image={image}
         />
-        <audio 
-          id="audio" 
-          ref="audio" 
+        <audio
+          id="audio"
+          ref="audio"
           style={{display: 'none'}}
         ></audio>
       </div>
     )
   }
 
-  renderAudio = ()=> {
-    const { volume, source, playing, progressPosition, current, duration, isScrolling } = this.state
+  renderAudio = () => {
+    let { volume, source, playing, progressPosition, current, duration, isScrolling } = this.state
     const { image } = this.props
     const playPause = (playing ? 'pause-button' : 'play-button')
 
@@ -79,14 +78,14 @@ export default class MediaPlayer extends Component {
           <div className="volume-container">
             <span className="fa fa-volume-up">
             </span>
-            <input 
-              id="volume-slider" 
-              ref="volume" 
-              type="range" 
-              min="0" 
-              max="1" 
-              value={volume} 
-              step="0.01" 
+            <input
+              id="volume-slider"
+              ref="volume"
+              type="range"
+              min="0"
+              max="1"
+              value={volume}
+              step="0.01"
               onChange={this.changeVol}
             />
             <select onChange={this.handleSpeedChange}>
@@ -98,8 +97,8 @@ export default class MediaPlayer extends Component {
 
 
           </div>
-        </div> 
-        
+        </div>
+
         <div className='col-sm-9 wave-box'></div>
         <div id="audioplayer" className='col-sm-9 col-sm-offset-3 progress-container'>
           <div id="timeline"
@@ -123,7 +122,7 @@ export default class MediaPlayer extends Component {
             onClick={this.handleToggleIsScrolling}
             className="btn btn-xs u-btn-outline-primary"
           >
-            {isScrolling ? (
+            { isScrolling ? (
               <i className="fa fa fa-check g-font-size-18"></i>
             ) : (
               <i className="fa fa-close g-font-size-18"></i>
@@ -135,19 +134,19 @@ export default class MediaPlayer extends Component {
     )
   }
 
-  handleSpeedChange = (e)=>{
-    let { audio } = this.refs
+  handleSpeedChange = (e) => {
+    const { audio } = this.refs
     audio.playbackRate = e.target.value
   }
 
-  handleProgressClick = (e)=> {
+  handleProgressClick = (e) => {
     try {
       const { initialPlay, playing } = this.state
-      let { audio } = this.refs
+      const { audio } = this.refs
       const { clientX } = e
-      let timelineBox = document.getElementById('timeline').getClientRects()[0]
-      let position = clientX - timelineBox.left
-      let percentage = ( position / timelineBox.width) * audio.duration
+      const timelineBox = document.getElementById('timeline').getClientRects()[0]
+      const position = clientX - timelineBox.left
+      const percentage = ( position / timelineBox.width) * audio.duration
       audio.currentTime = percentage
 
       if (!initialPlay || !playing) {
@@ -155,24 +154,24 @@ export default class MediaPlayer extends Component {
         audio.pause()
       }
 
-      this.setState({progressPosition:  position, initialPlay: true})
+      this.setState({ progressPosition:  position, initialPlay: true })
     } catch (error) {
       console.log(error)
     }
   }
 
-  changeVol = (e)=> {
-    let { audio, volume } = this.refs
+  changeVol = (e) => {
+    const { audio, volume } = this.refs
     audio.volume = volume.value
-    
+
     this.setState({
       volume: volume.value,
     })
   }
 
-  handleTogglePlay = ()=> {
+  handleTogglePlay = () => {
     let { playing, initialPlay } = this.state
-    let { audio } = this.refs
+    const { audio } = this.refs
     const { id, src, peaks, transcript } = this.props
 
     playing = !playing
@@ -209,13 +208,13 @@ export default class MediaPlayer extends Component {
     let wavesurfer
     const { id, source, peaks } = this.state
     const { typeOfResource } = this.props
-    let { audio } = this.refs
-    if(typeOfResource === "audio"){
+    const { audio } = this.refs
+    if (typeOfResource === "audio") {
       const interval = setInterval(() => {
-        if(audio.duration > 0) {
+        if (audio.duration > 0) {
           const c = Math.floor(audio.currentTime)
           const d = Math.floor(audio.duration)
-          let timelineBox = document.getElementById('timeline').getClientRects()[0]
+          const timelineBox = document.getElementById('timeline').getClientRects()[0]
           const progressPosition = (c / d) * timelineBox.width
 
           this.setState({
@@ -231,10 +230,10 @@ export default class MediaPlayer extends Component {
     }
 
     audio.ontimeupdate = () => {
-      let { currentScrolledTime, isScrolling } = this.state
+      const { currentScrolledTime, isScrolling } = this.state
       const c = Math.floor(audio.currentTime)
       const d = Math.floor(audio.duration)
-      let timelineBox = document.getElementById('timeline').getClientRects()[0]
+      const timelineBox = document.getElementById('timeline').getClientRects()[0]
       const progressPosition = (c / d) * timelineBox.width
 
       // NOTE (george): yes, this isn't ideal and queries the DOM every iteration
@@ -243,14 +242,13 @@ export default class MediaPlayer extends Component {
       // Ideally, we would make this entire page (or at least the player, transcript, and sections)
       // React-ified and use something like React Provider (instead of Redux) to manage the state.
       let mapped = {}
-      let timestamps = Array.from(document.getElementsByClassName('audio-timestamp-link'))
+      const timestamps = Array.from(document.getElementsByClassName('audio-timestamp-link'))
       timestamps.map(function (link) { mapped[timeStrToSeconds(link.getAttribute('data-start'))] = link })
 
-      let nextScrollTime = getNearestTimeIndex(Object.keys(mapped), c)
+      const nextScrollTime = getNearestTimeIndex(Object.keys(mapped), c)
 
       if (isScrolling && nextScrollTime != currentScrolledTime) {
         mapped[nextScrollTime].scrollIntoView({
-          behavior: "smooth",
           block: "center",
           inline: "nearest",
         })
@@ -269,12 +267,12 @@ export default class MediaPlayer extends Component {
     hls.loadSource(source)
     hls.attachMedia(audio)
 
-    if(typeOfResource === "audio"){
-      let wavesurfer = WaveSurfer.create(waveOptions)
+    if (typeOfResource === "audio") {
+      wavesurfer = WaveSurfer.create(waveOptions)
       wavesurfer.load(audio, peaks);
     }
 
-    let sourceHandler = changeSource(this, hls, wavesurfer, audio, id)
+    let sourceHandler = changeSource(this, hls, wavesurfer, audio, id, typeOfResource)
     window.addEventListener('set_audio_player_src', sourceHandler)
 
     let jumpHandler = jumpTo(audio)
@@ -294,8 +292,7 @@ export default class MediaPlayer extends Component {
   }
 }
 
-const changeSource = (component, hls, wavesurfer, audio) => (e) => {
-  const { typeOfResource } = this.props
+const changeSource = (component, hls, wavesurfer, audio, typeOfResource) => (e) => {
   const { src, peaks } = e.detail
   const { mapped } = component.state
 
@@ -303,7 +300,8 @@ const changeSource = (component, hls, wavesurfer, audio) => (e) => {
   hls.loadSource(src)
   hls.attachMedia(audio)
 
-  if(typeOfResource === "audio"){
+  let wavesurfer
+  if (typeOfResource === "audio") {
     wavesurfer.load(audio, peaks);
   }
 
@@ -328,7 +326,7 @@ const jumpTo = (audio) => (e) => {
 }
 
 const timeStrToSeconds = (str) => {
-  let parts = str.split(':').reverse()
+  const parts = str.split(':').reverse()
 
   const seconds = parts.reduce((acc, val, i) => {
     return acc + (parseInt(val) * (i > 0 ? 60 ** i : 1))
