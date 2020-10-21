@@ -44,7 +44,7 @@ export default class MediaPlayer extends Component {
       return this.renderVideo()
     }
 
-    return this.renderAudio();
+    return this.renderAudio()
   }
 
   renderVideo = () => {
@@ -95,8 +95,6 @@ export default class MediaPlayer extends Component {
               <option value="1.5">1.5</option>
               <option value="2.0">2.0</option>
             </select>
-
-
           </div>
         </div>
 
@@ -137,6 +135,7 @@ export default class MediaPlayer extends Component {
 
   handleSpeedChange = (e) => {
     const { audio } = this.refs
+
     audio.playbackRate = e.target.value
   }
 
@@ -165,9 +164,7 @@ export default class MediaPlayer extends Component {
     const { audio, volume } = this.refs
     audio.volume = volume.value
 
-    this.setState({
-      volume: volume.value,
-    })
+    this.setState({ volume: volume.value })
   }
 
   handleTogglePlay = () => {
@@ -184,7 +181,7 @@ export default class MediaPlayer extends Component {
     }
 
     if (playing && !initialPlay) {
-      var event = new CustomEvent(
+      const event = new CustomEvent(
         'set_audio_player_src',
         {
           bubbles: true,
@@ -265,19 +262,19 @@ export default class MediaPlayer extends Component {
       })
     }
 
-    let hls = new Hls()
+    const hls = new Hls()
     hls.loadSource(source)
     hls.attachMedia(audio)
 
     if (typeOfResource === 'audio' || typeOfResource === 'text') {
       wavesurfer = WaveSurfer.create(waveOptions)
-      wavesurfer.load(audio, peaks);
+      wavesurfer.load(audio, peaks)
     }
 
-    let sourceHandler = changeSource(this, hls, wavesurfer, audio, id, typeOfResource)
+    const sourceHandler = changeSource(this, hls, wavesurfer, audio, id, typeOfResource)
     window.addEventListener('set_audio_player_src', sourceHandler)
 
-    let jumpHandler = jumpTo(audio)
+    const jumpHandler = jumpTo(audio)
     window.addEventListener('jump_to_audio_time', jumpHandler)
 
     this.setState({
@@ -302,22 +299,17 @@ const changeSource = (component, hls, wavesurfer, audio, id, typeOfResource) => 
   hls.loadSource(src)
   hls.attachMedia(audio)
 
-  // let wavesurfer
   if (typeOfResource === 'audio' || typeOfResource === 'text') {
     wavesurfer.load(audio, peaks)
   }
 
-  component.setState({
-    playing: false,
-  })
+  component.setState({ playing: false })
 
   audio.oncanplay = () => {
     audio.volume = component.state.volume
     audio.play()
 
-    component.setState({
-      playing: true
-    })
+    component.setState({ playing: true })
   }
 }
 
