@@ -39,18 +39,19 @@ export default class MediaPlayer extends Component {
 
   render() {
     const { typeOfResource } = this.props
-    switch (typeOfResource) {
-      case "moving image":
-        return this.renderVideo();
-      default:
-        return this.renderAudio();
+
+    if (typeOfResource === 'moving image') {
+      return this.renderVideo()
     }
+
+    return this.renderAudio();
   }
 
   renderVideo = () => {
     const { image } = this.props
     const { source } = this.state
-    return(
+    
+    return (
       <div className="row player">
         <VideoPlayer
           source={source}
@@ -122,7 +123,7 @@ export default class MediaPlayer extends Component {
             onClick={this.handleToggleIsScrolling}
             className="btn btn-xs u-btn-outline-primary"
           >
-            { isScrolling ? (
+            {isScrolling ? (
               <i className="fa fa fa-check g-font-size-18"></i>
             ) : (
               <i className="fa fa-close g-font-size-18"></i>
@@ -209,6 +210,7 @@ export default class MediaPlayer extends Component {
     const { id, source, peaks } = this.state
     const { typeOfResource } = this.props
     const { audio } = this.refs
+
     if (typeOfResource === "audio") {
       const interval = setInterval(() => {
         if (audio.duration > 0) {
@@ -267,7 +269,7 @@ export default class MediaPlayer extends Component {
     hls.loadSource(source)
     hls.attachMedia(audio)
 
-    if (typeOfResource === "audio") {
+    if (typeOfResource === 'audio' || typeOfResource === 'text') {
       wavesurfer = WaveSurfer.create(waveOptions)
       wavesurfer.load(audio, peaks);
     }
@@ -292,7 +294,7 @@ export default class MediaPlayer extends Component {
   }
 }
 
-const changeSource = (component, hls, wavesurfer, audio, typeOfResource) => (e) => {
+const changeSource = (component, hls, wavesurfer, audio, id, typeOfResource) => (e) => {
   const { src, peaks } = e.detail
   const { mapped } = component.state
 
@@ -300,9 +302,9 @@ const changeSource = (component, hls, wavesurfer, audio, typeOfResource) => (e) 
   hls.loadSource(src)
   hls.attachMedia(audio)
 
-  let wavesurfer
-  if (typeOfResource === "audio") {
-    wavesurfer.load(audio, peaks);
+  // let wavesurfer
+  if (typeOfResource === 'audio' || typeOfResource === 'text') {
+    wavesurfer.load(audio, peaks)
   }
 
   component.setState({
