@@ -39,18 +39,19 @@ export default class MediaPlayer extends Component {
 
   render() {
     const { typeOfResource } = this.props
-    switch (typeOfResource) {
-      case "moving image":
-        return this.renderVideo();
-      default:
-        return this.renderAudio();
+
+    if (typeOfResource === 'moving image') {
+      return this.renderVideo()
     }
+
+    return this.renderAudio()
   }
 
   renderVideo = () => {
     const { image } = this.props
     const { source } = this.state
-    return(
+    
+    return (
       <div className="row player">
         <VideoPlayer
           source={source}
@@ -94,8 +95,6 @@ export default class MediaPlayer extends Component {
               <option value="1.5">1.5</option>
               <option value="2.0">2.0</option>
             </select>
-
-
           </div>
         </div>
 
@@ -122,7 +121,7 @@ export default class MediaPlayer extends Component {
             onClick={this.handleToggleIsScrolling}
             className="btn btn-xs u-btn-outline-primary"
           >
-            { isScrolling ? (
+            {isScrolling ? (
               <i className="fa fa fa-check g-font-size-18"></i>
             ) : (
               <i className="fa fa-close g-font-size-18"></i>
@@ -136,6 +135,7 @@ export default class MediaPlayer extends Component {
 
   handleSpeedChange = (e) => {
     const { audio } = this.refs
+
     audio.playbackRate = e.target.value
   }
 
@@ -164,9 +164,7 @@ export default class MediaPlayer extends Component {
     const { audio, volume } = this.refs
     audio.volume = volume.value
 
-    this.setState({
-      volume: volume.value,
-    })
+    this.setState({ volume: volume.value })
   }
 
   handleTogglePlay = () => {
@@ -183,7 +181,7 @@ export default class MediaPlayer extends Component {
     }
 
     if (playing && !initialPlay) {
-      var event = new CustomEvent(
+      const event = new CustomEvent(
         'set_audio_player_src',
         {
           bubbles: true,
@@ -209,6 +207,7 @@ export default class MediaPlayer extends Component {
     const { id, source, peaks } = this.state
     const { typeOfResource } = this.props
     const { audio } = this.refs
+
     if (typeOfResource === "audio") {
       const interval = setInterval(() => {
         if (audio.duration > 0) {
@@ -263,19 +262,19 @@ export default class MediaPlayer extends Component {
       })
     }
 
-    let hls = new Hls()
+    const hls = new Hls()
     hls.loadSource(source)
     hls.attachMedia(audio)
 
-    if (typeOfResource === "audio") {
+    if (typeOfResource === 'audio' || typeOfResource === 'text') {
       wavesurfer = WaveSurfer.create(waveOptions)
-      wavesurfer.load(audio, peaks);
+      wavesurfer.load(audio, peaks)
     }
 
-    let sourceHandler = changeSource(this, hls, wavesurfer, audio, id, typeOfResource)
+    const sourceHandler = changeSource(this, hls, wavesurfer, audio, id, typeOfResource)
     window.addEventListener('set_audio_player_src', sourceHandler)
 
-    let jumpHandler = jumpTo(audio)
+    const jumpHandler = jumpTo(audio)
     window.addEventListener('jump_to_audio_time', jumpHandler)
 
     this.setState({
@@ -292,7 +291,7 @@ export default class MediaPlayer extends Component {
   }
 }
 
-const changeSource = (component, hls, wavesurfer, audio, typeOfResource) => (e) => {
+const changeSource = (component, hls, wavesurfer, audio, id, typeOfResource) => (e) => {
   const { src, peaks } = e.detail
   const { mapped } = component.state
 
@@ -300,22 +299,17 @@ const changeSource = (component, hls, wavesurfer, audio, typeOfResource) => (e) 
   hls.loadSource(src)
   hls.attachMedia(audio)
 
-  let wavesurfer
-  if (typeOfResource === "audio") {
-    wavesurfer.load(audio, peaks);
+  if (typeOfResource === 'audio' || typeOfResource === 'text') {
+    wavesurfer.load(audio, peaks)
   }
 
-  component.setState({
-    playing: false,
-  })
+  component.setState({ playing: false })
 
   audio.oncanplay = () => {
     audio.volume = component.state.volume
     audio.play()
 
-    component.setState({
-      playing: true
-    })
+    component.setState({ playing: true })
   }
 }
 
