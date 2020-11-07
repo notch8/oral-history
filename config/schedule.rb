@@ -19,6 +19,8 @@
 
 # Learn more: http://github.com/javan/whenever
 
+env 'BASH_ENV', '/container.env'
+
 every 12.hours do
   rake "import"
 end

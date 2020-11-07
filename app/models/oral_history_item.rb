@@ -66,8 +66,11 @@ class OralHistoryItem
         total += 1
         break if total >= limit
       end
+      # Hard commit now that we are done adding items, before we remove anything
+      SolrService.commit
       #verify there is no limit argument which would allow deletion of all records after the limit
       if args[:limit] == 20000000
+
         remove_deleted_records(new_record_ids)
       end
       return total
@@ -316,12 +319,7 @@ class OralHistoryItem
   end
 
   def self.all_ids
-    return @all_ids if @all_ids.present?
-    @all_ids ||= []
-    SolrService.all_records do |record|
-      @all_ids << record["id"]
-    end
-    @all_ids
+    @all_ids ||= SolrService.all_ids
   end
 
   def generate_peaks
