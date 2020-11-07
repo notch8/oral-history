@@ -31,14 +31,14 @@ class SolrService
     end
 
     file = Faraday::UploadIO.new(path, 'application/octet-stream')
-    
-    payload = { 
-      'file' => file, 
-      'extractOnly' => true, 
+
+    payload = {
+      'file' => file,
+      'extractOnly' => true,
       'extractFormat' => 'text',
       'wt' => 'json'
     }
-    
+
     raw_response = conn.post('update/extract', payload).body
     JSON.parse(raw_response) if raw_response.present?
   end
@@ -52,6 +52,13 @@ class SolrService
     connect unless @@connection
     @@connection.delete_by_query('*:*')
     @@connection.commit
+  end
+
+  def self.all_ids
+    connect unless @@connection
+
+    res = @@connection.get("select", params: { rows: 2_000_000_000, fl: 'id' })
+    res&.[]('response')&.[]('docs')&.map { |v| v['id'] }
   end
 
   def self.all_records
