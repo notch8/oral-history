@@ -307,9 +307,12 @@ class OralHistoryItem
 
   def self.remove_deleted_records(new_record_ids)
     current_records = all_ids
+    File.write(Rails.root.join('log', 'in_solr.json'), all_ids.to_json)
+    File.write(Rails.root.join('log', 'new_ids.json'), new_record_ids.to_json)
     new_record_ids.each do |id|
       current_records.delete(id)
     end
+    File.write(Rails.root.join('log', 'to_delete.json'), current_records.to_json)
     if current_records.present?
       current_records.each do |id|
         SolrService.delete_by_id(id)
