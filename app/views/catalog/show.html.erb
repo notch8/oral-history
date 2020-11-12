@@ -1,5 +1,7 @@
 <div class="container">
 
+  <%= render_document_sidebar_partial @document %>
+
   <% if current_search_session %>
     <div id="appliedParams" class="clearfix constraints-container pull-right">
       <%= render 'start_over' %>
@@ -7,14 +9,5 @@
     </div>
   <% end %>
 
-  <div id="content" class="full-width">
-    <%= render_document_main_content_partial %>
-  </div>
-
-  <div id="sidebar" class="<%= show_sidebar_classes %>">
-    <% content_for(:sidebar) do %>
-      <%= render_document_sidebar_partial @document %>
-    <% end %>
-  </div>
-
+  <%= render_document_main_content_partial %>
 </div>

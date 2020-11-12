@@ -659,11 +659,26 @@ h2.facets-heading {
         padding:5px 15px;
       }
     }
-
-    .nav > li > a {
-      padding:0;
-    }
   }
+}
+
+.show-tools {
+  width: 250px;
+}
+
+.list-group-item.tools-links {
+  border: none;
+  padding: 5px 0 0 0;
+}
+
+.tools-links a {
+  color: #003B5C !important;
+}
+
+.tools-links:hover, .tools-links:focus {
+  color: #003B5C !important;
+  background-color: #ffe800;
+  text-decoration: none;
 }
 
 
