@@ -32,6 +32,23 @@ module ApplicationHelper
     from_helper "peaks_t", document
   end
 
+  def search_match(parsed_children, q)
+    matches = []
+    parsed_children.each do |child|
+      match = {}
+      regex = Regexp.new("\\b(#{Regexp.escape(q)})\\b", Regexp::IGNORECASE | Regexp::MULTILINE)
+      if regex =~ child['description_t']
+        match['search_match'] = true
+        match['highlighted_description'] = child['description_t'].gsub(regex, '<span class="label label-warning">\1</span>')
+      else
+        match['search_match'] = false
+        match['highlighted_description'] = child['description_t']
+      end
+      matches << match
+    end
+    matches
+  end
+
   def index_filter options={}
     "<span><p>#{ options[:value][0] }...</p></span>".html_safe
   end

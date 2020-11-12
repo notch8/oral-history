@@ -246,18 +246,16 @@ class CatalogController < ApplicationController
   # Currently using Blacklight 7.10 default show method
   # TODO(April): update highlighting on show page
 
-  # def show
-  #   search_service = Blacklight::SearchService.new(config: blacklight_config, user_params: params)
-  #   @response, @document = search_service.fetch params[:id], {
-  #     :"hl.q" => current_search_session.try(:query_params).try(:[], "q"),
-  #     :df => blacklight_config.try(:default_document_solr_params).try(:[], :"hl.fl")
-  #   }
-  #   respond_to do |format|
-  #     format.html { setup_next_and_previous_documents }
-  #     format.json { render json: { response: { document: @document } } }
-  #     additional_export_formats(@document, format)
-  #   end
-  # end
+  def show
+    deprecated_response, @document = search_service.fetch(params[:id])
+    @response = ActiveSupport::Deprecation::DeprecatedObjectProxy.new(deprecated_response, 'The @response instance variable is deprecated; use @document.response instead.')
+
+    respond_to do |format|
+      format.html { @search_context = setup_next_and_previous_documents }
+      format.json
+      additional_export_formats(@document, format)
+    end
+  end
 
   # override from blacklight 6.12 to handle captcha
   def email
