@@ -14,7 +14,7 @@
               <%= link_to_document document, document_show_link_field(document), counter: count %>
             </h3>
           </div>
-          <p>Results Found: <%= document.response['highlighting'][document.id]['transcripts_t']&.count %></p>
+
           <% highlit[1].each_with_index do |value, k| %>
             <div
               <%# TODO(k8): ask Lea Ann if we need count here bc it doesn't increment %>
