@@ -1,0 +1,10 @@
+<%# Override Blacklight v7.10 to to add startover and render constraints into the layout %>
+<% if Deprecation.silence(Blacklight::RenderConstraintsHelperBehavior) { query_has_constraints? } %>
+  <div id="appliedParams" class="clearfix constraints-container">
+    <h2 class="sr-only"><%= t('blacklight.search.search_constraints_header') %></h2>
+
+    <%= render 'start_over' %>
+    <span class="constraints-label"><%= t('blacklight.search.filters.title') %></span>
+    <%= render_constraints(controller.params != params ? params : search_state) %>
+  </div>
+<% end %>
