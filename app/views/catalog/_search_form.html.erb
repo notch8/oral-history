@@ -7,11 +7,10 @@
       <label for="search_field" class="sr-only"><%= t('blacklight.search.form.search_field.label') %></label>
       <%= select_tag("search_params", options_for_select(["Full Text", "Interview Information"], :selected => params[:search_params]), id: "search_field", class: "search_field custom-select") %>
     </span>
-
-    <span class="input-group-btn">
+    <span class="input-group-btn input-group-append">
       <button type="submit" class="btn btn-primary search-btn" id="search">
         <span class="submit-search-text">Search </span>
-        <span class="glyphicon glyphicon-search"></span>
+        <span class="font-awesome-search"></span>
       </button>
     </span>
   </div>

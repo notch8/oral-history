@@ -47,6 +47,10 @@ Rails.application.routes.draw do
     concerns [:exportable, :marc_viewable]
   end
 
+  resource :bookmarks, only: [:index], as: 'bookmarks', path: '/bookmarks', controller: 'bookmarks' do
+    concerns :searchable
+  end
+
   resources :bookmarks do
     concerns :exportable
 

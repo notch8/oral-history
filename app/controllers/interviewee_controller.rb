@@ -11,7 +11,7 @@ class IntervieweeController < ApplicationController
     config.index.display_type_field = 'format'
 
 #    config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
-    
+
     config.add_facet_field 'interviewee_sort', label: 'Interviewee List', :query => {
                              :a => { label: 'A', fq: "interviewee_sort:/A.*/" },
                              :b => { label: 'B', fq: "interviewee_sort:/B.*/" },
@@ -48,9 +48,20 @@ class IntervieweeController < ApplicationController
 
     config.add_field_configuration_to_solr_request!
 
+    config.add_results_collection_tool(:sort_widget)
+    config.add_results_collection_tool(:per_page_widget)
+    config.add_results_collection_tool(:view_type_group)
+
+    config.add_show_tools_partial(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_show_tools_partial(:email, callback: :email_action, validator: :validate_email_params)
+    config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :validate_sms_params)
+    config.add_show_tools_partial(:citation)
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
+
   end
 
- 
+
 #  def index
 #
 #  end
