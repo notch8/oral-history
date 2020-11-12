@@ -68,14 +68,14 @@ module ApplicationHelper
   end
 
   def audio_icon options={}
-    "<span class='glyphicon #{ options[:value][0] == "T" || options[:value][0] == true ? 'glyphicon-headphones' : 'glyphicon-ban-circle' }'></span>".html_safe
+    "<span class='#{ options[:value][0] == "T" || options[:value][0] == true ? 'font-awesome-headphones' : 'font-awesome-no' }'></span>".html_safe
   end
 
   def audio_icon_with_text options={}
     if options == "false"
-      "<span class='glyphicon glyphicon-ban-circle' style='margin-left: 1em;'></span>&nbsp;no".html_safe
+      "<span class='font-awesome-no style='margin-left: 1em;'></span>&nbsp;no".html_safe
     else
-      "<span class='glyphicon glyphicon-headphones' style='margin-left: 1em;'></span>&nbsp;yes".html_safe
+      "<span class='font-awesome-headphones' style='margin-left: 1em;'></span>&nbsp;yes".html_safe
     end
   end
 

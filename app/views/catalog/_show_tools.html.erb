@@ -12,18 +12,24 @@
 
   <div class="panel panel-default show-tools u-accordion__header g-pa-0" role="tab">
     <a class="d-block g-color-main g-text-underline--none--hover collapsed" href="#accordion-tools-body-0" data-toggle="collapse" data-parent="#accordion-tools" aria-expanded="false"  aria-controls="accordion-tools-body-0">
-      <div class="panel-heading">
-        <span class="u-accordion__control-icon g-ml-10">
-          <i class="fa fa-angle-right"></i>
-          <i class="fa fa-angle-down"></i>
-        </span>
-        <%= t('blacklight.tools.title') %>
+
+      <div class="panel-heading card show-tools">
+
+        <div class="card-header">
+          <h2 class="mb-0 h6"><%= t('blacklight.tools.title') %>
+            <span class="u-accordion__control-icon g-ml-10">
+              <i class="fa fa-angle-right"></i>
+              <i class="fa fa-angle-down"></i>
+            </span>
+          </h2>
+        </div>
+
       </div>
     </a>
     <div id="accordion-tools-body-0" class="collapse panel-body" role="tabpanel" aria-labelledby="accordion-tools-heading-0">
-      <ul class="nav">
+      <ul class="nav list-group list-group-flush">
         <%= render_show_doc_actions @document do |config, inner| %>
-          <li class="<%= config.key %>">
+          <li class="list-group-item tools-links <%= config.key %>">
             <%= inner %>
           </li>
         <% end %>

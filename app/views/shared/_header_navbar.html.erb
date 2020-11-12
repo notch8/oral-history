@@ -1,24 +1,24 @@
-<div id="header-navbar" class="navbar navbar-static-top g-bg-blue" role="navigation">
+<nav id="header-navbar" class="navbar custom-toggler navbar-expand-md navbar-static-top g-bg-blue">
   <div class="<%= container_classes %>">
     <div class="navbar-header">
-    <button type="button" class="navbar-toggle btn collapsed" data-toggle="collapse" data-target="#user-util-collapse">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <%= render partial: '/logo' %>
+
+      <%= render partial: '/logo' %>
+
+      <a class="navbar-toggler" type="button" data-toggle="collapse" data-target="#user-util-collapse" aria-controls="user-util-collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="custom-toggler navbar-toggler-icon"></span>
+      </a>
 
     </div>
 
-    <div class="collapse navbar-collapse" id="user-util-collapse">
-      <%= render :partial=>'/user_util_links' %>
+    <div class="collapse navbar-collapse justify-content-md-end" id="user-util-collapse">
+      <%= render 'shared/user_util_links' %>
     </div>
+
   </div>
-</div>
+</nav>
 
 <% if has_search_parameters? %>
-  <div id="search-navbar" class="navbar navbar-default navbar-static-top" role="navigation">
+  <div id="search-navbar" class="navbar navbar-light navbar-static-top" role="navigation">
     <div class="<%= container_classes %>">
       <%= render_search_bar  %>
     </div>
@@ -26,4 +26,3 @@
 <% end %>
 
 <%= render :partial => '/shared/ie_message'%>
-

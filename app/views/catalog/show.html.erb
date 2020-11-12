@@ -1,9 +1,20 @@
 <div class="container">
-  <div id="content" class="<%= show_content_classes %>">
+
+  <% if current_search_session %>
+    <div id="appliedParams" class="clearfix constraints-container pull-right">
+      <%= render 'start_over' %>
+      <%= link_back_to_catalog class: 'btn' %>
+    </div>
+  <% end %>
+
+  <div id="content" class="full-width">
     <%= render_document_main_content_partial %>
   </div>
 
   <div id="sidebar" class="<%= show_sidebar_classes %>">
-     <%= render_document_sidebar_partial %>
+    <% content_for(:sidebar) do %>
+      <%= render_document_sidebar_partial @document %>
+    <% end %>
   </div>
+
 </div>
