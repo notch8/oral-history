@@ -8,9 +8,16 @@ class OralHistoryItem
     if attr.is_a?(Hash)
       @attributes = attr.with_indifferent_access
     else
-      @attributes = attr.to_h
+      @attributes = attr.to_h.with_indifferent_access
     end
   end
+
+  def self.index_logger
+    logger           = ActiveSupport::Logger.new(Rails.root.join('log', "indexing.log"))
+    logger.formatter = Logger::Formatter.new
+    @@index_logger ||= ActiveSupport::TaggedLogging.new(logger)
+  end
+
 
   def self.client(args)
     url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
@@ -49,12 +56,17 @@ class OralHistoryItem
         begin
           history = process_record(record)
           history.index_record
+          if history.id
+            new_record_ids << history.id
+          else
+            OralHistoryItem.index_logger.info("ID is nil for #{history.inspect}")
+          end
           if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.should_process_peaks?
             ProcessPeakJob.perform_later(history.id)
           end
-          new_record_ids << history.id
         rescue => exception
           Raven.capture_exception(exception)
+          OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
         end
         if true
           yield(total) if block_given?
@@ -70,12 +82,12 @@ class OralHistoryItem
       SolrService.commit
       #verify there is no limit argument which would allow deletion of all records after the limit
       if args[:limit] == 20000000
-
         remove_deleted_records(new_record_ids)
       end
       return total
     rescue => exception
       Raven.capture_exception(exception)
+      OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
     ensure
       remove_import_tmp_file
     end
@@ -89,6 +101,9 @@ class OralHistoryItem
       ProcessPeakJob.perform_later(history.id)
     end
     return history
+  rescue => exception
+    Raven.capture_exception(exception)
+    OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
   end
 
   def self.process_record(record)
