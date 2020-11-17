@@ -8,7 +8,7 @@ class OralHistoryItem
     if attr.is_a?(Hash)
       @attributes = attr.with_indifferent_access
     else
-      @attributes = attr.to_h
+      @attributes = attr.to_h.with_indifferent_access
     end
   end
 
