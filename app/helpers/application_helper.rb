@@ -37,7 +37,7 @@ module ApplicationHelper
     parsed_children.each do |child|
       match = {}
       regex = Regexp.new("\\b(#{Regexp.escape(q)})\\b", Regexp::IGNORECASE | Regexp::MULTILINE) if q.present?
-      if regex  && regex =~ child['description_t']
+      if regex &&  regex =~ child['description_t']
         match['search_match'] = true
         match['highlighted_description'] = child['description_t'].gsub(regex, '<span class="label label-warning">\1</span>')
       else
