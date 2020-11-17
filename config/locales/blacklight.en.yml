@@ -3,3 +3,9 @@ en:
     application_name: 'Oral Histories'
     tools:
       citation: 'Copy List'
+    search:
+      per_page:
+        button_label_html: '%{count} per page'
+      sort:
+        label_html: 'Sort by %{field}'
+

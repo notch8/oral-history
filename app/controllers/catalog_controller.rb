@@ -3,6 +3,7 @@ class CatalogController < ApplicationController
 
   include Blacklight::Catalog
   include Blacklight::Marc::Catalog
+  include Blacklight::DefaultComponentConfiguration
   before_action :setup_negative_captcha, only: [:email]
 
   configure_blacklight do |config|
@@ -115,32 +116,32 @@ class CatalogController < ApplicationController
     config.add_index_field 'extent_t', label: 'Length', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'language_t', label: 'Language', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }, helper_method: 'audio_icon'
-    # config.add_index_field 'title_t', label: 'Title', highlight: true, solr_params: { :"hl.alternateField" => "dd" } 
-    # config.add_index_field 'series_t', label: 'Series Name', highlight: true, solr_params: { :"hl.alternateField" => "dd" } 
-    config.add_index_field 'description_t', label: 'Description', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 100, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter' 
-    config.add_index_field 'abstract_t', label: 'Series Statement', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 100, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter' 
+    # config.add_index_field 'title_t', label: 'Title', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    # config.add_index_field 'series_t', label: 'Series Name', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    config.add_index_field 'description_t', label: 'Description', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 100, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter'
+    config.add_index_field 'abstract_t', label: 'Series Statement', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 100, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter'
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'subtitle_t', label: 'Subtitle', highlight: true
-    config.add_show_field 'series_t', label: 'Series', link_to_search: "series_facet", highlight: true, helper_method: 'highlightable_series_link'
-    config.add_show_field 'subject_t', label: 'Topic', helper_method: :split_multiple, highlight: true
-    config.add_show_field 'contributor_display', label: 'Interviewer', highlight: true
-    config.add_show_field 'author_t', label: 'Interviewer', highlight: true
-    config.add_show_field 'interviewee_t', label: 'Interviewee', highlight: true
-    config.add_show_field 'person_present_t', label: 'Persons Present', highlight: true
-    config.add_show_field 'place_t', label: 'Place Conducted', highlight: true
-    config.add_show_field 'supporting_documents_t', label: 'Supporting Documents', highlight: true
-    config.add_show_field 'interviewer_history_t', label: 'Interviewer Background and Preparation', highlight: true
-    config.add_show_field 'process_interview_t', label: 'Processing of Interview', highlight: true
-    config.add_show_field 'publisher_display', label: 'Publisher', highlight: true
-    config.add_show_field 'pub_date', label: 'Date', highlight: true
-    config.add_show_field 'extent_t', label: 'Length', highlight: true
+    config.add_show_field 'series_t', label: 'Series', highlight: true, link_to_search: "series_facet", helper_method: 'highlightable_series_link'
+    config.add_show_field 'subject_t', label: 'Topic', highlight: true, helper_method: :split_multiple
+    config.add_show_field 'contributor_display', highlight: true, label: 'Interviewer'
+    config.add_show_field 'author_t', highlight: true, label: 'Interviewer'
+    config.add_show_field 'interviewee_t', highlight: true, label: 'Interviewee'
+    config.add_show_field 'person_present_t', highlight: true, label: 'Persons Present'
+    config.add_show_field 'place_t', highlight: true, label: 'Place Conducted'
+    config.add_show_field 'supporting_documents_t', highlight: true, label: 'Supporting Documents'
+    config.add_show_field 'interviewer_history_t', highlight: true, label: 'Interviewer Background and Preparation'
+    config.add_show_field 'process_interview_t', highlight: true, label: 'Processing of Interview'
+    config.add_show_field 'publisher_display', highlight: true, label: 'Publisher'
+    config.add_show_field 'pub_date', highlight: true, label: 'Date'
+    config.add_show_field 'extent_t', highlight: true, label: 'Length'
     config.add_show_field 'language_t', label: 'Language'
-    config.add_show_field 'coverage_display', label: 'Period Covered', highlight: true
-    config.add_show_field 'rights_t', label: 'Copyright', highlight: true
+    config.add_show_field 'coverage_display', highlight: true, label: 'Period Covered'
+    config.add_show_field 'rights_t', highlight: true, label: 'Copyright'
     config.add_show_field 'audio_b', label: 'Audio', helper_method: 'audio_icon'
     config.add_show_field 'links_t', label: 'Files', helper_method: 'file_links'
-    config.add_show_field 'abstract_t', label: 'Series Statement', highlight: true
+    config.add_show_field 'abstract_t', highlight: true, label: 'Series Statement'
     config.add_show_field 'interview_abstract_t', label: 'Abstract'
  #   config.add_show_field 'author_vern_display', label: 'Author'
  #   config.add_show_field 'format', label: 'Format'
@@ -241,15 +242,28 @@ class CatalogController < ApplicationController
 
   end
 
-  # Override to add highlighing to show
+  # Override to add highlighing to show - from Blacklight 6.23
+  # Currently using Blacklight 7.10 default show method
+  # TODO(April): update highlighting on show page
+
   def show
-    @response, @document = fetch params[:id], {
+    deprecated_response, @document = search_service.fetch(params[:id])
+
+    @response = ActiveSupport::Deprecation::DeprecatedObjectProxy.new(deprecated_response, 'The @response instance variable is deprecated; use @document.response instead.')
+
+    # We can not get highlight on get query, and are not getting child documents on select query
+    # so we make a second call to solr in order to get the highlight. not super efficient, but effective
+    highlight_response, highlight_document = search_service.fetch([params[:id]], {
       :"hl.q" => current_search_session.try(:query_params).try(:[], "q"),
       :df => blacklight_config.try(:default_document_solr_params).try(:[], :"hl.fl")
-    }
+    })
+
+    @response['highlighting'] = highlight_response['highlighting']
+    @document.response['highlighting'] = highlight_response['highlighting']
+
     respond_to do |format|
-      format.html { setup_next_and_previous_documents }
-      format.json { render json: { response: { document: @document } } }
+      format.html { @search_context = setup_next_and_previous_documents }
+      format.json
       additional_export_formats(@document, format)
     end
   end

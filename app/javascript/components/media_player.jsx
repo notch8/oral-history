@@ -50,7 +50,7 @@ export default class MediaPlayer extends Component {
   renderVideo = () => {
     const { image } = this.props
     const { source } = this.state
-    
+
     return (
       <div className="row player">
         <VideoPlayer
@@ -99,7 +99,7 @@ export default class MediaPlayer extends Component {
         </div>
 
         <div className='col-sm-9 wave-box'></div>
-        <div id="audioplayer" className='col-sm-9 col-sm-offset-3 progress-container'>
+        <div id="audioplayer" className='col-sm-9 offset-sm-3 progress-container'>
           <div id="timeline"
             onClick={this.handleProgressClick}
             onDragOver={this.handleProgressClick}

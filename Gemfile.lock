@@ -47,31 +47,31 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    addressable (2.7.0)
+      public_suffix (>= 2.0.2, < 5.0)
     arel (8.0.0)
-    autoprefixer-rails (10.0.0.2)
+    autoprefixer-rails (9.8.6.1)
       execjs
     bcrypt (3.1.16)
     bindex (0.8.1)
-    blacklight (6.23.0)
-      bootstrap-sass (~> 3.2)
+    blacklight (7.10.0)
       deprecation
       globalid
       jbuilder (~> 2.7)
       kaminari (>= 0.15)
-      nokogiri (~> 1.6)
-      rails (>= 4.2, < 6)
-      rsolr (>= 1.0.6, < 3)
-      twitter-typeahead-rails (= 0.11.1.pre.corejavascript)
-    blacklight-marc (6.2.0)
-      blacklight (> 6.1, < 8.a)
+      rails (>= 5.1, < 7)
+      view_component
+    blacklight-marc (7.0.0)
+      blacklight (~> 7.0)
       library_stdnums
       marc (>= 0.4.3, < 1.1)
       marc-fastxmlwriter
       rails
-      traject (~> 2.1)
-    bootstrap-sass (3.4.1)
-      autoprefixer-rails (>= 5.2.1)
-      sassc (>= 2.0.0)
+      traject (~> 3.0)
+    bootstrap (4.5.0)
+      autoprefixer-rails (>= 9.1.0)
+      popper_js (>= 1.14.3, < 2)
+      sassc-rails (>= 2.0.0)
     builder (3.2.4)
     byebug (9.1.0)
     chronic (0.10.2)
@@ -106,6 +106,8 @@ GEM
     devise-guests (0.6.0)
       devise
     diff-lcs (1.3)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
     dot-properties (0.1.3)
     edtf (3.0.4)
       activesupport (>= 3.0, < 6.0)
@@ -116,12 +118,25 @@ GEM
     faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
     ffi (1.9.18)
+    ffi-compiler (1.0.1)
+      ffi (>= 1.0.0)
+      rake
     font-awesome-rails (4.7.0.2)
       railties (>= 3.2, < 5.2)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    hashie (3.5.6)
+    hashie (4.1.0)
     highline (1.7.8)
+    http (4.4.1)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 2.2)
+      http-parser (~> 1.2.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    http-form_data (2.3.0)
+    http-parser (1.2.1)
+      ffi-compiler (>= 1.0, < 2.0)
     httpclient (2.8.3)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
@@ -159,7 +174,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.0)
       mini_mime (>= 0.1.1)
-    marc (1.0.2)
+    marc (1.0.4)
       scrub_rb (>= 1.0.1, < 2)
       unf
     marc-fastxmlwriter (1.0.0)
@@ -193,11 +208,13 @@ GEM
     options (2.3.2)
     orm_adapter (0.5.0)
     pg (0.21.0)
+    popper_js (1.16.0)
     progress_bar (1.1.0)
       highline (~> 1.6)
       options (~> 2.3.0)
     progress_job (0.0.4)
       delayed_job
+    public_suffix (4.0.6)
     puma (4.3.6)
       nio4r (~> 2.0)
     rack (2.2.3)
@@ -275,6 +292,12 @@ GEM
       tilt (>= 1.1, < 3)
     sassc (2.4.0)
       ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     scrub_rb (1.0.1)
     sentry-raven (2.7.4)
       faraday (>= 0.7.6, < 1.0)
@@ -304,13 +327,15 @@ GEM
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.8)
-    traject (2.3.3)
+    traject (3.4.0)
       concurrent-ruby (>= 0.8.0)
       dot-properties (>= 0.1.1)
-      hashie (~> 3.1)
+      hashie (>= 3.1, < 5)
+      http (>= 3.0, < 5)
       httpclient (~> 2.5)
       marc (~> 1.0)
       marc-fastxmlwriter (~> 1.0)
+      nokogiri (~> 1.9)
       slop (>= 3.4.5, < 4.0)
       yell
     turbolinks (5.0.1)
@@ -326,7 +351,9 @@ GEM
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.4)
+    unf_ext (0.0.7.7)
+    view_component (2.19.1)
+      activesupport (>= 5.0.0, < 7.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (3.7.0)
@@ -341,14 +368,15 @@ GEM
     websocket-extensions (0.1.3)
     whenever (0.10.0)
       chronic (>= 0.6.3)
-    yell (2.0.7)
+    yell (2.2.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  blacklight (~> 6.23)
-  blacklight-marc (~> 6.1)
+  blacklight (~> 7.10)
+  blacklight-marc (~> 7.0.0)
+  bootstrap (~> 4.0)
   byebug
   coffee-rails (~> 4.2)
   daemons
@@ -380,6 +408,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)
+  twitter-typeahead-rails (= 0.11.1.pre.corejavascript)
   tzinfo-data
   uglifier (>= 1.3.0)
   web-console (>= 3.7.0)

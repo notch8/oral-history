@@ -11,10 +11,10 @@
               <%= render_index_doc_actions document, wrapping_class: "index-document-functions col-sm-3 col-lg-2" %>
             <% end %>
             <h3 class="index_title document-title-heading col-md-12">
-              <%= link_to_document document, document_show_link_field(document), counter: count %>
+              <%= link_to document['title_display'], solr_document_path(document, counter: count, q: params[:q]) %>
             </h3>
           </div>
-          <p>Results Found: <%= document.response['highlighting'][document.id]['transcripts_t']&.count %></p>
+
           <% highlit[1].each_with_index do |value, k| %>
             <div
               <%# TODO(k8): ask Lea Ann if we need count here bc it doesn't increment %>

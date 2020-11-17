@@ -1,12 +1,12 @@
 <div class="container">
-  <div class="u-heading-v2-5--bottom g-brd-primary ">  
+  <div class="u-heading-v2-5--bottom g-brd-primary ">
     <h4 class="u-heading-v2__title text-uppercase g-font-weight-300 mb-0 g-mt-40">Full Text Search Results</h4>
   </div>
-  
+
   <% unless has_search_parameters? %>
     <div class="container-fluid">
       <div id="sidebar" class="<%= sidebar_classes %> padding-left-50">
-      <p>no search params</p>
+      <p>Please enter keywords into the search bar.</p>
       <%= render 'search_sidebar' %>
     </div>
   <% else %>
@@ -20,5 +20,3 @@
     <%= render 'search_results' %>
   </div>
 </div>
-
-

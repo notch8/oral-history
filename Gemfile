@@ -8,8 +8,9 @@ end
 gem 'rails', '~> 5.1.4'
 
 gem "delayed_job_web"
-gem 'blacklight', '~> 6.23'
-gem 'blacklight-marc', '~> 6.1'
+gem 'blacklight', '~> 7.10'
+gem 'blacklight-marc', '~> 7.0.0'
+gem 'bootstrap', '~> 4.0'
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw], group: [:development, :test]
 gem 'coffee-rails', '~> 4.2'
 gem 'daemons'
@@ -39,6 +40,7 @@ gem 'solr_wrapper', '>= 0.3', group: [:development, :test]
 gem 'spring', group: [:development]
 gem 'spring-watcher-listen', '~> 2.0.0', group: [:development]
 gem 'turbolinks', '~> 5'
+gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'uglifier', '>= 1.3.0'
 gem 'web-console', '>= 3.7.0', group: [:development]

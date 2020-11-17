@@ -2,12 +2,12 @@
 <footer class=" ">
   <div class="footer-row row g-bg-gray g-py-20">
     <div class="container">
-      <div class="col-md-8 border-right">
+      <div class="col-md-8 border-right float-left">
         <%= image_tag("footer_logo.svg", :alt => "UCLA Library Logo", :class => 'footer-logo') %>
         <p class="g-mt-40"> The UCLA Library creates a vibrant nexus of ideas, collections, expertise, and spaces in which users illuminate solutions for local and global challenges. We constantly evolve to advance UCLA’s research, education, and public service mission by empowering and inspiring communities of scholars and learners to discover, access, create, share, and preserve knowledge.</p>
       </div>
 
-      <div class="col-md-2 padding-top border-left">
+      <div class="col-md-2 padding-top border-left float-left">
         <ul class="list-unstyled">
           <li><a class="footer-link" href="http://www.library.ucla.edu/about">About the UCLA Library</a></li>
 
@@ -16,7 +16,7 @@
           <li><a class="footer-link" href="http://www.library.ucla.edu/give">Giving to UCLA Library</a></li>
         </ul>
       </div>
-      <div class="col-md-2 padding-top border-left">
+      <div class="col-md-2 padding-top border-left float-left">
         <ul class="list-unstyled">
           <li><a class="footer-link" href="http://www.ucla.edu/">UCLA Homepage</a></li>
           <li><a class="footer-link" href="http://www.library.ucla.edu/about/jobs-ucla-library">Jobs @ UCLA Library</a></li>
@@ -29,9 +29,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12 text-center text-md-left g-mb-10 g-mb-0--md">
-          <div class="d-lg-flex">
-            <small class="text-center d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md">© <%= Time.now.year %> UCLA Library | Center for Oral History Research | <%= link_to 'Admin', admin_path, :class => 'admin-footer-link' %></small>
-          </div>
+          <small class="text-center d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md">© <%= Time.now.year %> UCLA Library | Center for Oral History Research | <%= link_to 'Admin', admin_path, :class => 'admin-footer-link' %></small>
         </div>
       </div>
     </div>

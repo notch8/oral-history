@@ -14,7 +14,7 @@
         <%= t('blacklight.search.documents.counter', counter: counter) %>
       </span>
     <% end %>
-    <%= link_to_document document, document_show_link_field(document), counter: counter %>
+    <%= link_to document['title_display'], solr_document_path(document, counter: counter, q: params[:q]) %>
   </h3>
 
   <%= document_actions %>

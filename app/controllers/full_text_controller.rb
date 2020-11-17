@@ -5,11 +5,11 @@ class FullTextController < ApplicationController
   include Blacklight::Marc::Catalog
 
   configure_blacklight do |config|
-    
+
     config.default_solr_params = {
-      rows: 5,
+      rows: 1,
       :"hl" => true,
-      :"hl.fl" => ["description_t", "transcripts_t"],
+      :"hl.fl" => ["transcripts_t"],
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
       :"hl.snippets" => 30,
@@ -21,7 +21,7 @@ class FullTextController < ApplicationController
     # solr field configuration for search results/index views
     config.index.title_field = 'title_display'
     config.index.display_type_field = 'format'
-    
+
     config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
     config.add_facet_field 'language_facet', label: 'Language', limit: true
     config.add_facet_field 'series_facet', label: 'Series'
@@ -32,9 +32,8 @@ class FullTextController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field 'transcripts_t', label: 'Transcript', highlight: true, helper_method: :split_multiple
-    config.add_index_field 'description_t', label: 'Description', highlight: true 
-    
-    config.add_search_field 'all_fields', label: 'All Fields'
+
+    config.add_search_field 'transcripts_t', label: 'Transcripts'
 
     config.add_search_field('title') do |field|
       field.solr_parameters = { :'spellcheck.dictionary' => 'title' }
@@ -49,9 +48,9 @@ class FullTextController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
     config.add_sort_field 'score desc, pub_date_sort desc, title_sort asc', label: 'Relevance'
-    config.add_sort_field 'series_sort asc, title_sort asc', label: 'Series'
-    config.add_sort_field 'interviewee_sort asc, title_sort asc', label: 'Interviewee'
-    config.add_sort_field 'language_sort asc, title_sort asc', label: 'Language'
+    # config.add_sort_field 'series_sort asc, title_sort asc', label: 'Series'
+    # config.add_sort_field 'interviewee_sort asc, title_sort asc', label: 'Interviewee'
+    # config.add_sort_field 'language_sort asc, title_sort asc', label: 'Language'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
@@ -63,6 +62,17 @@ class FullTextController < ApplicationController
 
     config.add_field_configuration_to_solr_request!
 
+    config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_results_collection_tool(:sort_widget)
+    config.add_results_collection_tool(:per_page_widget)
+    config.add_results_collection_tool(:view_type_group)
+    config.add_show_tools_partial(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_show_tools_partial(:email, callback: :email_action, validator: :validate_email_params)
+    config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :validate_sms_params)
+    config.add_show_tools_partial(:citation)
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
+
   end
 
   # Override index method
@@ -70,10 +80,10 @@ class FullTextController < ApplicationController
   def index
     #this is the number of rows to return (documents)
     params[:rows] = 1
-    
+
     # highlight_page is what we want to use for our pagination ( or load_more option )
     # we start highlight page at 1 and it increments in the view
-    @highlight_page = params[:highlight_page] || 1 
+    @highlight_page = params[:highlight_page] || 1
     @highlight_page = @highlight_page.to_i
 
     # highlight count is how many highlights we are displaying on each page
@@ -95,13 +105,14 @@ class FullTextController < ApplicationController
     @document_list = []
 
     while(highlight_count < (50 * @highlight_page) && results_count > 0) do
-      
+
       # page number sent from solr
       params[:page] = @results_page
 
       # gets the response and documents from params
-      (@response, @documents) = search_results(params)
-      
+      search_service = Blacklight::SearchService.new(config: blacklight_config, user_params: params)
+      (@response, @documents) = search_service.search_results
+
       # these are docs returned in params, the number of docs returned is equal to the value of params[:rows]
       @document_list += @documents
 
@@ -110,25 +121,24 @@ class FullTextController < ApplicationController
 
       # this is an array of records with highlight matches on transcript_t and description_t
       # [ { highlighting: { doc: [transcript_t, description_t] } } ]
-      highlights = @response['highlighting'].values 
+      highlights = @response['highlighting'].values
 
-      # adds the total number of highlights in @response['highlighting'].values 
+      # adds the total number of highlights in @response['highlighting'].values
       highlights.each { |t| highlight_count += t['transcripts_t'].count unless t['transcripts_t'].nil? }
-      highlights.each { |t| highlight_count += t['description_t'].count unless t['description_t'].nil? } 
-      
+
       # increments the results page at end of the iteration
       #this should then make this page 2, the second group of params[:rows]
-      @results_page += 1 
+      @results_page += 1
     end
 
-    @more = (results_count > 0) 
+    @more = (results_count > 0)
 
     respond_to do |format|
-      format.html do |html| 
+      format.html do |html|
         if params[:partial]
-          render partial: 'document_list', locals: { documents: @document_list } 
+          render partial: 'document_list', locals: { documents: @document_list }
         else
-          store_preferred_view 
+          store_preferred_view
         end
       end
       format.rss  { render :layout => false }
