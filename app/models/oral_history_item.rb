@@ -12,6 +12,13 @@ class OralHistoryItem
     end
   end
 
+  def self.index_logger
+    logger           = ActiveSupport::Logger.new(Rails.root.join('log', "indexing.log"))
+    logger.formatter = Logger::Formatter.new
+    @@index_logger ||= ActiveSupport::TaggedLogging.new(logger)
+  end
+
+
   def self.client(args)
     url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
     OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
@@ -49,12 +56,17 @@ class OralHistoryItem
         begin
           history = process_record(record)
           history.index_record
+          if history.id
+            new_record_ids << history.id
+          else
+            OralHistoryItem.index_logger.info("ID is nil for #{history.inspect}")
+          end
           if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.should_process_peaks?
             ProcessPeakJob.perform_later(history.id)
           end
-          new_record_ids << history.id
         rescue => exception
           Raven.capture_exception(exception)
+          OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
         end
         if true
           yield(total) if block_given?
@@ -66,6 +78,8 @@ class OralHistoryItem
         total += 1
         break if total >= limit
       end
+      # Hard commit now that we are done adding items, before we remove anything
+      SolrService.commit
       #verify there is no limit argument which would allow deletion of all records after the limit
       if args[:limit] == 20000000
         remove_deleted_records(new_record_ids)
@@ -73,6 +87,7 @@ class OralHistoryItem
       return total
     rescue => exception
       Raven.capture_exception(exception)
+      OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
     ensure
       remove_import_tmp_file
     end
@@ -86,6 +101,9 @@ class OralHistoryItem
       ProcessPeakJob.perform_later(history.id)
     end
     return history
+  rescue => exception
+    Raven.capture_exception(exception)
+    OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
   end
 
   def self.process_record(record)
@@ -304,9 +322,12 @@ class OralHistoryItem
 
   def self.remove_deleted_records(new_record_ids)
     current_records = all_ids
+    File.write(Rails.root.join('log', 'in_solr.json'), all_ids.to_json)
+    File.write(Rails.root.join('log', 'new_ids.json'), new_record_ids.to_json)
     new_record_ids.each do |id|
       current_records.delete(id)
     end
+    File.write(Rails.root.join('log', 'to_delete.json'), current_records.to_json)
     if current_records.present?
       current_records.each do |id|
         SolrService.delete_by_id(id)
@@ -316,12 +337,7 @@ class OralHistoryItem
   end
 
   def self.all_ids
-    return @all_ids if @all_ids.present?
-    @all_ids ||= []
-    SolrService.all_records do |record|
-      @all_ids << record["id"]
-    end
-    @all_ids
+    @all_ids ||= SolrService.all_ids
   end
 
   def generate_peaks
