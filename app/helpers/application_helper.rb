@@ -49,6 +49,22 @@ module ApplicationHelper
     matches
   end
 
+  def highlight_transcripts(parsed_transcripts, q)
+    highlighted_transcripts = []
+    parsed_transcripts.each do |child|
+      regex = Regexp.new("\\b(#{Regexp.escape(q)})\\b", Regexp::IGNORECASE | Regexp::MULTILINE) if q.present?
+      if regex && regex =~ child['transcript_t']
+        child['search_match'] = true
+        child['highlighted_transcript'] = child['transcript_t'].gsub(regex, '<span class="label label-warning">\1</span>')
+      else
+        child['search_match'] = false
+        child['highlighted_transcript'] = child['transcript_t']
+      end
+      highlighted_transcripts << child
+    end
+    highlighted_transcripts
+  end
+
   def index_filter options={}
     "<span><p>#{ options[:value][0] }...</p></span>".html_safe
   end

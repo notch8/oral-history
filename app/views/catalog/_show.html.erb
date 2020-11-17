@@ -3,6 +3,7 @@
 <% end %>
 <div class="container">
   <% parsed_transcripts = transcripts_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if transcripts_from(document) %>
+  <% highlighted_parsed_transcripts = highlight_transcripts(parsed_transcripts, params[:q]) if transcripts_from(document) %>
   <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document) %>
   <% search_matches = search_match(parsed_children, params[:q]) if children_from(document) %>
   <% parsed_peaks = peaks_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if peaks_from(document) %>
@@ -12,7 +13,7 @@
     id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'),
     src: parsed_children.try(:first).try(:[], "url_t"),
     peaks: parsed_peaks.try(:first).try(:[], "peaks"),
-    transcript: parsed_transcripts.try(:first).try(:[], "transcript_t"),
+    transcript: highlighted_parsed_transcripts.try(:first).try(:[], "highlighted_transcript"),
     image: narrator_image(document),
     typeOfResource: type_of_resource(document),
   ) %>
@@ -21,7 +22,7 @@
 
 <div class="container">
   <%= react_component('FileView',
-                      transcript: parsed_transcripts.try(:first).try(:[], "transcript_t"),
+                      transcript: highlighted_parsed_transcripts.try(:first).try(:[], "highlighted_transcript"),
                       userQuery: @user_query
   ) %>
 </div>
@@ -87,7 +88,7 @@
 
                 </a>
 
-                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: parsed_peaks ? parsed_peaks[i]["peaks"] : '', transcript: parsed_transcripts ? parsed_transcripts[i]["transcript_t"] : '' ) %>
+                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: parsed_peaks ? parsed_peaks[i]["peaks"] : '', transcript: highlighted_parsed_transcripts ? highlighted_parsed_transcripts[i]["highlighted_transcript"] : '' ) %>
               </h5>
             </div>
             <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
