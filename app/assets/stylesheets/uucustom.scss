@@ -241,8 +241,11 @@ body.blacklight-interviewee.blacklight-interviewee-index h3.index_title.document
 #header-navbar .navbar-brand {
   background-image: image-url('logo.svg');
   background-position: left center;
+  background-size: 150px auto;
   overflow: visible;
   background-repeat: no-repeat;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
 }
 
 .dropdown-toggle:hover, .dropdown-toggle:focus, .nav-link:hover, .nav-link:focus, #bookmarks_nav .badge-secondary:hover, #bookmarks_nav .badge-secondary:focus {
@@ -310,7 +313,7 @@ body.blacklight-interviewee.blacklight-interviewee-index h3.index_title.document
 
 .subhead {
   color: #fff;
-  padding-left: 160px;
+  padding-left: 145px;
   font-size: 16px;
   font-family: "Times New Roman";
 }
