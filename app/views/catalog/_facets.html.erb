@@ -22,16 +22,10 @@
     <%= render_facet_partials %>
   </div>
 
-  <div class="card panel panel-default facet_limit facet-limit blacklight-format">
+  <div class="card facet_limit facet-limit">
     <div class="collapsed collapse-toggle panel-heading" data-toggle="collapse">
       <h3 class="card-header p-0 panel-title">
-        <button
-            class="btn btn-block p-2 text-left collapse-toggle collapsed"
-            data-toggle="collapse"
-            data-target="#facet-format"
-            aria-expanded="false"
-        >
-          <%= link_to facet_field_label("browse by interviewees").titleize, "/interviewee", :"data-no-turbolink" => true %>
+        <%= button_to facet_field_label("browse by interviewees").titleize, "/interviewee", :"data-no-turbolink" => true, class: "btn btn-block p-2 text-left" %>
       </h3>
     </div>
   </div>
