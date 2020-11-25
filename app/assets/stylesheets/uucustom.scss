@@ -549,7 +549,7 @@ button.btn.btn-outline-secondary.dropdown-toggle {
 
   /* FACETS */
 
-.panel-title a{
+.panel-title a, .facet-field-heading a{
   text-decoration: none;
   color: inherit;
 }
@@ -612,6 +612,18 @@ h2.facets-heading {
     color: #fff !important;
     background-color: #1e4b87;
     border-color: #1e4b87;
+}
+
+.bg-success, .facet-limit-active .card-header {
+    background-color: #1e4b87 !important;
+}
+
+.border-success, .facet-limit-active {
+  border-color: #1e4b87 !important;
+}
+
+.bg-success .btn, .facet-limit-active .card-header .btn {
+  color: #fff !important;
 }
 
 .panel-success, .facet_limit-active {
