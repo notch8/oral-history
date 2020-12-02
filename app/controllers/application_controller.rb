@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
   before_action :set_raven_context
-  before_action :authenticate_for_staging
+  #before_action :authenticate_for_staging
 
   private
   def authenticate_for_staging
