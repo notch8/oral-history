@@ -2,7 +2,7 @@
   <% component.with(:label) do %>
 
       <% if facet_field_label(facet_field.key) == 'Series' %>
-          <%= link_to facet_field_label(facet_field.key) %>
+          <%= facet_field_label(facet_field.key) %>
           <span class="font-awesome-question-circle series-tooltip">
             <span class="series-tooltip-text">A series is a group of interviews that were designed and conducted as a whole. They document a specific phenomenon or community, were usually completed within a limited time period, and were often conducted by the same interviewer.</span>
           </span>
