@@ -48,7 +48,6 @@
   <requestHandler name="/update" class="solr.UpdateRequestHandler">
     <lst name="defaults">
       <str name="update.chain">add_modify_fields</str>
-
     </lst>
   </requestHandler>
 
@@ -267,6 +266,7 @@
          subtitle_vern_display,
          url_fulltext_display,
          url_suppl_display,
+         hashed_id_ssi
       </str>
 
       <str name="facet">true</str>
