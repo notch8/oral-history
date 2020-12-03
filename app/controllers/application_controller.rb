@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   private
   def authenticate_for_staging
-    if !request.format.to_s.match('json') && !params[:print] && !request.path.include?('api') && !request.path.include?('pdf')
+    if ENV['USE_HTTP_BASIC'] && !request.format.to_s.match('json') && !params[:print] && !request.path.include?('api') && !request.path.include?('pdf')
       authenticate_or_request_with_http_basic do |username, password|
         username == "oralhistory" && password == "oralhistory"
       end
