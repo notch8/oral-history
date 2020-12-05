@@ -81,7 +81,7 @@ class OralHistoryItem
       # Hard commit now that we are done adding items, before we remove anything
       SolrService.commit
       #verify there is no limit argument which would allow deletion of all records after the limit
-      if args[:limit] == 20000000
+      if args[:delete]
         remove_deleted_records(new_record_ids)
       end
       return total
