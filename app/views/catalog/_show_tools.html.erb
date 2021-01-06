@@ -29,9 +29,11 @@
       <div id="accordion-tools-body-0" class="collapse panel-body" role="tabpanel" aria-labelledby="accordion-tools-heading-0">
         <ul class="nav list-group list-group-flush">
           <%= render_show_doc_actions @document do |config, inner| %>
-            <li class="list-group-item tools-links <%= config.key %>">
-              <%= inner %>
-            </li>
+            <% if config.key.to_s != 'sms' %>
+              <li class="list-group-item tools-links <%= config.key %>">
+                <%= inner %>
+              </li>
+            <% end %>
           <% end %>
         </ul>
       </div>
