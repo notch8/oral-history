@@ -5,11 +5,19 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-# Set up a default admin user, if we are in a Development environment, otherwise, skip
-if Rails.env.development? || Rails.env.test? 
-  u = User.find_or_create_by(email: ENV['ADMIN_EMAIL'] || 'admin@example.com')
-  u.password = ENV['ADMIN_PASSWORD'] || 'password'
-  u.save
-end
 
+##################################################################
+##### SEED FILE GETS RUN AUTOMATICALLY IN STAGING/PRODUCTION #####
+##################################################################
+
+# seed the database with users who can access the admin page
+[
+  { email: 'rob@notch8.com', password: 'testing123'},
+  { email: 'tbarnett@library.ucla.edu', password: 'uclaoh2019'},
+  { email: 'genosanchez@library.ucla.edu', password: 'uclaoh2019'},
+  { email: 'pghorpade@library.ucla.edu', password: 'uclaoh2019'}
+].each do |set|
+  next if User.where(email: set[:email]).first
+  user = User.create!(email: set[:email], password: set[:password])
+end
 
