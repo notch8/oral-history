@@ -23,7 +23,7 @@ class CatalogController < ApplicationController
       :"hl.fl" => "abstract_t, biographical_t, subject_t, description_t, audio_b, extent_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
-      :"hl.fragsize" => 200,
+      :"hl.fragsize" => 100,#The fragsize is set to 100 so when the index_filter method is run on the abstract_t, biographical_t, and description_t and they have search terms within that will be highlighted, it only considers 100 fragzise limit. We then use .truncate at 150 characters allowing the hl.simple.pre and hl.simple.post to insert less than the remaining 50 characters differance between 100 fragsize and 150 chars till truncate so that the classes added on hl.simple.pre and hl.simple.post will not get truncated.
     }
 
     # solr path which will be added to solr base url before the other solr params.
