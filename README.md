@@ -2,25 +2,21 @@
 
 1) Install Docker.app
 
-2) Install SC
-``` bash
-gem install stack_car
-```
+2) We recommend committing .env to your repo with good defaults. .env.development, .env.production etc can be used for local overrides and should not be in the repo.
 
-3) We recommend committing .env to your repo with good defaults. .env.development, .env.production etc can be used for local overrides and should not be in the repo.
-
-4) Confirm or configure settings.  Sub your information for the examples.
+3) Confirm or configure settings.  Sub your information for the examples.
 ``` bash
 git config --global user.name example
 git config --global user.email example@example.com
-docker login registry.gitlab.com
+docker login
 ```
+4) Create and populate `.env.development`
 
 5) Build project and start up
 
 ``` bash
-sc build
-sc up
+docker-compose --file docker-compose.yml build
+docker-compose --file docker-compose.yml up
 ```
 
 Then visit http://0.0.0.0:8000 in your browser.  You should see a rails error page suggesting a migration.
@@ -28,7 +24,7 @@ Then visit http://0.0.0.0:8000 in your browser.  You should see a rails error pa
 6) Load database and import data
 
 ``` bash
-sc be rake db:migrate import[100]
+docker-compose exec web bundle exec rake db:migrate import[100]
 ```
 
 ## Development Notes
@@ -37,14 +33,14 @@ When performing an import the system will attempt to download and process the au
 # Deploy a new release
 
 ``` bash
-sc release {staging | production} # creates and pushes the correct tags
-sc deploy {staging | production} # deployes those tags to the server
+docker build -t uclalibrary/oral-history:staging -t uclalibrary/oral-history:latest -t uclalibrary/oral-history:$(date +%Y.%m.%d) .
+docker push uclalibrary/oral-history:staging uclalibrary/oral-history:latest uclalibrary/oral-history:$(date +%Y.%m.%d)
 ```
 
-Releaese and Deployment are handled by the gitlab ci by default. See ops/deploy-app to deploy from locally, but note all Rancher install pull the currently tagged registry image
+Deployment is handled by Jenkins.
 
 # Manually deploy to staging
-In Rancher, run an Upgrade on the web and worker containers and make sure to update the branch name at the end of the strings in the "Select Image*" text box and in the TAG text box. (update with the new branch name that you would like to deploy)
+In Jenkins, select `docker_swarm_deploy` job. Use `Build with Parameters`. Select `oralhistory_test` from the `TERRA_ENV` dropdown. Start the build.
 
 # README
 
