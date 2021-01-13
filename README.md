@@ -34,42 +34,23 @@ sc be rake db:migrate import[100]
 ## Development Notes
 When performing an import the system will attempt to download and process the audio files to create the peak files. This is very CPU & time intense. Change MAKE_WAVES in your .env to false (or delete it).
 
-# Deploy a new release
+# Deploy to Staging
 
-``` bash
-sc release {staging | production} # creates and pushes the correct tags
-sc deploy {staging | production} # deployes those tags to the server
-```
+1. Visit [Rancher](https://rancher.notch8.com) (not R2, this is one of the few projects left on the original Rancher set up)
 
-Releaese and Deployment are handled by the gitlab ci by default. See ops/deploy-app to deploy from locally, but note all Rancher install pull the currently tagged registry image
+2. At the top left use the drop down menu to select `staging`
 
-# Manually deploy to staging
-In Rancher, run an Upgrade on the web and worker containers and make sure to update the branch name at the end of the strings in the "Select Image*" text box and in the TAG text box. (update with the new branch name that you would like to deploy)
+3. Expand the Oral Histories containers by pressing the `+` next to `oh`
 
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+4. Upgrade the web and worker containers - with the following steps:
+- On the right hand side select the Upgrade button, a circle with an arrow pointing up
+- The upgrade service will present a form and there is only one field that needs changed - Select Image
+- The Select Image field will pull the most recently used image and it will look something like this: registry.gitlab.com/notch8/oral_history:ebbac127
+- The letters and numbers after the colon are the commit SHA
+- Use the commit SHA from the [most recent commit](https://gitlab.com/notch8/oral_history/-/commits/master/) into the main branch and replace the old commit with the most recent commit SHA
+- Then press the Upgrade button at the bottom of the page and Rancher will redirect to the container's page
+- Rancher will spin up a new container and when it is ready the circle with the arrow will turn into a checkmark with the help text of 'Finish Upgrade'
+- Click 'Finish Upgrade' button and repeat process for worker container
 
 ## Production Notes:
 Regarding docker-compose.production.yml: The delayed_job container is for scaling out processing of peaks for all of the audio files.
