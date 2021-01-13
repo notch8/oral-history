@@ -125,6 +125,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'subtitle_t', label: 'Subtitle', highlight: true
     config.add_show_field 'series_t', label: 'Series', highlight: true, link_to_search: "series_facet", helper_method: 'highlightable_series_link'
     config.add_show_field 'subject_t', label: 'Topic', highlight: true, helper_method: :split_multiple
+    config.add_show_field 'biographical_t', label: 'Biographical Note', highlight: true, helper_method: :split_multiple
     config.add_show_field 'contributor_display', highlight: true, label: 'Interviewer'
     config.add_show_field 'author_t', highlight: true, label: 'Interviewer'
     config.add_show_field 'interviewee_t', highlight: true, label: 'Interviewee'
