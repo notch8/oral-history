@@ -66,7 +66,7 @@ module ApplicationHelper
   end
 
   def index_filter options={}
-    "<span><p>#{ options[:value][0] }...</p></span>".html_safe
+    "<span><p>#{ options[:value][0].truncate(150)}</p></span>".html_safe
   end
 
   def highlightable_series_link(options={})
@@ -106,9 +106,9 @@ module ApplicationHelper
 
   def audio_icon_with_text options={}
     if options == "false"
-      "<span class='font-awesome-no style='margin-left: 1em;'></span>&nbsp;no".html_safe
+      "<span class='font-awesome-no'></span>&nbsp;no".html_safe
     else
-      "<span class='font-awesome-headphones' style='margin-left: 1em;'></span>&nbsp;yes".html_safe
+      "<span class='font-awesome-headphones'></span>&nbsp;yes".html_safe
     end
   end
 

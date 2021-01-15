@@ -241,8 +241,11 @@ body.blacklight-interviewee.blacklight-interviewee-index h3.index_title.document
 #header-navbar .navbar-brand {
   background-image: image-url('logo.svg');
   background-position: left center;
+  background-size: 150px auto;
   overflow: visible;
   background-repeat: no-repeat;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
 }
 
 .dropdown-toggle:hover, .dropdown-toggle:focus, .nav-link:hover, .nav-link:focus, #bookmarks_nav .badge-secondary:hover, #bookmarks_nav .badge-secondary:focus {
@@ -310,7 +313,7 @@ body.blacklight-interviewee.blacklight-interviewee-index h3.index_title.document
 
 .subhead {
   color: #fff;
-  padding-left: 160px;
+  padding-left: 145px;
   font-size: 16px;
   font-family: "Times New Roman";
 }
@@ -546,7 +549,7 @@ button.btn.btn-outline-secondary.dropdown-toggle {
 
   /* FACETS */
 
-.panel-title a{
+.panel-title a, .facet-field-heading a{
   text-decoration: none;
   color: inherit;
 }
@@ -609,6 +612,18 @@ h2.facets-heading {
     color: #fff !important;
     background-color: #1e4b87;
     border-color: #1e4b87;
+}
+
+.bg-success, .facet-limit-active .card-header {
+    background-color: #1e4b87 !important;
+}
+
+.border-success, .facet-limit-active {
+  border-color: #1e4b87 !important;
+}
+
+.bg-success .btn, .facet-limit-active .card-header .btn {
+  color: #fff !important;
 }
 
 .panel-success, .facet_limit-active {
