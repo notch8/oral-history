@@ -13,6 +13,7 @@ class OralHistoryItem
   end
 
   def self.index_logger
+    return if !ENV[DEBUG_INDEXING]
     logger           = ActiveSupport::Logger.new(Rails.root.join('log', "indexing.log"))
     logger.formatter = Logger::Formatter.new
     @@index_logger ||= ActiveSupport::TaggedLogging.new(logger)
