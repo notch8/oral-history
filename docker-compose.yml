@@ -26,8 +26,8 @@ services:
       dockerfile: Dockerfile
     image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
     env_file:
-      - .env.development
       - .env
+      - .env.development
     volumes:
       - .:/home/app/webapp
     # Keep the stdin open, so we can attach to our app container's process
@@ -52,8 +52,8 @@ services:
       dockerfile: Dockerfile
     image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
     env_file:
-      - .env.development
       - .env
+      - .env.development
     volumes:
       - .:/home/app/webapp
     command: bin/delayed_job run
