@@ -66,8 +66,8 @@ Docker can only push one tag at a time. It is recommended to push all three
 tags.
 
 ``` bash
-for tag in staging latest "$(date +%y.%m.%d)"; do 
-  docker push uclalibrary/oral-history:"$tag"
+for tag in staging latest "$(date +%Y.%m.%d)"; do
+  docker push uclalibrary/oral-history:"$tag";
 done
 ```
 
