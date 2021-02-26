@@ -12,6 +12,7 @@ gem 'blacklight', '~> 7.10'
 gem 'blacklight-marc', '~> 7.0.0'
 gem 'bootstrap', '~> 4.0'
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw], group: [:development, :test]
+gem 'capybara'
 gem 'coffee-rails', '~> 4.2'
 gem 'daemons'
 gem 'delayed_job_active_record', '~> 4.1.4'
