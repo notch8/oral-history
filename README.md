@@ -1,8 +1,8 @@
 # Docker Development Setup
 
 1. Install Docker ([macOS](https://docs.docker.com/docker-for-mac/install/)/[Windows](https://docs.docker.com/docker-for-windows/install/)/[Linux](https://docs.docker.com/engine/install/))
-1. `.env` is populated with good defaults. `.env.development` and `.env.production` can be used for local overrides and should not be in the repo.
-1. Confirm or configure Github and Dockerhub settings. (Substitute your information for the examples.)
+2. `.env` is populated with good defaults. `.env.development` and `.env.production` can be used for local overrides and should not be in the repo.
+3. Confirm or configure Github and Dockerhub settings. (Substitute your information for the examples.)
     + Set up your Gitgub configuration if it is not already set up
 ``` bash
 git config --global user.name example
@@ -12,15 +12,15 @@ git config --global user.email example@example.com
 ``` bash
 docker login
 ```
-1. Create and populate `.env.development`.
+4. Create and populate `.env.development`.
    Minimum requirements is that it exists. `touch .env.development`
-1.  Build project and start up
+5.  Build project and start up
 ``` bash
 docker-compose --file docker-compose.yml build
 docker-compose --file docker-compose.yml up
 ```
-1. Visit http://0.0.0.0:8000 in your browser. *You may see a rails error page suggesting a migration.*
-1. Load database and import data
+6. Visit http://0.0.0.0:8000 in your browser. *You may see a rails error page suggesting a migration.*
+7. Load database and import data
 ```
 docker-compose exec web bundle exec rake db:migrate import[100]
 ```
