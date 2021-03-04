@@ -24,7 +24,7 @@ docker-compose --file docker-compose.yml up
 ```
 docker-compose exec web bundle exec rake db:migrate import[100]
 ```
-**Note:** The `100` in `import[100]` limits the number of assets initially loaded. You may adjust this as desired. 
+**Note:** The `100` in `import[100]` limits the number of assets initially loaded. You may adjust this as desired.
 
 ## Development Notes
 When performing an import the system will attempt to download and process the audio files to create the peak files. This is very CPU & time intense.  
@@ -80,7 +80,7 @@ Stopping the delayed_job container will not stop jobs from being run.
 
 #### References
 
-Docker install: 
-[Docker for Mac](https://docs.docker.com/docker-for-mac/install/) | 
-[Docker for Windows](https://docs.docker.com/docker-for-windows/install/)| 
+Docker install:
+[Docker for Mac](https://docs.docker.com/docker-for-mac/install/) |
+[Docker for Windows](https://docs.docker.com/docker-for-windows/install/)|
 [Docker for Linux](https://docs.docker.com/engine/install/)
