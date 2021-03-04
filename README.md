@@ -1,6 +1,6 @@
 # Docker Development Setup
 
-1. Install Docker ([macOS][DAM]/[Windows][DAW]/[Linux][DAL])
+1. Install Docker ([macOS](https://docs.docker.com/docker-for-mac/install/)/[Windows](https://docs.docker.com/docker-for-windows/install/)/[Linux](https://docs.docker.com/engine/install/))
 1. `.env` is populated with good defaults. `.env.development` and `.env.production` can be used for local overrides and should not be in the repo.
 1. Confirm or configure Github and Dockerhub settings. (Substitute your information for the examples.)
     + Set up your Gitgub configuration if it is not already set up
@@ -75,12 +75,3 @@ In Jenkins, select `docker_swarm_deploy` job. Use `Build with Parameters`. Selec
 Regarding `docker-compose.production.yml`: The delayed_job container is for scaling out processing of peaks for all of the audio files.  
 However, the web container always has one worker.  
 Stopping the delayed_job container will not stop jobs from being run.
-
----
-
-#### References
-
-Docker install:
-[Docker for Mac](https://docs.docker.com/docker-for-mac/install/) |
-[Docker for Windows](https://docs.docker.com/docker-for-windows/install/)|
-[Docker for Linux](https://docs.docker.com/engine/install/)
