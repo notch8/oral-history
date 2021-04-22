@@ -24,3 +24,11 @@ jobs:
         with:
           tags: uclalibrary/oral-history:staging
           push: true
+  jenkins:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Jenkins webhook
+        # v2.1.0
+        uses: joelwmale/webhook-action@fd99bb3b8272237103e349e9bb4d9b0ead9a217c
+        with:
+          url: 'https://${{ secrets.JENKINS_USER }}@${{ secrets.JENKINS_HOST }}/job/docker_swarm_deploy/build?token=${{ secrets.JENKINS_TOKEN }}&TERRA_ENV=${{ secrets.OH_TEST }}&cause=GitHub+action'
