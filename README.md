@@ -32,7 +32,17 @@ When performing an import the system will attempt to download and process the au
 
 ---
 
-# Deploy a new release
+# Automated Build and Deploy
+
+## Testing/Staging
+
+Any push to GitHub of a branch other than master or main will build, tag with :staging, publish to Docker Hub and push to testing.
+
+## Production
+
+Any push to GitHub of the master or main branch will build, tag with :lastest, and publish to Docker Hub. It is up to Apps team or DevSupport to push to production.
+
+# Manually Deploy a new release
 
 ## Docker tags
 
