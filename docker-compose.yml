@@ -11,7 +11,6 @@ services:
       - 'postgres:/var/lib/postgresql/data'
 
   solr:
-    image: "${REGISTRY_HOST}${REGISTRY_URI}/solr:latest"
     build: solr/
     ports:
       - '8983:8983'
@@ -24,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
     env_file:
       - .env
       - .env.development
@@ -50,7 +49,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG}"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
     env_file:
       - .env
       - .env.development
