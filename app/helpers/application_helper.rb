@@ -66,7 +66,7 @@ module ApplicationHelper
   end
 
   def index_filter options={}
-    "<span><p>#{ options[:value][0].truncate(150)}</p></span>".html_safe
+    "#{ options[:value][0].truncate(150)}".html_safe
   end
 
   def highlightable_series_link(options={})
