@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).on('turbolinks:load', function() {
   $('body').on('click', '.audio-timestamp-link', function(e) {
     var event = new CustomEvent(
       'jump_to_audio_time',
