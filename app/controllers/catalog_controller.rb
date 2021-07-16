@@ -23,7 +23,7 @@ class CatalogController < ApplicationController
       :"hl.fl" => "abstract_t, biographical_t, subject_t, description_t, audio_b, extent_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
-      :"hl.fragsize" => 200,
+      :"hl.fragsize" => 100,
     }
 
     # solr path which will be added to solr base url before the other solr params.
