@@ -1,57 +1,87 @@
-# Docker development setup
+# Docker Development Setup
 
-1) Install Docker.app
-
-2) Install SC
-``` bash
-gem install stack_car
-```
-
-3) We recommend committing .env to your repo with good defaults. .env.development, .env.production etc can be used for local overrides and should not be in the repo.
-
-4) Confirm or configure settings.  Sub your information for the examples.
+1. Install Docker ([macOS](https://docs.docker.com/docker-for-mac/install/)/[Windows](https://docs.docker.com/docker-for-windows/install/)/[Linux](https://docs.docker.com/engine/install/))
+2. `.env` is populated with good defaults. `.env.development` and `.env.production` can be used for local overrides and should not be in the repo.
+3. Confirm or configure Github and Dockerhub settings. (Substitute your information for the examples.)
+    + Set up your Gitgub configuration if it is not already set up
 ``` bash
 git config --global user.name example
 git config --global user.email example@example.com
-docker login registry.gitlab.com
 ```
-
-5) Build project and start up
-
+    + Login in to Dockerhub (you will need your username and password)
 ``` bash
-sc build
-sc up
+docker login
 ```
-
-Then visit http://0.0.0.0:8000 in your browser.  You should see a rails error page suggesting a migration.
-
-6) Load database and import data
-
+4. Create and populate `.env.development`.
+   Minimum requirements is that it exists. `touch .env.development`
+5.  Build project and start up
 ``` bash
-sc be rake db:migrate import[100]
+docker-compose --file docker-compose.yml build
+docker-compose --file docker-compose.yml up
 ```
+6. Visit http://0.0.0.0:8000 in your browser. *You may see a rails error page suggesting a migration.*
+7. Load database and import data
+```
+docker-compose exec web bundle exec rake db:migrate import[100]
+```
+**Note:** The `100` in `import[100]` limits the number of assets initially loaded. You may adjust this as desired.
 
 ## Development Notes
-When performing an import the system will attempt to download and process the audio files to create the peak files. This is very CPU & time intense. Change MAKE_WAVES in your .env to false (or delete it).
+When performing an import the system will attempt to download and process the audio files to create the peak files. This is very CPU & time intense.
+**To avoid this** change `MAKE_WAVES` in your `.env` to false (or delete it).
 
-# Deploy to Staging
+---
 
-1. Visit [Rancher](https://rancher.notch8.com) (not R2, this is one of the few projects left on the original Rancher set up)
+# Automated Build and Deploy
 
-2. At the top left use the drop down menu to select `staging`
+## Testing/Staging
 
-3. Expand the Oral Histories containers by pressing the `+` next to `oh`
+Any push to GitHub of a branch other than master or main will build, tag with :staging, publish to Docker Hub and push to testing.
 
-4. Upgrade the web and worker containers - with the following steps:
-- On the right hand side select the Upgrade button, a circle with an arrow pointing up
-- The upgrade service will present a form and there is only one field that needs changed - Select Image
-- The Select Image field will pull the most recently used image and it will look something like this: registry.gitlab.com/notch8/oral_history:ebbac127
-- The letters and numbers after the colon are the commit SHA
-- Use the commit SHA from the [most recent commit](https://gitlab.com/notch8/oral_history/-/commits/master/) into the main branch and replace the old commit with the most recent commit SHA
-- Then press the Upgrade button at the bottom of the page and Rancher will redirect to the container's page
-- Rancher will spin up a new container and when it is ready the circle with the arrow will turn into a checkmark with the help text of 'Finish Upgrade'
-- Click 'Finish Upgrade' button and repeat process for worker container
+## Production
+
+Any push to GitHub of the master or main branch will build, tag with :lastest, and publish to Docker Hub. It is up to Apps team or DevSupport to push to production.
+
+# Manually Deploy a new release
+
+## Docker tags
+
+There are three common tags in use for Oral History:
+- `latest`: Tag Jenkins deploys to production
+- `staging`: Tag Jenkins deploys to test
+- `date`: (in ISO 8601 format) Allows forcible rollback to a previous version
+
+## Building
+
+To build and apply the Docker tags:
+
+``` bash
+docker build \
+  -t uclalibrary/oral-history:staging \
+  -t uclalibrary/oral-history:latest \
+  -t uclalibrary/oral-history:"$(date +%Y.%m.%d)" \
+  .
+```
+
+## Pushing to Dockerhub
+
+Docker can only push one tag at a time. It is recommended to push all three
+tags.
+
+``` bash
+for tag in staging latest "$(date +%Y.%m.%d)"; do
+  docker push uclalibrary/oral-history:"$tag";
+done
+```
+
+Deployment is handled by Jenkins.
+
+## Manual deployment to test
+
+In Jenkins, select `docker_swarm_deploy` job. Use `Build with Parameters`. Select `oralhistory_test` from the `TERRA_ENV` dropdown. Start the build.
 
 ## Production Notes:
-Regarding docker-compose.production.yml: The delayed_job container is for scaling out processing of peaks for all of the audio files.
-However, the web container always has one worker. Stopping the delayed_job container will not stop jobs from being run.
+
+Regarding `docker-compose.production.yml`: The delayed_job container is for scaling out processing of peaks for all of the audio files.
+However, the web container always has one worker.
+Stopping the delayed_job container will not stop jobs from being run.

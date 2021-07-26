@@ -10,6 +10,7 @@ gem 'rails', '~> 5.1.4'
 gem "delayed_job_web"
 gem 'blacklight', '~> 7.10'
 gem 'blacklight-marc', '~> 7.0.0'
+gem 'blacklight_dynamic_sitemap'
 gem 'bootstrap', '~> 4.0'
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw], group: [:development, :test]
 gem 'capybara'
