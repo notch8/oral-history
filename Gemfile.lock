@@ -68,6 +68,9 @@ GEM
       marc-fastxmlwriter
       rails
       traject (~> 3.0)
+    blacklight_dynamic_sitemap (0.4.0)
+      blacklight (> 6.0)
+      rails (<= 6.1)
     bootstrap (4.5.0)
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
@@ -387,6 +390,7 @@ PLATFORMS
 DEPENDENCIES
   blacklight (~> 7.10)
   blacklight-marc (~> 7.0.0)
+  blacklight_dynamic_sitemap
   bootstrap (~> 4.0)
   byebug
   capybara

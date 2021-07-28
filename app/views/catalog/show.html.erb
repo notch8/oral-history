@@ -5,7 +5,7 @@
   <% if current_search_session %>
     <div id="appliedParams" class="clearfix constraints-container pull-right">
       <%= render 'start_over' %>
-      <%= link_back_to_catalog class: 'btn' %>
+      <%= link_back_to_catalog class: 'btn' if @search_context %>
     </div>
   <% end %>
 
