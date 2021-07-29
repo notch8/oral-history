@@ -383,7 +383,7 @@ class OralHistoryItem
   end
 
   def peak_job_queued?
-    Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").present?
+    Delayed::Job.where("handler LIKE ? AND last_error IS ?", "%job_class: ProcessPeakJob%#{self.id}%", nil).present?
   end
 
   def should_process_peaks?
