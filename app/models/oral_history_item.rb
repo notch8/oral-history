@@ -66,7 +66,7 @@ class OralHistoryItem
             ProcessPeakJob.perform_later(history.id)
           end
         rescue => exception
-          Raven.capture_exception(exception)
+          Rollbar.error('Error processing record', exception)
           OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
         end
         if true
@@ -87,7 +87,7 @@ class OralHistoryItem
       end
       return total
     rescue => exception
-      Raven.capture_exception(exception)
+      Rollbar.error('Error importing record', exception)
       OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
     ensure
       remove_import_tmp_file
@@ -103,7 +103,7 @@ class OralHistoryItem
     end
     return history
   rescue => exception
-    Raven.capture_exception(exception)
+    Rollbar.error('Error importing record', exception)
     OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
   end
 

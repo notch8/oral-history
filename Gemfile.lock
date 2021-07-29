@@ -267,6 +267,7 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     retriable (3.1.1)
+    rollbar (3.2.0)
     rsolr (2.1.0)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
@@ -415,6 +416,7 @@ DEPENDENCIES
   progress_job
   puma (~> 4.3.5)
   rails (~> 5.1.4)
+  rollbar
   rsolr (>= 1.0)
   rspec-rails (~> 3.8)
   ruby-audio (~> 1.6.0)

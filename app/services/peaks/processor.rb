@@ -32,20 +32,23 @@ module Peaks
     # takes a solr document and attempts to create the peaks file
     def from_solr_document(doc)
       return unless doc.attributes["peaks_t"]
+      begin
+        # children_t is where all the non-indexed fields (i.e. audo_url) lives
+        # peaks_t is a duplicate of non-indexed fields for peak generation
+        doc.attributes["peaks_t"].each_with_index do |child, i|
+          raw = JSON.parse(child)
+          next unless raw["url_t"]
 
-      # children_t is where all the non-indexed fields (i.e. audo_url) lives
-      # peaks_t is a duplicate of non-indexed fields for peak generation
-      doc.attributes["peaks_t"].each_with_index do |child, i|
-        raw = JSON.parse(child)
-        next unless raw["url_t"]
+          puts "Processing #{raw["url_t"]}"
+          raw["peaks"] = generate(raw["url_t"])
 
-        puts "Processing #{raw["url_t"]}"
-        raw["peaks"] = generate(raw["url_t"])
+          doc.attributes["peaks_t"][i] = raw.to_json
+        end
 
-        doc.attributes["peaks_t"][i] = raw.to_json
+        doc.index_record
+      rescue => exception
+        Rollbar.error('Error processing peaks', e)
       end
-
-      doc.index_record
     end
 
     # expand attempts to normalize the peak data to be more aesthetically interesting
