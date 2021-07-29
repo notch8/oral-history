@@ -113,7 +113,7 @@ class OralHistoryItem
     end
 
     history = OralHistoryItem.find_or_new(record.header.identifier.split('/').last) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
-    history.attributes['id_t'] = record.header.identifier.split('/').last
+    history.attributes['id_t'] = history.id
     if record.header.datestamp
       history.attributes[:timestamp] = Time.parse(record.header.datestamp)
     end
@@ -307,7 +307,7 @@ class OralHistoryItem
   end
 
   def to_solr
-    attributes
+    attributes.except("hashed_id_ssi")
   end
 
   def index_record
