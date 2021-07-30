@@ -23,7 +23,7 @@ class CatalogController < ApplicationController
       :"hl.fl" => "abstract_t, biographical_t, subject_t, description_t, audio_b, extent_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
-      :"hl.fragsize" => 200,
+      :"hl.fragsize" => 100,
     }
 
     # solr path which will be added to solr base url before the other solr params.
@@ -116,9 +116,6 @@ class CatalogController < ApplicationController
     config.add_index_field 'extent_t', label: 'Length', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'language_t', label: 'Language', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }, helper_method: 'audio_icon'
-    # config.add_index_field 'title_t', label: 'Title', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
-    # config.add_index_field 'series_t', label: 'Series Name', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
-    config.add_index_field 'description_t', label: 'Description', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 0, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter'
     config.add_index_field 'abstract_t', label: 'Series Statement', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 0, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter'
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
