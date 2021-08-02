@@ -21,7 +21,7 @@ class OralHistoryItem
 
 
   def self.client(args)
-    url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
+    url = args[:url] || "https://webservices.library.ucla.edu/dldataprovider/oai2_0.do"
     OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
   end
 
@@ -66,7 +66,7 @@ class OralHistoryItem
             ProcessPeakJob.perform_later(history.id)
           end
         rescue => exception
-          Raven.capture_exception(exception)
+          Rollbar.error('Error processing record', exception)
           OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
         end
         if true
@@ -87,7 +87,7 @@ class OralHistoryItem
       end
       return total
     rescue => exception
-      Raven.capture_exception(exception)
+      Rollbar.error('Error importing record', exception)
       OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
     ensure
       remove_import_tmp_file
@@ -103,7 +103,7 @@ class OralHistoryItem
     end
     return history
   rescue => exception
-    Raven.capture_exception(exception)
+    Rollbar.error('Error importing record', exception)
     OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
   end
 
@@ -113,7 +113,7 @@ class OralHistoryItem
     end
 
     history = OralHistoryItem.find_or_new(record.header.identifier.split('/').last) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
-    history.attributes['id_t'] = record.header.identifier.split('/').last
+    history.attributes['id_t'] = history.id
     if record.header.datestamp
       history.attributes[:timestamp] = Time.parse(record.header.datestamp)
     end
@@ -307,7 +307,7 @@ class OralHistoryItem
   end
 
   def to_solr
-    attributes
+    attributes.except("hashed_id_ssi")
   end
 
   def index_record
@@ -367,7 +367,7 @@ class OralHistoryItem
   end
 
   def self.total_records(args = {})
-    url = args[:url] || "http://digital2.library.ucla.edu/dldataprovider/oai2_0.do"
+    url = args[:url] || "https://webservices.library.ucla.edu/dldataprovider/oai2_0.do"
     set = args[:set] || "oralhistory"
     client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
     response = client.list_records(set: set, metadata_prefix: 'mods')
@@ -383,7 +383,7 @@ class OralHistoryItem
   end
 
   def peak_job_queued?
-    Delayed::Job.where("handler LIKE ? ", "%job_class: ProcessPeakJob%#{self.id}%").present?
+    Delayed::Job.where("handler LIKE ? AND last_error IS ?", "%job_class: ProcessPeakJob%#{self.id}%", nil).present?
   end
 
   def should_process_peaks?
