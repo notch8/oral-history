@@ -27,7 +27,7 @@ docker-compose exec web bundle exec rake db:migrate import[100]
 **Note:** The `100` in `import[100]` limits the number of assets initially loaded. You may adjust this as desired.
 
 ## Development Notes
-When performing an import the system will attempt to download and process the audio files to create the peak files. This is very CPU & time intense.  
+When performing an import the system will attempt to download and process the audio files to create the peak files. This is very CPU & time intense.
 **To avoid this** change `MAKE_WAVES` in your `.env` to false (or delete it).
 
 ---
@@ -82,6 +82,6 @@ In Jenkins, select `docker_swarm_deploy` job. Use `Build with Parameters`. Selec
 
 ## Production Notes:
 
-Regarding `docker-compose.production.yml`: The delayed_job container is for scaling out processing of peaks for all of the audio files.  
-However, the web container always has one worker.  
+Regarding `docker-compose.production.yml`: The delayed_job container is for scaling out processing of peaks for all of the audio files.
+However, the web container always has one worker.
 Stopping the delayed_job container will not stop jobs from being run.
