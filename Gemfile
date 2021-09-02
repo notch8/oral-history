@@ -47,6 +47,6 @@ gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'uglifier', '>= 1.3.0'
 gem 'web-console', '>= 3.7.0', group: [:development]
-gem 'webpacker', github: 'rails/webpacker'
+gem 'webpacker', '~> 3.1.0'
 gem 'webpacker-react', "~> 0.3.2"
 gem 'whenever', require: false
