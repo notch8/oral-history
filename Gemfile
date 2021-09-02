@@ -50,3 +50,5 @@ gem 'web-console', '>= 3.7.0', group: [:development]
 gem 'webpacker', '~> 3.1.0'
 gem 'webpacker-react', "~> 0.3.2"
 gem 'whenever', require: false
+
+gem 'view_component', '2.28.0'
