@@ -435,6 +435,7 @@ DEPENDENCIES
   progress_job
   puma (~> 4.3.5)
   rails (~> 5.1.4)
+  rollbar
   rsolr (>= 1.0)
   rspec-rails (~> 3.8)
   ruby-audio (~> 1.6.0)

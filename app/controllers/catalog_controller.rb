@@ -23,7 +23,7 @@ class CatalogController < ApplicationController
       :"hl.fl" => "abstract_t, biographical_t, subject_t, description_t, audio_b, extent_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
       :"hl.simple.pre" => "<span class='label label-warning'>",
       :"hl.simple.post" => "</span>",
-      :"hl.fragsize" => 100,
+      :"hl.fragsize" => 100,#The fragsize is set to 100 so when the index_filter method is run on the abstract_t, biographical_t, and description_t and they have search terms within that will be highlighted, it only considers 100 fragzise limit. We then use .truncate at 150 characters allowing the hl.simple.pre and hl.simple.post to insert less than the remaining 50 characters differance between 100 fragsize and 150 chars till truncate so that the classes added on hl.simple.pre and hl.simple.post will not get truncated.
     }
     # The fragsize is set to 100 so when the index_filter method is run on the abstract_t, biographical_t, and 
     # description_t and they have search terms within that will be highlighted, it only considers 100 fragzise limit. 
@@ -120,7 +120,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'biographical_t', label: 'Biographical Note', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 0, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter'
     config.add_index_field 'extent_t', label: 'Length', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'language_t', label: 'Language', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
-    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }, helper_method: 'audio_icon'
+    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }, helper_method: 'audio_icon'    
     config.add_index_field 'abstract_t', label: 'Series Statement', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 0, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter'
     
     # solr fields to be displayed in the show (single result) view
