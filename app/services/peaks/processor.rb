@@ -24,9 +24,9 @@ module Peaks
 
       peaks = @should_expand ? expand(raw_peaks) : raw_peaks
 
-      system("rm -rf #{raw_path.gsub('/audio.wave', '')}")
-
       peaks
+    ensure
+      system("rm -rf #{raw_path.gsub('/audio.wave', '')}") if raw_path
     end
 
     # takes a solr document and attempts to create the peaks file
@@ -47,7 +47,7 @@ module Peaks
 
         doc.index_record
       rescue => exception
-        Rollbar.error('Error processing peaks', e)
+        Rollbar.error('Error processing peaks', exception)
       end
     end
 
