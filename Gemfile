@@ -8,7 +8,7 @@ end
 gem 'rails', '~> 5.1.4'
 
 gem "delayed_job_web"
-gem 'blacklight', '~> 7.10'
+gem 'blacklight', '~> 7.10.0'
 gem 'blacklight-marc', '~> 7.0.0'
 gem 'blacklight_dynamic_sitemap'
 gem 'bootstrap', '~> 4.0'
@@ -50,3 +50,4 @@ gem 'web-console', '>= 3.7.0', group: [:development]
 gem 'webpacker', '~> 3.1.0'
 gem 'webpacker-react', "~> 0.3.2"
 gem 'whenever', require: false
+gem 'view_component', '2.28.0' # remove once Blacklight is compatible with latest view_component

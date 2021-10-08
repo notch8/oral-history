@@ -70,18 +70,18 @@ Rails.application.configure do
   config.action_mailer.default_options={from: "support@notch8.com"}
 
   config.action_mailer.default_url_options = {
-    :host => ENV['SMTP_HOST'],
-    :protocol => ENV['SMTP_PROTOCOL']
+    :host => ENV.fetch('SMTP_HOST', 'localhost:3000'),
+    :protocol => ENV.fetch('SMTP_HTTP_PROTOCOL', 'http')
   }
 
   config.action_mailer.smtp_settings = {
-    address: "email-smtp.us-west-2.amazonaws.com",
-    port: 587,
-    domain: ENV['SMTP_DOMAIN'],
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: ENV['SMTP_USER'],
-    password: ENV['SMTP_PASSWORD']
+    address: ENV.fetch('SMTP_ADDRESS', nil),
+    port: ENV.fetch('SMTP_PORT', nil),
+    domain: ENV.fetch('SMTP_DOMAIN', nil),
+    authentication: ENV.fetch('SMTP_AUTHENTICATION', nil),
+    enable_starttls_auto: (ENV.fetch('SMTP_STARTTLS', nil) == 'true'),
+    user_name: ENV.fetch('SMTP_USER', nil),
+    password: ENV.fetch('SMTP_PASSWORD', nil)
   }
 
 
