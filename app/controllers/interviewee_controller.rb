@@ -41,9 +41,14 @@ class IntervieweeController < ApplicationController
                              :z => { label: 'Z', fq: "interviewee_sort:/Z.*/" }
                            }
     config.add_sort_field 'interviewee_sort asc, title_sort asc', label: 'Interviewee'
-    config.add_index_field 'title_t', label: 'Title', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+
     config.add_index_field 'subject_t', label: 'Topic', helper_method: :split_multiple, highlight: true, solr_params: { :"hl.alternateField" => "dd" }
-    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }, helper_method: 'audio_icon'
+    config.add_index_field 'extent_t', label: 'Length', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    config.add_index_field 'language_t', label: 'Language', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
+    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }, helper_method: 'audio_icon'    
+    config.add_index_field 'abstract_t', label: 'Series Statement', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 0, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter'
+    config.add_index_field 'biographical_t', label: 'Biographical Note', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 0, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter'
+
     config.add_facet_fields_to_solr_request!
 
     config.add_field_configuration_to_solr_request!

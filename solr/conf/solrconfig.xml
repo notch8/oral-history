@@ -134,6 +134,7 @@
          author_addl_t^50
          language_t
          biographical_t
+         admin_note_t
          abstract_t
          isbn_t
          text
@@ -173,6 +174,7 @@
          author_t^100
          author_addl_t^500
          biographical_t^10
+         admin_note_t^10
          abstract_t^10
          language_t^10
          text^10

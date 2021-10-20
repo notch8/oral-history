@@ -233,6 +233,11 @@ class OralHistoryItem
             history.attributes["abstract_t"] = []
             history.attributes["abstract_t"] << child.elements['mods:abstract'].text
           elsif child.name == "note"
+            if child.attributes == {}
+              history.attributes["admin_note_display"] = child.text
+              history.attributes["admin_note_t"] = []
+              history.attributes["admin_note_t"] << child.text
+            end
             if child.attributes['type'].to_s.match('biographical')
               history.attributes["biographical_display"] = child.text
               history.attributes["biographical_t"] = []
