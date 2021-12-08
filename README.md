@@ -36,7 +36,9 @@ When performing an import the system will attempt to download and process the au
 
 ## Testing/Staging
 
-Any push to GitHub of a branch other than master or main will build, tag with :staging, publish to Docker Hub and push to testing.
+Any push to GitHub of a branch starting or ending with "test" will build, tag with :test, publish to Docker Hub and push to testing.
+
+Any push to GitHub of a branch other than master, main, or test will build, tag with :staging, publish to Docker Hub and push to staging.
 
 ## Production
 
