@@ -4,9 +4,9 @@ name: Build and Publish (testing)
 on:
   push:
     branches:
-      - '*test'
-      - '*test*'
-      - 'test*'
+      - '**/test*'
+      - '**test'
+      - 'test**'
 
 jobs:
   docker:

@@ -4,9 +4,9 @@ name: Build and Publish (staging)
 on:
   push:
     branches-ignore:
-      - '*test'
-      - '*test*'
-      - 'test*'
+      - '**/test*'
+      - '**test'
+      - 'test**'
       - main
       - master
 
