@@ -1,14 +1,12 @@
 ---
 
-name: Build and Publish (staging)
+name: Build and Publish (testing)
 on:
   push:
-    branches-ignore:
+    branches:
       - '**/test*'
       - '**test'
       - 'test**'
-      - main
-      - master
 
 jobs:
   docker:
@@ -25,10 +23,10 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2.4.0
         with:
-          tags: uclalibrary/oral-history:staging
+          tags: uclalibrary/oral-history:test
           push: true
       - name: Jenkins webhook
         # @master as of 2021-04-22
         uses: enflo/curl-action@fabe347922c7a9e88bafa15c4b7d6326ea802695
         with:
-          curl: 'https://${{ secrets.JENKINS_USER }}@${{ secrets.JENKINS_HOST }}/job/docker_swarm_deploy/buildWithParameters?token=${{ secrets.JENKINS_TOKEN }}&TERRA_ENV=${{ secrets.OH_STAGE }}&cause=GitHub+action'
+          curl: 'https://${{ secrets.JENKINS_USER }}@${{ secrets.JENKINS_HOST }}/job/docker_swarm_deploy/buildWithParameters?token=${{ secrets.JENKINS_TOKEN }}&TERRA_ENV=${{ secrets.OH_TEST }}&cause=GitHub+action'
