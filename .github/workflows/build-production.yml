@@ -1,6 +1,6 @@
 ---
 
-name: Build and Publish
+name: Build and Publish (production)
 on:
   push:
     branches:
