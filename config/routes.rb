@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  mount DelayedJobWeb, at: "/delayed_job"
+  authenticated :user do
+    mount DelayedJobWeb, at: '/delayed_job'
+  end
 
   get 'pages/contact', to: 'pages#contact', as: 'contact'
 
@@ -19,6 +21,7 @@ Rails.application.routes.draw do
   get 'pages/bibliography', to: 'pages#bibliography', as: 'bibliography'
 
   get '/admin', to: 'admin#index', as: 'admin'
+  get '/admin/logs', to: 'admin#logs', as: 'admin_logs'
 
   post 'admin/run_import', to: 'admin#run_import', as: 'run_import'
 
