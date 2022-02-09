@@ -75,9 +75,21 @@ module ApplicationHelper
 
   def link_parser(links)
     result = {}
-    links.each do |link|
+    count = 1
+    links.reverse.each do |link|
       parsed = JSON.parse(link)
-      result[parsed[1]] = parsed[0]
+      key = parsed[1]
+      if key == 'Interview Full Transcript (PDF)'
+        if result.has_key? key
+          count += 1
+          new_key = "Interview Full Transcript - #{count} (PDF)"
+          result[new_key] = parsed[0]
+        else
+          result[key] = parsed[0]
+        end
+      else 
+        result[key] = parsed[0]
+      end
     end
     return result
   end
