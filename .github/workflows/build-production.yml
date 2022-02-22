@@ -24,3 +24,8 @@ jobs:
         with:
           tags: uclalibrary/oral-history:latest
           push: true
+      - name: Jenkins webhook
+        # @master as of 2021-04-22
+        uses: enflo/curl-action@fabe347922c7a9e88bafa15c4b7d6326ea802695
+        with:
+          curl: 'https://${{ secrets.JENKINS_USER }}@${{ secrets.JENKINS_HOST }}/job/docker_swarm_deploy/buildWithParameters?token=${{ secrets.JENKINS_TOKEN }}&TERRA_ENV=${{ secrets.OH_PROD }}&cause=GitHub+action'
