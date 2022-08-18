@@ -7,6 +7,7 @@ end
 
 gem 'rails', '~> 5.1.4'
 
+gem 'activejob-scheduler', git: 'https://github.com/notch8/activejob-scheduler.git'
 gem "delayed_job_web"
 gem 'blacklight', '~> 7.10.0'
 gem 'blacklight-marc', '~> 7.0.0'

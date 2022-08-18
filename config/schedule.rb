@@ -23,4 +23,6 @@ env 'BASH_ENV', '/container.env'
 
 every 12.hours do
   rake "import"
+  rake "file_cleanup"
+  rake "activejob:schedule"
 end
