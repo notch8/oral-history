@@ -1,3 +1,14 @@
+GIT
+  remote: https://github.com/notch8/activejob-scheduler.git
+  revision: 22850499dd0ab046eff2e1c113261782e7b8d8dc
+  specs:
+    activejob-scheduler (1.0.0.pre)
+      actionmailer (> 5, < 7)
+      activejob (> 5, < 7)
+      activesupport (> 5, < 7)
+      fugit (~> 1.3)
+      travis-release (~> 0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -114,6 +125,8 @@ GEM
     edtf (3.0.6)
       activesupport (>= 3.0, < 7.0)
     erubi (1.10.0)
+    et-orbi (1.2.7)
+      tzinfo
     execjs (2.8.1)
     faraday (1.6.0)
       faraday-em_http (~> 1.0)
@@ -142,6 +155,9 @@ GEM
       rake
     font-awesome-rails (4.7.0.7)
       railties (>= 3.2, < 7)
+    fugit (1.5.3)
+      et-orbi (~> 1, >= 1.2.7)
+      raabro (~> 1.4)
     globalid (0.5.2)
       activesupport (>= 5.0)
     hashie (4.1.0)
@@ -238,6 +254,7 @@ GEM
     public_suffix (4.0.6)
     puma (4.3.8)
       nio4r (~> 2.0)
+    raabro (1.4.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-protection (2.1.0)
@@ -363,6 +380,9 @@ GEM
       nokogiri (~> 1.9)
       slop (~> 4.0)
       yell
+    travis-release (0.0.4)
+      bundler
+      rake
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -405,6 +425,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activejob-scheduler!
   blacklight (~> 7.10.0)
   blacklight-marc (~> 7.0.0)
   blacklight_dynamic_sitemap

@@ -1,6 +1,7 @@
 require 'rails_helper'
 
-describe FileCleanup do
+describe FileCleanupJob do
+  let(:file_cleanup) { FileCleanupJob.new }
   let(:new_folder) { FileUtils.mkdir 'tmp/ffmpeg-1' }
   let(:old_folder) { FileUtils.mkdir 'tmp/ffmpeg-2' }
 
@@ -12,7 +13,7 @@ describe FileCleanup do
     FileUtils.touch old_folder, :mtime => Time.now - 5.hours
     directory = Rails.root.join('tmp')
     count_of_folders_in_temp =  Dir.glob("#{directory}/*").count
-    FileCleanup.purge_files
+    file_cleanup.cleanup(directory)
     expect(Dir.glob("#{directory}/*").count).to eq count_of_folders_in_temp - 1
   end
 
@@ -20,7 +21,7 @@ describe FileCleanup do
   it "doesn't delete files that are less than 4 hours old" do
     directory = Rails.root.join('tmp')
     count_of_folders_in_temp = Dir.glob("#{directory}/*").count
-    FileCleanup.purge_files
+    file_cleanup.cleanup(directory)
     expect(Dir.glob("#{directory}/*").count).to eq count_of_folders_in_temp
   end
 end
