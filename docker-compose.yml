@@ -23,7 +23,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
+    # image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}" # UCLA Original - Keep
+    image: "${REGISTRY_HOST}/${REGISTRY_URI}:${TAG-latest}"
     env_file:
       - .env
       - .env.development
@@ -38,7 +39,7 @@ services:
       - "${DOCKER_PORTS}"
       - "8000:80"
     environment:
-      - VIRTUAL_HOST=oralhistory.docker
+      - VIRTUAL_HOST=oralhistory.test
       - VIRTUAL_PORT=80
     depends_on:
       - postgres
@@ -49,7 +50,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
+    # image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}" # UCLA Original - Keep
+    image: "${REGISTRY_HOST}/${REGISTRY_URI}/worker:${TAG-latest}"
     env_file:
       - .env
       - .env.development
