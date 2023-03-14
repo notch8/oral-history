@@ -2,7 +2,7 @@
   "name": "oral_history",
   "private": true,
   "dependencies": {
-    "@rails/webpacker": "^5.4.4",
+    "@rails/webpacker": "^3.0.2",
     "babel-preset-react": "^6.24.1",
     "clappr": "^0.3.13",
     "clappr-playback-rate-plugin": "^0.6.0",
@@ -13,8 +13,6 @@
     "react-dom": "^16.2.0",
     "react-hls-player": "^0.1.6",
     "wavesurfer.js": "^2.0.6",
-    "webpack": "^5.76.1",
-    "webpack-cli": "^5.0.1",
     "webpack-merge": "^4.1.1",
     "webpacker-react": "^0.3.2",
     "xslt": "^0.9.1"

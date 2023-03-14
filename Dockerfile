@@ -1,14 +1,9 @@
 FROM phusion/passenger-ruby27:2.5.0
 
 RUN echo 'Downloading Packages' && \
-    apt-get update -qq -o Dir::Etc::sourceparts=- && \
-    apt-get install -y  \
-      ca-certificates \
-      && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
-    apt-get update -qq && \
+    apt-get update && \
     apt-get install -y  \
       build-essential \
       default-jdk \
@@ -17,9 +12,9 @@ RUN echo 'Downloading Packages' && \
       libpq-dev \
       libsasl2-dev \
       libsndfile1-dev \
-      nodejs \
       postgresql-client \
       pv \
+      python2 \
       tzdata \
       unzip \
       yarn \
@@ -30,6 +25,12 @@ RUN echo 'Downloading Packages' && \
     yarn config set no-progress && \
     yarn config set silent && \
     echo 'Packages Downloaded'
+
+RUN echo 'Node version fix' && \
+    apt-get remove -y nodejs && \
+    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get install -y nodejs && \
+    echo 'Node done'
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
