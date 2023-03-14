@@ -1,4 +1,4 @@
-FROM phusion/passenger-ruby25:1.0.11
+FROM phusion/passenger-ruby27:2.5.0
 
 RUN echo 'Downloading Packages' && \
     apt-get update -qq -o Dir::Etc::sourceparts=- && \
@@ -44,6 +44,7 @@ ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
   BUNDLE_JOBS=4
 
 COPY --chown=app:app Gemfile* $APP_HOME/
+RUN chmod -R g+w /usr/local/rvm/gems/ruby-2.7.7
 RUN /sbin/setuser app bash -l -c "bundle check || bundle install"
 
 COPY ops/nginx.sh /etc/service/nginx/run

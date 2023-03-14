@@ -23,8 +23,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}" # UCLA Original - Keep
-    image: "${REGISTRY_HOST}/${REGISTRY_URI}:${TAG-latest}"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
     env_file:
       - .env
       - .env.development
@@ -50,8 +49,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}" # UCLA Original - Keep
-    image: "${REGISTRY_HOST}/${REGISTRY_URI}/worker:${TAG-latest}"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
     env_file:
       - .env
       - .env.development
