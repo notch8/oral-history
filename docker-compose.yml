@@ -38,7 +38,7 @@ services:
       - "${DOCKER_PORTS}"
       - "8000:80"
     environment:
-      - VIRTUAL_HOST=oralhistory.docker
+      - VIRTUAL_HOST=oralhistory.test
       - VIRTUAL_PORT=80
     depends_on:
       - postgres
