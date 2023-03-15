@@ -1,5 +1,7 @@
 # Be sure to restart your server when you modify this file.
-#
+# TODO: Need to comb through this and enable helpful deafults it suggests
+# Step 6: Uncomment defaults in new_framework_defaults_6_0.rb
+# https://fullstackheroes.com/tutorials/rails/upgrade-to-rails-6/
 # This file contains migration options to ease your Rails 6.1 upgrade.
 #
 # Once upgraded flip defaults one by one to migrate to the new default.

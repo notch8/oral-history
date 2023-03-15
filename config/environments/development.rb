@@ -3,6 +3,10 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # disable integrity check in development
   config.webpacker.check_yarn_integrity = false
+
+  # # Verifies that versions and hashed value of the package contents in the project's package.json
+  # config.webpacker.check_yarn_integrity = true
+
   # Settings specified here will take precedence over those in config/application.rb.
   config.web_console.whitelisted_ips = ['172.16.0.0/12', '192.168.0.0/16', '127.0.0.1']
   # In the development environment your application's code is reloaded on
@@ -71,10 +75,6 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
-
-  # Use an evented file watcher to asynchronously detect changes in source code,
-  # routes, locales, etc. This feature depends on the listen gem.
-  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.

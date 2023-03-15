@@ -13,7 +13,7 @@ require "action_mailer/railtie"
 require "action_view/railtie"
 require "action_cable/engine"
 require "sprockets/railtie"
-require "rails/test_unit/railtie"
+# require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -31,5 +31,15 @@ module OralHistory
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Don't generate system test files.
+    config.generators.system_tests = nil
+
+    config.active_job.queue_adapter = :delayed_job
+    BlacklightDynamicSitemap::Engine.config.max_documents_expiration = 1.day
+    BlacklightDynamicSitemap::Engine.config.minimum_average_chunk = 10_000
+    BlacklightDynamicSitemap::Engine.config.hashed_id_field = 'hashed_id_ssi'
+    BlacklightDynamicSitemap::Engine.config.unique_id_field = 'id'
+    BlacklightDynamicSitemap::Engine.config.last_modified_field = 'timestamp'
   end
 end
