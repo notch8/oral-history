@@ -61,4 +61,5 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   # Commented out for development purposes with Apple M1 Silicon Procesing Chips
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  config.hosts << "oralhistory.test"
 end

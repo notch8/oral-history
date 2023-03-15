@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.1.4'
+gem 'rails', '~> 6.1'
 
 gem 'activejob-scheduler', git: 'https://github.com/notch8/activejob-scheduler.git'
 gem "delayed_job_web"
@@ -30,15 +30,16 @@ gem 'listen', '>= 3.0.5', '< 3.2', group: [:development]
 gem 'mods'
 gem 'negative_captcha'
 gem 'oai', '>=1.1.0'
-gem 'pg', '~> 0.18'
+gem 'pg', '~> 1.1'
 gem 'progress_bar'
 gem 'progress_job'
+# gem 'progress_job', git: 'https://github.com/d4be4st/progress_job.git', branch: 'master'
 gem 'puma', '~> 4.3.5'
 gem 'rollbar'
 gem 'rsolr', '>= 1.0'
 gem 'rspec-rails', '~> 3.8', group: [:development, :test]
 gem 'ruby-audio', '~> 1.6.0'
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 6.0'
 gem 'sentry-raven'
 gem 'solr_wrapper', '>= 0.3', group: [:development, :test]
 gem 'spring', group: [:development]
