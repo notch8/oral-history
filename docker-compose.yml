@@ -51,6 +51,9 @@ services:
     build:
       context: .
       target: worker
+      cache_from:
+        - "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
     env_file:
       - .env
       - .env.development

@@ -249,8 +249,7 @@ class CatalogController < ApplicationController
 
   # Override to add highlighing to show - from Blacklight 6.23
   # Currently using Blacklight 7.10 default show method
-
-  # TODO(April): update highlighting on show page
+  # TODO: update highlighting on show page
 
   def show
     deprecated_response, @document = search_service.fetch(params[:id])
