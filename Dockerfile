@@ -61,6 +61,4 @@ RUN /sbin/setuser app bash -l -c " \
     yarn install && \
     NODE_ENV=production DB_ADAPTER=nulldb bundle exec rake assets:precompile"
 
-FROM web as worker
-
 CMD ["/sbin/my_init"]
