@@ -1,6 +1,6 @@
+<%# OVERRIDE: Blacklight 7.33.1 - customizes the email form %>
 <%= form_tag url_for(:controller => controller_name, :action => "email"), :id => 'email_form', :class => "form-horizontal ajax_form", :method => :post do %>
   <%= raw negative_captcha(@captcha) %>
-
   <div class="modal-body">
     <%= render '/shared/flash_msg' %>
     <div class="form-group">

@@ -1,5 +1,7 @@
+<%# OVERRIDE: Blacklight 7.33.1 - Add tooltip to series in the facets %>
+
 <%= render(Blacklight::FacetFieldComponent.new(facet_field: facet_field_presenter(facet_field, nil))) do |component| %>
-  <% component.with(:label) do %>
+  <% component.label do %>
 
       <% if facet_field_label(facet_field.key) == 'Series' %>
           <%= facet_field_label(facet_field.key) %>
@@ -12,7 +14,7 @@
 
         <% end %>
   <% end %>
-  <% component.with(:body) do %>
+  <% component.body do %>
     <%= yield %>
   <% end %>
 <% end %>
