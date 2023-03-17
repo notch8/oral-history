@@ -11,9 +11,9 @@ services:
       - 'postgres:/var/lib/postgresql/data'
 
   solr:
-    build: solr/
+    build: ./solr
     ports:
-      - '8983:8983'
+      - "8983:8983"
     environment:
       - SOLR_HEAP=4g
     volumes:
@@ -22,7 +22,9 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile
+      target: web
+      cache_from:
+        - "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
     image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
     env_file:
       - .env
@@ -48,8 +50,7 @@ services:
   worker:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
+      target: worker
     env_file:
       - .env
       - .env.development

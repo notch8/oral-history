@@ -25,10 +25,10 @@ class CatalogController < ApplicationController
       :"hl.simple.post" => "</span>",
       :"hl.fragsize" => 100,#The fragsize is set to 100 so when the index_filter method is run on the abstract_t and description_t and they have search terms within that will be highlighted, it only considers 100 fragzise limit. We then use .truncate at 150 characters allowing the hl.simple.pre and hl.simple.post to insert less than the remaining 50 characters differance between 100 fragsize and 150 chars till truncate so that the classes added on hl.simple.pre and hl.simple.post will not get truncated.
     }
-    # The fragsize is set to 100 so when the index_filter method is run on the abstract_t and 
-    # description_t and they have search terms within that will be highlighted, it only considers 100 fragzise limit. 
+    # The fragsize is set to 100 so when the index_filter method is run on the abstract_t and
+    # description_t and they have search terms within that will be highlighted, it only considers 100 fragzise limit.
     # We then use .truncate at 150 characters allowing the hl.simple.pre and hl.simple.post to insert less than the r
-    # emaining 50 characters differance between 100 fragsize and 150 chars till truncate so that the classes added on 
+    # emaining 50 characters differance between 100 fragsize and 150 chars till truncate so that the classes added on
     # hl.simple.pre and hl.simple.post will not get truncated.
 
     # solr path which will be added to solr base url before the other solr params.
@@ -119,7 +119,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'subject_t', label: 'Topic', helper_method: :split_multiple, highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'extent_t', label: 'Length', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
     config.add_index_field 'language_t', label: 'Language', highlight: true, solr_params: { :"hl.alternateField" => "dd" }
-    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }, helper_method: 'audio_icon'    
+    config.add_index_field 'audio_b', label: 'Audio', highlight: true, solr_params: { :"hl.alternateField" => "dd" }, helper_method: 'audio_icon'
     config.add_index_field 'abstract_t', label: 'Series Statement', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 0, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter'
     config.add_index_field 'biographical_t', label: 'Biographical Note', highlight: true, solr_params: { :"hl.alternateField" => "dd", :"hl.maxAlternateFieldLength" => 0, :"hl.highlightAlternate" => true  }, helper_method: 'index_filter'
 
@@ -249,6 +249,7 @@ class CatalogController < ApplicationController
 
   # Override to add highlighing to show - from Blacklight 6.23
   # Currently using Blacklight 7.10 default show method
+
   # TODO(April): update highlighting on show page
 
   def show
