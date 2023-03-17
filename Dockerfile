@@ -1,4 +1,4 @@
-FROM phusion/passenger-ruby27:2.5.0
+FROM phusion/passenger-ruby27:2.5.0 as web
 
 RUN echo 'Downloading Packages' && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
