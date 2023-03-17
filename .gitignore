@@ -27,3 +27,4 @@ public/packs/*
 
 # Ignore local development history
 /.history
+*~undo-tree~
