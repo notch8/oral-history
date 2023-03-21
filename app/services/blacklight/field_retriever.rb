@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+# OVERRIDE: Blacklight 7.33.1
+# Adds client need for highlighting
 
 module Blacklight
   class FieldRetriever
