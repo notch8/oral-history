@@ -3,10 +3,10 @@
   <%= render_document_sidebar_partial @document %>
 
   <% if current_search_session %>
-  <div id="appliedParams" class="clearfix constraints-container pull-right">
-    <%= render 'start_over' %>
-    <%= link_back_to_catalog class: 'btn' if @search_context %>
-  </div>
+    <div id="appliedParams" class="clearfix constraints-container pull-right">
+      <%= render 'start_over' %>
+      <%= link_back_to_catalog class: 'btn' if @search_context %>
+    </div>
 <% end %>
 
 <%= render 'show_main_content' %>
