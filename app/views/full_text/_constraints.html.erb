@@ -1,10 +1,10 @@
-<% if query_has_constraints? %>
+<%# OVERRIDE: Blacklight v7.33.1 to to add startover and render constraints into the layout %>
+<% if Deprecation.silence(Blacklight::RenderConstraintsHelperBehavior) { query_has_constraints? } %>
+<div id="appliedParams" class="clearfix constraints-container">
+  <h2 class="sr-only"><%= t('blacklight.search.search_constraints_header') %></h2>
 
-      <div id="appliedParams" class="clearfix constraints-container">
-        <div class="pull-right">
-          <%=link_to t('blacklight.search.start_over'), start_over_path, :class => "catalog_startOverLink btn btn-sm btn-text", :id=>"startOverLink" %>
-        </div>
-        <span class="constraints-label"><%= t('blacklight.search.filters.title') %></span>
-        <%= render_constraints(params) %>
-      </div>
+    <%= render 'start_over' %>
+    <span class="constraints-label sr-only"><%= t('blacklight.search.filters.title') %></span>
+    <%= render_constraints(controller.params != params ? params : search_state) %>
+  </div>
 <% end %>

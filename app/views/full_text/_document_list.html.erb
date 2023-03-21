@@ -1,41 +1,5 @@
 <% # container for all documents in index list view -%>
-<div id="documents" class="documents-<%= document_index_view_type %>">
-  <% count = 1 %>
-  <% documents.each_with_index do |document, i| %>
-    <% index_fields(document).each do |field_name, field| -%>
-      <% if should_render_index_field? document, field %>
-        <% document.response['highlighting'][document.id].each_with_index do |highlit, j| %>
-          <%# render_document_partials document, blacklight_config.view_config(document_index_view_type).partials, :document_counter => document_counter %>
-          <div class="documentHeader row">
-            <% document_actions = capture do %>
-              <%= render_index_doc_actions document, wrapping_class: "index-document-functions col-sm-3 col-lg-2" %>
-            <% end %>
-            <h3 class="index_title document-title-heading col-md-12">
-              <%= link_to document['title_display'], solr_document_path(document, counter: count, q: params[:q]) %>
-            </h3>
-          </div>
-
-          <% highlit[1].each_with_index do |value, k| %>
-            <div
-              <%# TODO(k8): ask Lea Ann if we need count here bc it doesn't increment %>
-              class="document <%= render_document_class document %> document-position-<%= count %>"
-              data-document-counter="<%= count %>"
-              itemscope
-              itemtype="<%= document.itemtype %>"
-            >
-              <dl class="document-metadata dl-horizontal dl-invert dl-full-text ">
-                <dd class="blacklight-<%= field_name.parameterize %>"><%= value.html_safe %></dd>
-              </dl>
-            </div>
-            <% break if k >= 4 %>
-          <% end %>
-        <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
-  <% if @more %>
-    <%= link_to 'Load More Results', request.params.merge(highlight_page: @highlight_page + 1), class: 'load-more' %>
-  <% end %>
-  <div class="spinner"></div>
+<% view_config = local_assigns[:view_config] || blacklight_config&.view_config(document_index_view_type) %>
+<div id="documents" class="documents-<%= view_config&.key || document_index_view_type %>">
+  <%= render documents, as: :document, view_config: view_config %>
 </div>
-

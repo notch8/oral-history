@@ -1,14 +1,10 @@
-<% if show_sort_and_per_page? and !blacklight_config.per_page.blank? %>
-
-  <span class="sr-only"><%= t('blacklight.search.per_page.title') %></span>
-<div id="per_page-dropdown" class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    <%= t(:'blacklight.search.per_page.button_label', :count => current_per_page) %> <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-    <%- per_page_options_for_select.each do |(label, count)| %>
-      <li><%= link_to(label, url_for(search_state.params_for_search(per_page: count))) %></li>
-    <%- end -%>
-  </ul>
-</div>
+<% if show_sort_and_per_page? %>
+  <span class="sr-only visually-hidden"><%= t('blacklight.search.per_page.title') %></span>
+  <%= render(Blacklight::System::DropdownComponent.new(
+    param: :per_page,
+    choices: per_page_options_for_select,
+    id: 'per_page-dropdown',
+    search_state: search_state,
+    selected: current_per_page,
+    interpolation: :count)) %>
 <% end %>
