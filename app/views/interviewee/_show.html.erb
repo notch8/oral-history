@@ -7,9 +7,8 @@
   <%= react_component('MediaPlayer',
     id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'),
     src: parsed_children.try(:first).try(:[], "url_t"),
-    peaks: parsed_children.try(:first).try(:[], "peaks"),
-    image: "/avatar.jpg",
-    typeOfResource: type_of_resource(document))
+    peaks: parsed_children.try(:first).try(:[], "peaks"), image: "/avatar.jpg"),
+    typeOfResource: type_of_resource(document)
   %>
 </div>
 <div class="container shortcode-html">
