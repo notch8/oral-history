@@ -1,5 +1,5 @@
 <%= render(Blacklight::FacetFieldComponent.new(facet_field: facet_field_presenter(facet_field, nil))) do |component| %>
-  <% component.label do %>
+  <% component.with(:label) do %>
 
       <% if facet_field_label(facet_field.key) == 'Series' %>
           <%= facet_field_label(facet_field.key) %>
@@ -12,7 +12,7 @@
 
         <% end %>
   <% end %>
-  <% component.body do %>
+  <% component.with(:body) do %>
     <%= yield %>
   <% end %>
 <% end %>

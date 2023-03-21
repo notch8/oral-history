@@ -1,7 +1,5 @@
-<%= render Blacklight::System::ModalComponent.new do |component| %>
-  <% component.title { t('blacklight.sms.form.title') } %>
-
-  <% component.body do %>
-    <%= render 'sms_form' %>
-  <% end %>
-<% end %>
+<div class="modal-header">
+	<button type="button" class="ajax-modal-close close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h1 class="modal-title"><%= t('blacklight.sms.form.title') %></h1>
+</div>
+<%= render :partial => 'sms_form' %>

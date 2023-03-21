@@ -2,29 +2,14 @@
   <%= javascript_pack_tag "media_player" %>
 <% end %>
 <div class="container">
-  <% parsed_transcripts = transcripts_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if transcripts_from(document) %>
-  <% highlighted_parsed_transcripts = highlight_transcripts(parsed_transcripts, params[:q]) if transcripts_from(document) %>
-  <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document) %>
-  <% search_matches = search_match(parsed_children, params[:q]) if children_from(document) %>
-  <% parsed_peaks = peaks_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if peaks_from(document) %>
-
-  <%= react_component(
-    'MediaPlayer',
+  <%# TODO: this feels really gross -- needs to be refactored %>
+  <% parsed_children = children_from(document).sort {|a, b| a["order_i"].to_i <=> b["order_i"].to_i} if children_from(document).present? %>
+  <%= react_component('MediaPlayer',
     id: parsed_children.try(:first).try(:[], "id_t").try(:gsub, '/', '-'),
     src: parsed_children.try(:first).try(:[], "url_t"),
-    peaks: parsed_peaks.try(:first).try(:[], "peaks"),
-    transcript: highlighted_parsed_transcripts.try(:first).try(:[], "highlighted_transcript"),
-    image: narrator_image(document),
-    typeOfResource: type_of_resource(document),
-  ) %>
-</div>
-<%= render :partial => 'download_transcript_panel', locals: {document: document} %>
-
-<div class="container">
-  <%= react_component('FileView',
-                      transcript: highlighted_parsed_transcripts.try(:first).try(:[], "highlighted_transcript"),
-                      userQuery: @user_query
-  ) %>
+    peaks: parsed_children.try(:first).try(:[], "peaks"), image: "/avatar.jpg"),
+    typeOfResource: type_of_resource(document)
+  %>
 </div>
 <div class="container shortcode-html">
   <div class="col-sm-12">
@@ -32,42 +17,7 @@
       <%= document["biographical_display"].first if document["biographical_display"].present? %>
     </div>
   </div>
-
   <div id="accordion-10" class="u-accordion u-accordion-color-primary u-accordion-brd-primary" role="tablist" aria-multiselectable="true">
-    <div class="col-sm-12">
-      <!-- Card -->
-      <div class="card rounded-0 g-brd-none">
-        <div id="accordion-10-heading-last" class="u-accordion__header g-pa-0" role="tab">
-          <h5 class="mb-0 g-font-weight-600 g-font-size-default g-brd-bottom g-brd-gray-light-v4 g-pa-15-0">
-            <a class="d-block g-color-main g-text-underline--none--hover collapsed" href="#accordion-10-body-last" data-toggle="collapse" data-parent="#accordion-10" aria-expanded="false" aria-controls="accordion-10-body-last">
-              <span class="u-accordion__control-icon g-ml-10">
-                <i class="fa fa-angle-right"></i>
-                <i class="fa fa-angle-down"></i>
-              </span>
-              <span class="g-valign-middle">Interview Information</span>
-            </a>
-          </h5>
-        </div>
-        <div id="accordion-10-body-last" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-last">
-          <div class="u-accordion__body g-color-gray-dark-v5 g-pa-15-0">
-            <% doc_presenter = show_presenter(document) %>
-            <%# default partial to display solr document fields in catalog show view -%>
-            <dl class="dl-horizontal dl-invert show-page">
-
-              <% doc_presenter.fields_to_render.each do |field_name, field, field_presenter| -%>
-                <% if should_render_show_field? document, field %>
-                  <% unless field_name == "links_t"%>
-                    <dt class="blacklight-<%= field_name.parameterize %>"><%= render_document_show_field_label document, label: field_presenter.label, field: field_name %></dt>
-                    <dd class="blacklight-<%= field_name.parameterize %>"><%= field_presenter.render %></dd>
-                  <% end -%>
-                <% end -%>
-              <% end %>
-            </dl>
-          </div>
-        </div>
-      </div>
-      <!-- End Card -->
-    </div>
     <% if parsed_children.present? %>
       <% parsed_children.each_with_index do |child, i| %>
         <div class="col-sm-12">
@@ -82,27 +32,52 @@
 
                   </span>
                   <span class="g-valign-middle"><%= child["title_t"] %></span>
-                  <% if search_matches[i]['search_match'] %>
-                    <span class="label label-warning">*</span>
-                  <% end %>
-
                 </a>
-
-                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: parsed_peaks ? parsed_peaks[i]["peaks"] : '', transcript: highlighted_parsed_transcripts ? highlighted_parsed_transcripts[i]["highlighted_transcript"] : '' ) %>
+                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: child["peaks"]) %>
               </h5>
             </div>
             <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
               <div class="u-accordion__body g-color-gray-dark-v5 g-pa-15-0">
-                <%= search_matches[i]["highlighted_description"].html_safe %>
+                <%= child["description_t"] %>
               </div>
-
             </div>
           </div>
           <!-- End Card -->
         </div> <!-- end div for accordion card-->
       <% end %> <!-- end parsed children loop with accordion -->
     <% end %>
+    <div class="col-sm-12">
+      <!-- Card -->
+      <div class="card rounded-0 g-brd-none">
+        <div id="accordion-10-heading-last" class="u-accordion__header g-pa-0" role="tab">
+          <h5 class="mb-0 g-font-weight-600 g-font-size-default g-brd-bottom g-brd-gray-light-v4 g-pa-15-0">
+            <a class="d-block g-color-main g-text-underline--none--hover collapsed" href="#accordion-10-body-last" data-toggle="collapse" data-parent="#accordion-10" aria-expanded="false" aria-controls="accordion-10-body-last">
+              <span class="u-accordion__control-icon g-ml-10">
+                <i class="fa fa-angle-right"></i>
+                <i class="fa fa-angle-down"></i>
 
+
+              </span>
+              <span class="g-valign-middle">Interview Information</span>
+            </a>
+          </h5>
+        </div>
+        <div id="accordion-10-body-last" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-last">
+          <div class="u-accordion__body g-color-gray-dark-v5 g-pa-15-0">
+
+            <% doc_presenter = show_presenter(document) %>
+              <%# default partial to display solr document fields in catalog show view -%>
+              <dl class="row dl-invert dl-horizontal show-page document-metadata">
+                <% doc_presenter.fields_to_render.each do |field_name, field, field_presenter| -%>
+                  <dt class="blacklight-<%= field_name.parameterize %> col-md-3"><%= render_document_show_field_label document, label: field_presenter.label, field: field_name %></dt>
+                  <dd class="blacklight-<%= field_name.parameterize %> col-md-9"><%= field_presenter.render %></dd>
+                <% end -%>
+              </dl>
+          </div>
+        </div>
+      </div>
+      <!-- End Card -->
+    </div>
 
   </div> <!-- end accordion -->
 </div> <!-- end container -->
