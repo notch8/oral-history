@@ -35,7 +35,7 @@ gem 'oai', '>=1.1.0'
 gem 'pg', '~> 1.1'
 gem 'progress_bar'
 gem 'progress_job'
-gem 'puma', '~> 4.3.5'
+gem 'puma', '~> 4.3.12'
 gem 'rollbar'
 gem 'rsolr', '>= 1.0'
 gem 'rspec-rails', '~> 3.8', group: [:development, :test]
