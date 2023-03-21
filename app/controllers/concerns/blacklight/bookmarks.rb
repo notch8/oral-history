@@ -15,7 +15,7 @@ module Blacklight::Bookmarks
     skip_before_action :verify_authenticity_token
     before_action :verify_user
 
-    blacklight_config.http_method = Blacklight::Engine.config.bookmarks_http_method
+    blacklight_config.http_method = Blacklight::Engine.config.blacklight.bookmarks_http_method
     blacklight_config.add_results_collection_tool(:clear_bookmarks_widget)
 
     blacklight_config.show.document_actions[:bookmark].if = false if blacklight_config.show.document_actions[:bookmark]
@@ -25,7 +25,7 @@ module Blacklight::Bookmarks
   def action_documents
     bookmarks = token_or_current_or_guest_user.bookmarks
     bookmark_ids = bookmarks.collect { |b| b.document_id.to_s }
-    search_service.fetch(bookmark_ids)
+    search_service.fetch(bookmark_ids, rows: bookmark_ids.count)
   end
 
   def action_success_redirect_path
@@ -49,9 +49,6 @@ module Blacklight::Bookmarks
       format.html { }
       format.rss  { render layout: false }
       format.atom { render layout: false }
-      format.json do
-        render json: render_search_results_as_json
-      end
 
       additional_response_formats(format)
       document_export_formats(format)
@@ -62,9 +59,6 @@ module Blacklight::Bookmarks
     create
   end
 
-  # For adding a single bookmark, suggest use PUT/#update to
-  # /bookmarks/$docuemnt_id instead.
-  # But this method, accessed via POST to /bookmarks, can be used for
   # creating multiple bookmarks at once, by posting with keys
   # such as bookmarks[n][document_id], bookmarks[n][title].
   # It can also be used for creating a single bookmark by including keys
@@ -79,8 +73,11 @@ module Blacklight::Bookmarks
 
     current_or_guest_user.save! unless current_or_guest_user.persisted?
 
-    success = @bookmarks.all? do |bookmark|
-       current_or_guest_user.bookmarks.where(bookmark).exists? || current_or_guest_user.bookmarks.create(bookmark)
+    bookmarks_to_add = @bookmarks.reject { |bookmark| current_or_guest_user.bookmarks.where(bookmark).exists? }
+    success = ActiveRecord::Base.transaction do
+      current_or_guest_user.bookmarks.create!(bookmarks_to_add)
+    rescue ActiveRecord::RecordInvalid
+      false
     end
 
     if request.xhr?
@@ -137,7 +134,7 @@ module Blacklight::Bookmarks
 
   def verify_user
     unless current_or_guest_user || (action == "index" and token_or_current_or_guest_user)
-      flash[:notice] = I18n.t('blacklight.bookmarks.need_login') 
+      flash[:notice] = I18n.t('blacklight.bookmarks.need_login')
       raise Blacklight::Exceptions::AccessDenied
     end
   end
