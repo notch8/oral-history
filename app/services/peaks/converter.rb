@@ -12,7 +12,7 @@ module Peaks
 
     def convert(src, dst)
       dir = Dir.mktmpdir(@tmp_path, nil)
-      dst_file = Pathname.new(dir).join('audio.wav').cleanpath.to_s
+      dst_file = "#{dir}/audio.wav"
 
       cmd = sprintf(DEFAULT_FFMPEG_CALL, src, dst_file)
 
