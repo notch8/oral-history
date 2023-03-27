@@ -400,7 +400,7 @@ class OralHistoryItem
     Delayed::Job.where("handler LIKE ? AND last_error IS ?", "%job_class: ProcessPeakJob%#{self.id}%", nil).present?
   end
 
-  def transcript_job_queued?
+  def pdf_transcript_job_queued?
     Delayed::Job.where("handler LIKE ? AND last_error IS ?", "%job_class: IndexPdfTranscriptJob%#{self.id}%", nil).present?
   end
 
@@ -410,7 +410,7 @@ class OralHistoryItem
 
   def should_process_pdf_transcripts
     @should_process_pdf_transcripts ||= false
-    @should_process_pdf_transcripts && !transcript_job_queued?
+    @should_process_pdf_transcripts && !pdf_transcript_job_queued?
   end
 
   def self.create_import_tmp_file
