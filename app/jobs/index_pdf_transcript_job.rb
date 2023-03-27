@@ -16,14 +16,11 @@ class IndexPdfTranscriptJob < ApplicationJob
       transcript = result['file'].to_s.strip
 
       # put transcript into these fields
-      item.attributes['time_log_t'] ||= []
-      item.attributes['time_log_t'] << pdf_text
       item.attributes['transcripts_t'] ||= []
       item.attributes['transcripts_t'] << transcript
       item.attributes['transcripts_json_t'] ||= []
       item.attributes['transcripts_json_t'] << {
-        'transcript_t': transcript,
-        'time_log_t': pdf_text
+        'transcript_t': transcript
       }.to_json
 
       # index the record in Solr
