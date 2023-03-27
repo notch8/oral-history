@@ -27,7 +27,8 @@ module Peaks
 
       peaks
     ensure
-      system("rm -rf #{raw_path.gsub('/audio.wave', '')}") if raw_path
+      sanitized_raw_path = Shellwords.escape(raw_path.gsub('/audio.wave', ''))
+      system("rm -rf #{sanitized_raw_path}") if raw_path
     end
 
     # takes a solr document and attempts to create the peaks file

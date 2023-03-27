@@ -9,7 +9,9 @@ class IndexPdfTranscriptJob < ApplicationJob
     tmp_file = Tempfile.new
 
     tmp_file.binmode
-    `curl -o #{tmp_file.path} #{pdf_text}`
+    escaped_pdf_text = Shellwords.escape(pdf_text)
+    cmd = "curl -o #{tmp_file.path} #{escaped_pdf_text}"
+    system(cmd)
 
     if tmp_file.size > 0
       result = SolrService.extract(path: tmp_file.path)
