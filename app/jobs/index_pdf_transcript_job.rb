@@ -1,5 +1,3 @@
-require 'shellwords'
-
 class IndexPdfTranscriptJob < ApplicationJob
   queue_as :default
 
@@ -17,9 +15,17 @@ class IndexPdfTranscriptJob < ApplicationJob
 
     if tmp_file.size > 0
       result = SolrService.extract(path: tmp_file.path)
-      # put response in this field
+      transcript = result['file'].to_s.strip
+
+      # put transcript into these fields
       item.attributes['transcripts_t'] ||= []
-      item.attributes['transcripts_t'] << result[File.basename(tmp_file.path)].to_s.strip
+      item.attributes['transcripts_t'] << transcript
+      item.attributes['transcripts_json_t'] ||= []
+      item.attributes['transcripts_json_t'] << {
+        'transcript_t': transcript
+      }.to_json
+
+      # index the record in Solr
       item.index_record
     end
   end
