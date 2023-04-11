@@ -38,7 +38,7 @@ gem 'progress_job'
 gem 'puma', '~> 4.3.12'
 gem 'rollbar'
 gem 'rsolr', '>= 1.0'
-gem 'rspec-rails', '~> 3.8', group: [:development, :test]
+gem 'rspec-rails', '~> 4.0.1', group: [:development, :test]
 gem 'ruby-audio', '~> 1.6.0'
 gem 'sass-rails', '>= 6'
 gem 'sentry-raven'
