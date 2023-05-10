@@ -1,3 +1,4 @@
+require 'shellwords'
 class IndexPdfTranscriptJob < ApplicationJob
   queue_as :default
 

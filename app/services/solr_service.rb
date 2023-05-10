@@ -24,7 +24,7 @@ class SolrService
     params['extractFormat'] = 'text'
 
     # "/solr/techproducts/update/extract"
-    conn = Faraday.new(url: Blacklight.connection_config[:url]) do |faraday|
+    conn = Faraday.new(url: 'http://solr:8983/solr/blacklight-core') do |faraday| # TODO @@connection.uri
       faraday.request :multipart #make sure this is set before url_encoded
       faraday.request :url_encoded
       faraday.adapter Faraday.default_adapter
