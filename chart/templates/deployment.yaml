@@ -37,12 +37,12 @@ spec:
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: database-external-secret
+                  name: database-external-password
                   key: database-password
             - name: SOLR_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: solr-external-secret
+                  name: solr-external-password
                   key: solr-admin-password
             - name: NEGATIVE_CAPTCHA_SECRET
               valueFrom:
