@@ -37,18 +37,18 @@ spec:
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: database-external-password
-                  key: database-password
+                  name: {{ .Values.externalSecrets.secretStoreRef.name }}
+                  key: {{ .Values.externalSecrets.env.databasePassword }}
             - name: SOLR_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: solr-external-password
-                  key: solr-admin-password
+                  name: {{ .Values.externalSecrets.secretStoreRef.name }}
+                  key: {{ .Values.externalSecrets.env.solrAdminPassword }}
             - name: NEGATIVE_CAPTCHA_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: negative-captcha-external-secret
-                  key: negative-captcha-secret
+                  name: {{ .Values.externalSecrets.secretStoreRef.name }}
+                  key: {{ .Values.externalSecrets.env.negativeCaptchaSecret }}
           envFrom:
             - configMapRef:
                 name: {{ include "chart.fullname" . }}-env
