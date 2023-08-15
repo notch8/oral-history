@@ -27,6 +27,9 @@ solr:
     size: 8Gi
     mountPath: /bitnami/solr
 
+# if solr.enabled=false uncomment and fill in with solr host
+# externalSolrHost: external-solr.example.com
+
 postgresql:
   enabled: true
   image:
@@ -35,6 +38,10 @@ postgresql:
   postgresqlUsername: blacklight
   postgresqlDatabase: blacklight
   servicePort: 5432
+
+# if postgresql.enabled=false uncomment and fill in with postgres host
+# externalPostgresql:
+#   host: pg-postgresql.staging-postgres.svc.cluster.local
 
 externalSecrets:
   refreshInterval: 1h

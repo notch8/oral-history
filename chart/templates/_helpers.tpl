@@ -60,3 +60,27 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "chart.postgresql.fullname" -}}
+{{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "chart.postgresql.host" -}}
+{{- if .Values.postgresql.enabled }}
+{{- include "chart.postgresql.fullname" . }}
+{{- else }}
+{{- .Values.externalPostgresql.host }}
+{{- end }}
+{{- end -}}
+
+{{- define "chart.solr.fullname" -}}
+{{- printf "%s-%s" .Release.Name "solr" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "chart.solr.host" -}}
+{{- if .Values.solr.enabled }}
+{{- include "chart.solr.fullname" . }}
+{{- else }}
+{{- .Values.externalSolrHost }}
+{{- end }}
+{{- end -}}
