@@ -21,3 +21,7 @@
 .idea/
 *.tmproj
 .vscode/
+
+# Environment-specific Values files
+/test-oralhistory-values.yaml
+/prod-oralhistory-values.yaml
