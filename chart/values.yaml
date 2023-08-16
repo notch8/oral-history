@@ -10,7 +10,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-# https://github.com/bitnami/charts/tree/main/bitnami/solr
+# Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/solr
 solr:
   enabled: true
   image:
@@ -30,6 +30,7 @@ solr:
 # if solr.enabled=false uncomment and fill in with solr host
 # externalSolrHost: external-solr.example.com
 
+# Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
 postgresql:
   enabled: true
   image:
