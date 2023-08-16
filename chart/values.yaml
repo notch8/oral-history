@@ -35,9 +35,12 @@ postgresql:
   image:
     repository: bitnami/postgresql
     tag: 12.3.0
-  postgresqlUsername: blacklight
-  postgresqlDatabase: blacklight
-  servicePort: 5432
+  auth:
+    username: blacklight
+    database: blacklight
+  service:
+    ports:
+      postgresql: 5432
 
 # if postgresql.enabled=false uncomment and fill in with postgres host
 # externalPostgresql:
