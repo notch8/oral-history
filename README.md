@@ -1,29 +1,42 @@
 # Docker Development Setup
 
 1. Install Docker ([macOS](https://docs.docker.com/docker-for-mac/install/)/[Windows](https://docs.docker.com/docker-for-windows/install/)/[Linux](https://docs.docker.com/engine/install/))
-2. `.env` is populated with good defaults. `.env.development` and `.env.production` can be used for local overrides and should not be in the repo.
-3. Confirm or configure Github and Dockerhub settings. (Substitute your information for the examples.)
-    + Set up your Gitgub configuration if it is not already set up
+2. `.env` is populated with good defaults.
+3. Install Dory: https://github.com/FreedomBen/dory
+4. Configure dory: https://github.com/FreedomBen/dory#config-file
+   Add the following to the config-file
+```bash
+- domain: test
+  address: 127.0.0.1
+```
+5. Run dory:
+```bash
+dory up
+```
+6.  Build project and start up
 ``` bash
-git config --global user.name example
-git config --global user.email example@example.com
+docker compose build
+docker compose up
 ```
-    + Login in to Dockerhub (you will need your username and password)
-``` bash
-docker login
+7. Visit http://oralhistory.test in your browser.
+8. Load database and import data
 ```
-4. Create and populate `.env.development`.
-   Minimum requirements is that it exists. `touch .env.development`
-5.  Build project and start up
-``` bash
-docker-compose --file docker-compose.yml build
-docker-compose --file docker-compose.yml up
+docker compose exec web bundle exec rake db:migrate
+docker compose exec web bundle exec rake db:seed
+docker compose exec web bundle exec rake import[100]
 ```
-6. Visit http://0.0.0.0:8000 in your browser. *You may see a rails error page suggesting a migration.*
-7. Load database and import data
-```
-docker-compose exec web bundle exec rake db:migrate import[100]
-```
+9. Sign into the Admin Dashboard
+Navigate to https://oralhistory.test/users/sign_in
+Login with default the seeded user and password at db/seeds.rb
+Note you can add those ENV variable to your .env file to update
+the values in one place. But deafults are set so make sure you
+update for produciton environment.
+
+10. Common Developer Recipes:
+Drop into a bash console inside docker container: `docker compose exec container-name bash`. Example: `docker compose exec web bash`
+Drop into a sh console inside docker container: `docker compose exec container-name sh`. Example: `docker compose exec web sh`
+Drop into a rails console: `docker compose exec bundle exec rails c`
+
 **Note:** The `100` in `import[100]` limits the number of assets initially loaded. You may adjust this as desired.
 
 ## Development Notes
