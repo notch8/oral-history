@@ -4,6 +4,9 @@ name: Build and Publish (staging)
 on:
   push:
     branches-ignore:
+      - '**/helm*'
+      - '**helm'
+      - 'helm**'
       - '**/test*'
       - '**test'
       - 'test**'
