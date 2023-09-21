@@ -54,9 +54,13 @@ export default class MediaPlayer extends Component {
     return (
       <div className="row player">
         <VideoPlayer
+          id="video"
+          ref="video"
           source={source}
+          src={source}
           image={image}
         />
+        {/* <audio: needs to stay here in order for the ontimeupdate to work */}
         <audio
           id="audio"
           ref="audio"
@@ -73,8 +77,9 @@ export default class MediaPlayer extends Component {
 
     return (
       <div className="row player">
-        <audio id="audio" ref="audio" src={source} style={{display: 'none'}}></audio>
-        <div className="col-sm-3 narrator-image-container" style={{backgroundImage: `url(${image})`, backgroundPosition: "center center", backgroundSize: "contain", backgroundRepeat: "no-repeat"}}>
+        <audio id="audio" ref="audio" src={source} style={{ display: 'none' }}></audio>
+        {/* If there is a video put in over the avatar.jpg image */}
+        <div className="col-sm-3 narrator-image-container" style={{ backgroundImage: `url(${image})`, backgroundPosition: "center center", backgroundSize: "contain", backgroundRepeat: "no-repeat" }}>
           <a onClick={this.handleTogglePlay} className={playPause}></a>
           <div className="volume-container">
             <span className="fa fa-volume-up">
@@ -226,6 +231,11 @@ export default class MediaPlayer extends Component {
           clearInterval(interval)
         }
       }, 200)
+    } else if (typeOfResource === 'moving image') {
+      const video = this.refs.video
+      const hls = new Hls()
+      hls.loadSource(source)
+      hls.attachMedia(video)
     }
 
     audio.ontimeupdate = () => {

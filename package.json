@@ -2,6 +2,8 @@
   "name": "oral_history",
   "private": true,
   "dependencies": {
+    "@babel/runtime": "^7.22.15",
+    "@clappr/core": "^0.6.1",
     "@rails/webpacker": "^3.0.2",
     "babel-preset-react": "^6.24.1",
     "clappr": "^0.3.13",
