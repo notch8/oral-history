@@ -1,4 +1,4 @@
-FROM phusion/passenger-ruby25:1.0.11 as web
+FROM phusion/passenger-ruby25:1.0.11
 
 RUN echo 'Downloading Packages' && \
     apt-get update -qq -o Dir::Etc::sourceparts=- && \
