@@ -32,7 +32,7 @@ export default class VideoPlayer extends Component{
         width: 800,
         baseUrl: '/assets/clappr',
         parent: this.refs.player,
-        hlsjsConfig: { enableWorker: true },
+        hlsjsConfig: { enableWorker: true }
       })
 
       this.setState({ player: player })
@@ -69,8 +69,7 @@ export default class VideoPlayer extends Component{
 
   render() {
     return (
-      <div id="player" ref="player">
-      </div>
+      <div id="player" ref="player"></div>
     )
   }
 }

@@ -14,14 +14,6 @@ if Rails.env.development? || Rails.env.test?
   # Import the work with the video
   OralHistoryItem.import_single("21198-zz002jxz7z")
 
-   # Import additional works with audio
+  # Import additional works with audio
   OralHistoryItem.import_single("21198-zz002bfs89")
-  OralHistoryItem.import_single("21198-zz002kd7t9")
-  OralHistoryItem.import_single("21198-zz002gvzsh")
-
-  #https://webservices.library.ucla.edu/dldataprovider/oai2_0.do?metadataPrefix=mods&verb=GetRecord&identifier=oai:library.ucla.edu:digital2/21198-zz00096t7z
-  OralHistoryItem.import_single("21198-zz00096t7z")
-  OralHistoryItem.import_single("21198-zz002czx49")
-  OralHistoryItem.import_single("21198-zz000904cp")
-  OralHistoryItem.import_single("21198-zz00096th3")
 end
