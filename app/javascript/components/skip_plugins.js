@@ -101,7 +101,7 @@ class SkipBackward extends Clappr.UICorePlugin {
   }
 
   onClick() {
-    if (this.core.getCurrentPlayback().getCurrentTime() > 5) {
+    if (this.core.getCurrentPlayback().getCurrentTime() > 10) {
       this.core.getCurrentPlayback().seek(this.core.getCurrentPlayback().getCurrentTime() - 5)
     } else {
       this.core.getCurrentPlayback().seek(0)
