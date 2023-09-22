@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: "0.0.1"
 description: Chart for Oral History Public-Facing App
 name: oralhistory
-version: 0.0.3
+version: 0.0.4
 
 dependencies:
   - name: postgresql
