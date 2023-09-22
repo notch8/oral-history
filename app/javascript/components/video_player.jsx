@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import Clappr from 'clappr'
-import SkipBackwardButton from './skip_forward_button'
-import SkipForwardButton from './skip_backward_button'
 import PlaybackRatePlugin from 'clappr-playback-rate-plugin'
+import { FastForward, SkipBackward } from './skip_plugins'
 
 export default class VideoPlayer extends Component{
   constructor(props) {
@@ -28,6 +27,8 @@ export default class VideoPlayer extends Component{
         plugins: [
           Clappr.FlasHLS,
           PlaybackRatePlugin,
+          SkipBackward,
+          FastForward,
           ],
         width: 800,
         baseUrl: '/assets/clappr',
@@ -71,8 +72,6 @@ export default class VideoPlayer extends Component{
   render() {
     return (
       <div id="player" ref="player">
-        <SkipBackwardButton onClick={this.handleRewind} />
-        <SkipForwardButton onClick={this.handleForward} />
       </div>
     )
   }

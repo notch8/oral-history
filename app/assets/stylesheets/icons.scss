@@ -75,3 +75,8 @@
   content: "\e910";
 }
 
+#fast-forward, #skip-backward {
+    svg:hover {
+      fill-opacity: .7;
+  }
+}
