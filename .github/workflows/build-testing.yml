@@ -8,7 +8,7 @@ on:
       - '**test'
       - 'test**'
     paths-ignore:
-      - 'chart/**'
+      - 'charts/**'
 
 jobs:
   docker:
