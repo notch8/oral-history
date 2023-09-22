@@ -78,7 +78,6 @@ export default class MediaPlayer extends Component {
     return (
       <div className="row player">
         <audio id="audio" ref="audio" src={source} style={{ display: 'none' }}></audio>
-        {/* If there is a video put in over the avatar.jpg image */}
         <div className="col-sm-3 narrator-image-container" style={{ backgroundImage: `url(${image})`, backgroundPosition: "center center", backgroundSize: "contain", backgroundRepeat: "no-repeat" }}>
           <a onClick={this.handleTogglePlay} className={playPause}></a>
           <div className="volume-container">

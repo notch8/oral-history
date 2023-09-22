@@ -23,7 +23,6 @@ export default class VideoPlayer extends Component{
         source: source,
         src: source,
         poster: image,
-        mute: true,
         plugins: [
           Clappr.FlasHLS,
           PlaybackRatePlugin,
@@ -34,7 +33,6 @@ export default class VideoPlayer extends Component{
         baseUrl: '/assets/clappr',
         parent: this.refs.player,
         hlsjsConfig: { enableWorker: true },
-        mediacontrol: {seekbar: "#E113D3", buttons: "#66B2FF"}
       })
 
       this.setState({ player: player })
