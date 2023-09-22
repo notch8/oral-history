@@ -33,25 +33,11 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            - name: DATABASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.externalSecrets.secretStoreRef.name }}
-                  key: {{ .Values.externalSecrets.env.databasePassword }}
-            - name: SOLR_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.externalSecrets.secretStoreRef.name }}
-                  key: {{ .Values.externalSecrets.env.solrAdminPassword }}
-            - name: NEGATIVE_CAPTCHA_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.externalSecrets.secretStoreRef.name }}
-                  key: {{ .Values.externalSecrets.env.negativeCaptchaSecret }}
           envFrom:
             - configMapRef:
                 name: {{ include "chart.fullname" . }}-env
+            - secretRef:
+                name: {{ template “chart.fullname" . }}-secrets
           ports:
             - name: http
               containerPort: 80

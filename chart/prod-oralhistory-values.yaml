@@ -6,18 +6,23 @@ replicaCount: 1
 
 image:
   repository: uclalibrary/oral-history
-  tag: v1.0.0
+  # TODO: tag relation to docker images; in future use 1.x.x etc
+  # For now, use latest staging hash
+  tag: eeb68bf3aee48269c618bf93af079b8eb210d3488c334b0ae8eccac39e9e822b
   pullPolicy: Always
 
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/solr
 solr:
+  # TODO: Solr heap size? docker-compose has SOLR_HEAP=4g
   enabled: true
   image:
     repository: bitnami/solr
+    # This is the image version, not the chart version.
     tag: 8.11.1
   auth:
     enabled: true
     adminUsername: admin
+    adminPassword: admin
   coreName: blacklight
   collection: blacklight-core
   persistence:
@@ -31,6 +36,7 @@ postgresql:
   enabled: true
   image:
     repository: bitnami/postgresql
+    # This is the image version, not the chart version.
     tag: 12.3.0
   auth:
     username: blacklight
@@ -38,16 +44,44 @@ postgresql:
   service:
     ports:
       postgresql: 5432
+  primary:
+    persistence:
+      # TODO: Should enabled be true?
+      enabled: false
+      size: 10Gi
+
+# TODO: Variable names and values were copied from .env - is this all right?
+web:
+  env:
+    SOLR_URL: http://solr:8983/solr/blacklight-core
+    POSTGRES_DB: oral_history
+    POSTGRES_HOST: postgres
+    POSTGRES_USER: postgres
+    DEPLOY_HOOK: CHANGEME
+    DOCKER_PORTS: 80
+    MAKE_WAVES: false
+    PASSENGER_APP_ENV: production
+    REGISTRY_HOST: index.docker.io/
+    REGISTRY_URI: uclalibrary
+    # TODO: Real value
+    SITE_URI: oralhistory-k8s.library.ucla.edu
+    TAG: dev
+    TEST_DB: oral_history_test
+
+# TODO: Add worker service
+# worker:
 
 externalSecrets:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-3"
   refreshInterval: 10m
   secretStoreRef:
     name: systems-clustersecretstore
     kind: ClusterSecretStore
   env:
-    negativeCaptchaSecret: negative-captcha-external-secret/negative-captcha-secret
-    databasePassword: database-external-password/database-password
-    solrAdminPassword: solr-external-password/solr-admin-password
+    negativeCaptchaSecret: /systems/prodrke01/oh-public/negative_captcha_secret
+    databasePassword: /systems/prodrke01/oh-public/db_password
+    solrAdminPassword: /systems/prodrke01/oh-public/solr_admin_password
 
 # configure a registry token for access to your container registry, needs read permissions, create secret in Rancher, follow instructions:
 # https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/new-user-guides/kubernetes-resources-setup/kubernetes-and-docker-registries#creating-a-registry
@@ -79,14 +113,16 @@ ingress:
     kubernetes.io/tls-acme: "true"
 
   hosts:
-    - host: oralhistory.library.ucla.edu
+    # TODO: Set real production name
+    - host: oralhistory-k8s.library.ucla.edu
       paths:
         - "/"
 
   tls:
-   - secretName: oralhistory-tls
+    # TODO: Set real production name
+   - secretName: oralhistory-k8s-tls
      hosts:
-       - oralhistory.library.ucla.edu
+       - oralhistory-k8s.library.ucla.edu
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/or-whatever-container-registry-you-use
+  repository: uclalibrary/oral-history
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -46,6 +46,12 @@ postgresql:
 # if postgresql.enabled=false uncomment and fill in with postgres host
 # externalPostgresql:
 #   host: pg-postgresql.staging-postgres.svc.cluster.local
+
+# TODO: Maybe define default values for web service
+# web:
+
+# TODO: Maybe define default values for worker service
+# worker:
 
 externalSecrets:
   refreshInterval: 1h

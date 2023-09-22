@@ -14,6 +14,14 @@ data:
   SOLR_CORE: {{ .Values.solr.coreName }}
   SOLR_HOST: {{ template "chart.solr.host" . }}
   SOLR_PORT: "8983"
-{{- range $key, $value := .Values.env.configmap }}
-  {{ $key }}: "{{ $value }}"
-{{- end }}
+  # These are used by the "web" service
+  SOLR_URL: {{ .Values.web.env.SOLR_URL}}
+  DEPLOY_HOOK: {{ .Values.web.env.DEPLOY_HOOK}}
+  DOCKER_PORTS: {{ .Values.web.env.DOCKER_PORTS}}
+  MAKE_WAVES: {{ .Values.web.env.MAKE_WAVES}}
+  PASSENGER_APP_ENV: {{ .Values.web.env.PASSENGER_APP_ENV}}
+  REGISTRY_HOST: {{ .Values.web.env.REGISTRY_HOST}}
+  REGISTRY_URI: {{ .Values.web.env.REGISTRY_URI}}
+  SITE_URI: {{ .Values.web.env.SITE_URI}}
+  TAG: {{ .Values.web.env.TAG}}
+  TEST_DB: {{ .Values.web.env.TEST_DB}}

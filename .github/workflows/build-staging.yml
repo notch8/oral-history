@@ -9,6 +9,8 @@ on:
       - 'test**'
       - main
       - master
+    paths-ignore:
+      - 'chart/**'
 
 jobs:
   docker:
