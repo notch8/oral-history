@@ -51,22 +51,6 @@ export default class VideoPlayer extends Component{
     this.setState({ player: null })
   }
 
-  handleRewind = (seconds) => {
-    const { player } = this.state;
-    if (player) {
-      const currentTime = player.getCurrentTime();
-      player.seek(currentTime + seconds);
-    }
-  };
-
-  handleForward = (seconds) => {
-    const { player } = this.state;
-    if (player) {
-      const currentTime = player.getCurrentTime();
-      player.seek(currentTime - seconds);
-    }
-  };
-
   render() {
     return (
       <div id="player" ref="player"></div>
