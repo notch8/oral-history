@@ -119,8 +119,8 @@ class OralHistoryItem
     if record.header.blank? || record.header.identifier.blank?
       return false
     end
-
-    history = OralHistoryItem.find_or_new(record.header.identifier.split('/').last) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
+    record_id = record.header.identifier.gsub('/','-')
+    history = OralHistoryItem.find_or_new(record_id) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))    
     history.attributes['id_t'] = history.id
     if record.header.datestamp
       history.attributes[:timestamp] = Time.parse(record.header.datestamp)
