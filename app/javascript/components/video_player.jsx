@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import ReactHLS from 'react-hls-player'
 import Clappr from 'clappr'
 import PlaybackRatePlugin from 'clappr-playback-rate-plugin'
+import { FastForward, SkipBackward } from './skip_plugins'
 
 export default class VideoPlayer extends Component{
   constructor(props) {
@@ -21,8 +21,14 @@ export default class VideoPlayer extends Component{
     if (source != prevProps.source || (!player && source)) {
       const player = new Clappr.Player({
         source: source,
+        src: source,
         poster: image,
-        plugins: [Clappr.FlasHLS, PlaybackRatePlugin],
+        plugins: [
+          Clappr.FlasHLS,
+          PlaybackRatePlugin,
+          SkipBackward,
+          FastForward,
+          ],
         width: 800,
         baseUrl: '/assets/clappr',
         parent: this.refs.player,
@@ -47,7 +53,7 @@ export default class VideoPlayer extends Component{
 
   render() {
     return (
-      <div ref="player"></div>
+      <div id="player" ref="player"></div>
     )
   }
 }
