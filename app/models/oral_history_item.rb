@@ -27,7 +27,8 @@ class OralHistoryItem
 
   def self.client(args)
     url = args[:url] || "https://oh-staff.library.ucla.edu/oai/"
-    OAI::Client.new url
+    
+    OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300}) 
   end
 
   def self.fetch(args)
@@ -40,24 +41,16 @@ class OralHistoryItem
 
 
   def self.fetch_first_id
-    response = self.fetch({progress: false, limit:1})
-    response.full&.first&.header&.identifier&.split('/')&.last
+    response = self.fetch({limit:1})
+    response.full&.first&.header&.identifier
   end
 
   def self.import(args)
     return false if !args[:override] && check_for_tmp_file
     begin
       create_import_tmp_file
-      progress = args[:progress] || true
       limit = args[:limit] || 20000000  # essentially no limit
-      # when getting the whole set, the app times out. We need to do it in chunks or we need to set the timeout to a longer time
-      puts "getting response"
       response = self.fetch(args)
-      
-      puts "got response"
-      if progress
-        bar = ProgressBar.new(response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i)
-      end
       total = 0
       new_record_ids = []
 
@@ -81,9 +74,6 @@ class OralHistoryItem
           yield(total) if block_given?
         end
 
-        if progress
-          bar.increment!
-        end
         total += 1
         break if total >= limit
       end
