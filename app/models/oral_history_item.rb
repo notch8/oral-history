@@ -26,35 +26,31 @@ class OralHistoryItem
 
 
   def self.client(args)
-    url = args[:url] || "https://webservices.library.ucla.edu/dldataprovider/oai2_0.do"
-    OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
+    url = args[:url] || "https://oh-staff.library.ucla.edu/oai/"
+
+    OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
   end
 
   def self.fetch(args)
-    set = args[:set] || "oralhistory"
-    response = client(args).list_records(set: set, metadata_prefix: 'mods')
+    response = client(args).list_records
   end
 
   def self.get(args)
-    response = client(args).get_record(identifier: args[:identifier], metadata_prefix: 'mods', )
+    response = client(args).get_record(identifier: args[:identifier] )
   end
 
 
   def self.fetch_first_id
-    response = self.fetch({progress: false, limit:1})
-    response.full&.first&.header&.identifier&.split('/')&.last
+    response = self.fetch({limit:1})
+    response.full&.first&.header&.identifier
   end
 
   def self.import(args)
     return false if !args[:override] && check_for_tmp_file
     begin
       create_import_tmp_file
-      progress = args[:progress] || true
       limit = args[:limit] || 20000000  # essentially no limit
       response = self.fetch(args)
-      if progress
-        bar = ProgressBar.new(response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i)
-      end
       total = 0
       new_record_ids = []
 
@@ -78,9 +74,6 @@ class OralHistoryItem
           yield(total) if block_given?
         end
 
-        if progress
-          bar.increment!
-        end
         total += 1
         break if total >= limit
       end
@@ -116,8 +109,8 @@ class OralHistoryItem
     if record.header.blank? || record.header.identifier.blank?
       return false
     end
-
-    history = OralHistoryItem.find_or_new(record.header.identifier.split('/').last) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
+    record_id = record.header.identifier.gsub('/','-')
+    history = OralHistoryItem.find_or_new(record_id) #Digest::MD5.hexdigest(record.header.identifier).to_i(16))
     history.attributes['id_t'] = history.id
     if record.header.datestamp
       history.attributes[:timestamp] = Time.parse(record.header.datestamp)
@@ -201,7 +194,7 @@ class OralHistoryItem
 
             if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
               time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
-              transcript = self.generate_transcript(time_log_url)
+              transcript = self.generate_xml_transcript(time_log_url)
               history.attributes["transcripts_json_t"] << {
                 "transcript_t": transcript,
                 "order_i": order
@@ -272,6 +265,7 @@ class OralHistoryItem
           elsif child.name == 'location'
             child.elements.each do |f|
               history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
+              order = child.elements['mods:part'].present? ? child.elements['mods:part'].attributes['order'] : 1
               if f.attributes['displayLabel'] &&
                 has_xml_transcripts == false &&
                 history.attributes["transcripts_t"].blank? &&
@@ -279,6 +273,9 @@ class OralHistoryItem
                 f.text.match(/pdf/i)
                 history.should_process_pdf_transcripts = true
                 pdf_text = f.text
+                history.attributes["transcripts_json_t"] << {
+                  "order_i": order
+                }.to_json
               end
             end
           elsif child.name == 'physicalDescription'
@@ -367,7 +364,7 @@ class OralHistoryItem
     OralHistoryItem.new(id: id)
   end
 
-  def self.generate_transcript(url)
+  def self.generate_xml_transcript(url)
     tmpl = Nokogiri::XSLT(File.read('public/convert.xslt'))
     resp = Net::HTTP.get(URI(url))
 
@@ -396,8 +393,17 @@ class OralHistoryItem
     Delayed::Job.where("handler LIKE ? AND last_error IS ?", "%job_class: ProcessPeakJob%#{self.id}%", nil).present?
   end
 
+  def pdf_transcript_job_queued?
+    Delayed::Job.where("handler LIKE ? AND last_error IS ?", "%job_class: IndexPdfTranscriptJob%#{self.id}%", nil).present?
+  end
+
   def should_process_peaks?
     !has_peaks? && !peak_job_queued?
+  end
+
+  def should_process_pdf_transcripts
+    @should_process_pdf_transcripts ||= false
+    @should_process_pdf_transcripts && !pdf_transcript_job_queued?
   end
 
   def self.create_import_tmp_file
