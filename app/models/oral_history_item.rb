@@ -25,25 +25,25 @@ class OralHistoryItem
   end
 
 
-  def self.client(args)
-    url = args[:url] || "https://oh-staff.library.ucla.edu/oai/"
+    def self.client(args)
+      url = args[:url] || "https://oh-staff.library.ucla.edu/oai/"
 
-    OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
-  end
+      OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
+    end
 
-  def self.fetch(args)
-    response = client(args).list_records
-  end
+    def self.fetch(args)
+      response = client(args).list_records
+    end
 
-  def self.get(args)
-    response = client(args).get_record(identifier: args[:identifier] )
-  end
+    def self.get(args)
+      response = client(args).get_record(identifier: args[:identifier] )
+    end
 
 
-  def self.fetch_first_id
-    response = self.fetch({limit:1})
-    response.full&.first&.header&.identifier
-  end
+    def self.fetch_first_id
+      response = self.fetch({limit:1})
+      response.full&.first&.header&.identifier
+    end
 
   def self.import(args)
     return false if !args[:override] && check_for_tmp_file
@@ -194,7 +194,7 @@ class OralHistoryItem
 
             if child.elements['mods:location/mods:url[@usage="timed log"]'].present?
               time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
-              transcript = self.generate_xml_transcript(time_log_url)
+              transcript = self.generate_transcript(time_log_url)
               history.attributes["transcripts_json_t"] << {
                 "transcript_t": transcript,
                 "order_i": order
@@ -265,7 +265,6 @@ class OralHistoryItem
           elsif child.name == 'location'
             child.elements.each do |f|
               history.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
-              order = child.elements['mods:part'].present? ? child.elements['mods:part'].attributes['order'] : 1
               if f.attributes['displayLabel'] &&
                 has_xml_transcripts == false &&
                 history.attributes["transcripts_t"].blank? &&
@@ -273,9 +272,6 @@ class OralHistoryItem
                 f.text.match(/pdf/i)
                 history.should_process_pdf_transcripts = true
                 pdf_text = f.text
-                history.attributes["transcripts_json_t"] << {
-                  "order_i": order
-                }.to_json
               end
             end
           elsif child.name == 'physicalDescription'
@@ -364,7 +360,7 @@ class OralHistoryItem
     OralHistoryItem.new(id: id)
   end
 
-  def self.generate_xml_transcript(url)
+  def self.generate_transcript(url)
     tmpl = Nokogiri::XSLT(File.read('public/convert.xslt'))
     resp = Net::HTTP.get(URI(url))
 
@@ -393,17 +389,8 @@ class OralHistoryItem
     Delayed::Job.where("handler LIKE ? AND last_error IS ?", "%job_class: ProcessPeakJob%#{self.id}%", nil).present?
   end
 
-  def pdf_transcript_job_queued?
-    Delayed::Job.where("handler LIKE ? AND last_error IS ?", "%job_class: IndexPdfTranscriptJob%#{self.id}%", nil).present?
-  end
-
   def should_process_peaks?
     !has_peaks? && !peak_job_queued?
-  end
-
-  def should_process_pdf_transcripts
-    @should_process_pdf_transcripts ||= false
-    @should_process_pdf_transcripts && !pdf_transcript_job_queued?
   end
 
   def self.create_import_tmp_file
