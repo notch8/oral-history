@@ -25,6 +25,8 @@ Rails.application.routes.draw do
 
   post 'admin/run_import', to: 'admin#run_import', as: 'run_import'
 
+  delete 'destroy_all_delayed_jobs', to: 'admin#destroy_all_delayed_jobs'
+
   mount Blacklight::Engine => '/'
   mount BlacklightDynamicSitemap::Engine => '/'
 
