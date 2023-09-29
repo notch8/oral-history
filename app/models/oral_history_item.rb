@@ -25,25 +25,25 @@ class OralHistoryItem
   end
 
 
-    def self.client(args)
-      url = args[:url] || "https://oh-staff.library.ucla.edu/oai/"
+  def self.client(args)
+    url = args[:url] || "https://oh-staff.library.ucla.edu/oai/"
 
-      OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
-    end
+    OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
+  end
 
-    def self.fetch(args)
-      response = client(args).list_records
-    end
+  def self.fetch(args)
+    response = client(args).list_records
+  end
 
-    def self.get(args)
-      response = client(args).get_record(identifier: args[:identifier] )
-    end
+  def self.get(args)
+    response = client(args).get_record(identifier: args[:identifier] )
+  end
 
 
-    def self.fetch_first_id
-      response = self.fetch({limit:1})
-      response.full&.first&.header&.identifier
-    end
+  def self.fetch_first_id
+    response = self.fetch({limit:1})
+    response.full&.first&.header&.identifier
+  end
 
   def self.import(args)
     return false if !args[:override] && check_for_tmp_file
@@ -370,11 +370,9 @@ class OralHistoryItem
   end
 
   def self.total_records(args = {})
-    url = args[:url] || "https://webservices.library.ucla.edu/dldataprovider/oai2_0.do"
-    set = args[:set] || "oralhistory"
-    client = OAI::Client.new url, :headers => { "From" => "rob@notch8.com" }, :parser => 'rexml', metadata_prefix: 'mods'
-    response = client.list_records(set: set, metadata_prefix: 'mods')
-    response.doc.elements['//resumptionToken'].attributes['completeListSize'].to_i
+    url = args[:url] || "https://oh-staff.library.ucla.edu/oai/"
+
+    OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
   end
 
   def has_peaks?
