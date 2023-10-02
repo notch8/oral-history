@@ -10,10 +10,4 @@ if Rails.env.development? || Rails.env.test?
   u = User.find_or_create_by(email: ENV['ADMIN_EMAIL'] || 'admin@example.com')
   u.password = ENV['ADMIN_PASSWORD'] || 'password'
   u.save
-
-  # Import the work with the video
-  OralHistoryItem.import_single("21198-zz002jxz7z")
-
-  # Import additional works with audio
-  OralHistoryItem.import_single("21198-zz002bfs89")
 end
