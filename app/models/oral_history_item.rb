@@ -229,7 +229,7 @@ class OralHistoryItem
             history.attributes["series_sort"] = child.elements['mods:titleInfo/mods:title'].text
             history.attributes["abstract_display"] = child.elements['mods:abstract']&.text
             history.attributes["abstract_t"] = []
-            history.attributes["abstract_t"] << child.elements['mods:abstract'].text
+            history.attributes["abstract_t"] << child.elements['mods:abstract']&.text
           elsif child.name == "note"
             if child.attributes == {}
               history.attributes["admin_note_display"] = child.text
