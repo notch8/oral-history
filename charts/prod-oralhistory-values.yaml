@@ -6,9 +6,8 @@ replicaCount: 1
 
 image:
   repository: uclalibrary/oral-history
-  # TODO: tag relation to docker images; in future use 1.x.x etc
-  # For now, use latest staging hash
-  tag: eeb68bf3aee48269c618bf93af079b8eb210d3488c334b0ae8eccac39e9e822b
+  # changing this tag will cause a deploy via ArgoCD
+  tag: v0.0.2
   pullPolicy: Always
 
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/solr
