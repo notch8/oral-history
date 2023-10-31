@@ -55,6 +55,7 @@ web:
     SOLR_URL: http://solr:8983/solr/blacklight-core
     POSTGRES_DB: oral_history
     POSTGRES_HOST: postgres
+    POSTGRES_PASSWORD: '{{ .Values.externalSecrets.env.databasePassword }}'
     POSTGRES_USER: postgres
     DEPLOY_HOOK: CHANGEME
     DOCKER_PORTS: 80
