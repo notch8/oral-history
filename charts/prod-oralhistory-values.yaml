@@ -55,7 +55,6 @@ web:
     SOLR_URL: http://solr:8983/solr/blacklight-core
     POSTGRES_DB: oral_history
     POSTGRES_HOST: postgres
-    POSTGRES_PASSWORD: '{{ .Values.externalSecrets.env.databasePassword }}'
     POSTGRES_USER: postgres
     DEPLOY_HOOK: CHANGEME
     DOCKER_PORTS: 80
@@ -71,17 +70,25 @@ web:
 # TODO: Add worker service
 # worker:
 
-externalSecrets:
+externalsecrets:
   annotations:
     argocd.argoproj.io/sync-wave: "-3"
-  refreshInterval: 10m
-  secretStoreRef:
-    name: systems-clustersecretstore
-    kind: ClusterSecretStore
-  env:
-    negativeCaptchaSecret: /systems/prodrke01/oh-public/negative_captcha_secret
-    databasePassword: /systems/prodrke01/oh-public/db_password
-    solrAdminPassword: /systems/prodrke01/oh-public/solr_admin_password
+  enabled: true
+  # Reference to ClusterSecretStore name
+  ref: systems-clustersecretstore
+  secrets:
+    application:
+      data:
+        - secretKey: NEGATIVE_CAPTCHA_SECRET
+          remoteRef:
+            key: /systems/prodrke01/oh-public/negative_captcha_secret
+        - secretKey: POSTGRES_PASSWORD
+          remoteRef:
+            key: /systems/prodrke01/oh-public/db_password
+        - secretKey: SOLR_ADMIN_PASSWORD
+          remoteRef:
+            key: /systems/prodrke01/oh-public/solr_admin_password
+
 
 # configure a registry token for access to your container registry, needs read permissions, create secret in Rancher, follow instructions:
 # https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/new-user-guides/kubernetes-resources-setup/kubernetes-and-docker-registries#creating-a-registry
