@@ -4,9 +4,6 @@
 
 replicaCount: 1
 
-podAnnotations:
-  checksum/config: {{ include (print $.Template.BasePath "/oral-history-env.yaml") . | sha256sum }}
-
 image:
   repository: uclalibrary/oral-history
   # changing this tag will cause a deploy via ArgoCD
