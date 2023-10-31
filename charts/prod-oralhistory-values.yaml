@@ -43,7 +43,7 @@ postgresql:
     secretKeys:
       adminPasswordKey: POSTGRES_PASSWORD
       userPasswordKey: POSTGRES_PASSWORD
-    existingSecret: oral-history-env
+    existingSecret: oral-history-secrets
   service:
     ports:
       postgresql: 5432
