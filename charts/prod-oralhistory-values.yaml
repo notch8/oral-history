@@ -70,7 +70,6 @@ web:
     SITE_URI: oralhistory-k8s.library.ucla.edu
     TAG: dev
     TEST_DB: oral_history_test
-    AVUONGTEST: AVUONGTEST
 
 # TODO: Add worker service
 # worker:
