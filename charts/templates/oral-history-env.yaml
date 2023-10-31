@@ -26,3 +26,4 @@ data:
   SITE_URI: "{{ .Values.web.env.SITE_URI}}"
   TAG: "{{ .Values.web.env.TAG}}"
   TEST_DB: "{{ .Values.web.env.TEST_DB}}"
+  AVUONGTEST: "AVUONGTEST"
