@@ -37,9 +37,13 @@ postgresql:
     repository: bitnami/postgresql
     # This is the image version, not the chart version.
     tag: 12.3.0
+
   auth:
     username: blacklight
-    database: blacklight
+    secretKeys:
+      adminPasswordKey: POSTGRES_PASSWORD
+      userPasswordKey: POSTGRES_PASSWORD
+    existingSecret: oral-history-env
   service:
     ports:
       postgresql: 5432
