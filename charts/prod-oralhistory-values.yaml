@@ -57,7 +57,7 @@ postgresql:
 # TODO: Variable names and values were copied from .env - is this all right?
 web:
   env:
-    SOLR_URL: http://solr:8983/solr/blacklight-core
+    SOLR_URL: http://oral-history-public-web-solr:8983/solr/blacklight-core
     POSTGRES_DB: oral_history
     POSTGRES_HOST: postgres
     POSTGRES_USER: postgres
