@@ -90,10 +90,12 @@ externalsecrets:
         - secretKey: POSTGRES_PASSWORD
           remoteRef:
             key: /systems/prodrke01/oh-public/db_password
+        - secretKey: SECRET_KEY_BASE
+          remoteRef:
+            key: /systems/prodrke01/oh-public/secret_key_base
         - secretKey: SOLR_ADMIN_PASSWORD
           remoteRef:
             key: /systems/prodrke01/oh-public/solr_admin_password
-
 
 # configure a registry token for access to your container registry, needs read permissions, create secret in Rancher, follow instructions:
 # https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/new-user-guides/kubernetes-resources-setup/kubernetes-and-docker-registries#creating-a-registry
