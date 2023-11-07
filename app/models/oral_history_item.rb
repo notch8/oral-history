@@ -133,6 +133,10 @@ class OralHistoryItem
         history.attributes['links_t'] = []
         set.children.each do |child|
         next if child.class == REXML::Text
+
+          # Skip series and session level metadata
+          next if child.name == "relatedItem" && ['constituent', 'series'].include?(child.attributes['type'])
+
           if child.name == "titleInfo"
             child.elements.each('mods:title') do |title|
               title_text = title.text.to_s.strip
