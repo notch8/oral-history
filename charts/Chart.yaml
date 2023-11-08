@@ -1,0 +1,36 @@
+apiVersion: v2
+appVersion: "0.0.1"
+description: Chart for Oral History Public-Facing App
+name: oralhistory
+version: 0.0.8
+
+# The `appVersion` is not a required field whereas `version` is required. If
+# you’re making changes to a helm chart template file and/or the default values
+# file, you must increment the `version`.
+
+# If you just make a change to an env-specific values file, you do not change
+# the `version` field.
+
+# So, if nothing changes about the helm chart itself, and you just need to
+# deploy a new container image tagged with a new version number, the only thing
+# you’d edit is the env-specific values file that identifies the new tag for
+# the image you want to deploy.
+
+# It is optional to increment the `appVersion` field in chart.yml - it is
+# helpful to stay consistent, but not required.
+
+# See prod-oralhistory-values.yaml for the env-specific values
+
+dependencies:
+  - name: postgresql
+    # This is the chart version, not the image version.
+    # TODO: Be sure chart versions here are compatible with image verions in values files.
+    version: 12.2.5
+    repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+    condition: postgresql.enabled
+  - name: solr
+    # This is the chart version, not the image version.
+    # TODO: Be sure chart versions here are compatible with image verions in values files.
+    version: 7.2.1
+    repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+    condition: solr.enabled
