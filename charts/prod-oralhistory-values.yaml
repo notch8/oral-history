@@ -44,7 +44,7 @@ postgresql:
     secretKeys:
       adminPasswordKey: POSTGRES_PASSWORD
       userPasswordKey: POSTGRES_PASSWORD
-    existingSecret: oral-history-externalsecrets
+    existingSecret: oral-history-externalsecret
   service:
     ports:
       postgresql: 5432
