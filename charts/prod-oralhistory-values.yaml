@@ -21,15 +21,15 @@ solr:
   auth:
     enabled: true
     adminUsername: admin
-    adminPassword: admin
-  coreName: blacklight
-  collection: blacklight-core
+    secretKeys:
+      adminPasswordKey: SOLR_ADMIN_PASSWORD
+      userPasswordKey: SOLR_ADMIN_PASSWORD
+    existingSecret: oral-history-secrets
   persistence:
     enabled: true
     storageClass: "vsphere-csi-sc"
     size: 8Gi
     mountPath: /bitnami/solr
-
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
 postgresql:
   enabled: true
@@ -71,7 +71,7 @@ web:
     REGISTRY_URI: uclalibrary
     # TODO: Real value
     SITE_URI: oralhistory-k8s.library.ucla.edu
-    TAG: dev
+    TAG: staging
     TEST_DB: oral_history_test
 
 worker:

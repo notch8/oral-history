@@ -9,14 +9,9 @@ data:
   POSTGRES_HOST: "{{ template "chart.postgresql.host" . }}"
   POSTGRES_PORT: "{{ .Values.postgresql.service.ports.postgresql }}"
   POSTGRES_USER: "{{ .Values.postgresql.auth.username }}"
-  SOLR_ADMIN_USER: "{{ .Values.solr.auth.adminUsername }}"
-  SOLR_COLLECTION_NAME: "{{ .Values.solr.collection }}"
-  SOLR_CORE: "{{ .Values.solr.coreName }}"
-  SOLR_HOST: "{{ template "chart.solr.host" . }}"
-  SOLR_PORT: "8983"
-
-  # These are used by the "web" service
-  SOLR_URL: "{{ .Values.web.env.SOLR_URL}}"
+  SOLR_ADMIN_USER: "{{ .Values.web.env.SOLR_ADMIN_USER}}"
+  SOLR_HOST: "{{ .Values.web.env.SOLR_HOST}}"
+  SOLR_PORT: "{{ .Values.web.env.SOLR_PORT}}"
   DEPLOY_HOOK: "{{ .Values.web.env.DEPLOY_HOOK}}"
   DOCKER_PORTS: "{{ .Values.web.env.DOCKER_PORTS}}"
   MAKE_WAVES: "{{ .Values.web.env.MAKE_WAVES}}"
