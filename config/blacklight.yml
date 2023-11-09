@@ -18,4 +18,4 @@ test: &test
   url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:#{ENV['TEST_JETTY_PORT'] || 8983}/solr/blacklight-core" %>
 production:
   adapter: solr
-  url: <%= ENV['SOLR_URL'] || "http://#{ENV.fetch(SOLR_ADMIN_USER}:#{ENV.fetch(SOLR_ADMIN_PASSWORD)}@#{ENV.fetch(SOLR_HOST}:#{ENV.fetch(SOLR_PORT)}/solr/blacklight-core/" %>
+  url: <%= sprintf "http://%s:%s@%s:%s/solr/blacklight-core", ENV["SOLR_ADMIN_USER"], ENV["SOLR_ADMIN_PASSWORD"], ENV["SOLR_HOST"], ENV["SOLR_PORT"] %>
