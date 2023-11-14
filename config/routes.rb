@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   get '/admin/logs', to: 'admin#logs', as: 'admin_logs'
 
   post 'admin/run_import', to: 'admin#run_import', as: 'run_import'
+  post 'admin/run_single_import', to: 'admin#run_single_import', as: 'run_single_import'
+  delete 'admin/delete_jobs', to: 'admin#delete_jobs', as: 'delete_jobs'
 
   mount Blacklight::Engine => '/'
   mount BlacklightDynamicSitemap::Engine => '/'

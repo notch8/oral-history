@@ -12,8 +12,8 @@ if Rails.env.development? || Rails.env.test?
   u.save
 
   # Import the work with the video
-  OralHistoryItem.import_single("21198-zz002jxz7z")
+  # OralHistoryItem.import_single("21198-zz002jxz7z")
 
   # Import additional works with audio
-  OralHistoryItem.import_single("21198-zz002bfs89")
+  # OralHistoryItem.import_single("21198-zz002bfs89")
 end

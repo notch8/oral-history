@@ -8,9 +8,30 @@
       <strong>The importer is currently running...</strong>
     </div>
     <%= link_to "Run Importer", run_import_url, method: :post, remote: true, id: "run-import-button", class: "btn btn-lg btn-primary", disabled: true %>
+    <%= link_to 'Delete All Delayed Jobs', delete_jobs_path, method: :delete, data: { confirm: 'Are you sure you want to delete all jobs?' }, class: 'btn btn-lg btn-danger' %>
+    <div class="g-mt-40 g-mb-40">
+      <%= form_tag run_single_import_url, method: :post, remote: true, id: "run-single-import-button", class: "btn btn-lg btn-primary", disabled: true do %>
+        <div class="form-group">
+          <%= text_field_tag 'id', '', class: 'form-control', placeholder: 'Enter ID' %>
+        </div>
+        <%= button_tag 'Run Single Import', class: 'btn btn-lg btn-primary', type: 'submit' %>
+      <% end %>
+    </div>
   <% else%>
+
     <%= link_to "Run Importer", run_import_url, method: :post, remote: true, id: "run-import-button", class: "btn btn-lg btn-primary" %>
     <%= link_to "Run Importer and Delete Removed Entries", run_import_url(delete: true), method: :post, remote: true, id: "run-import-button", class: "btn btn-lg btn-primary" %>
+    <%= link_to 'Delete All Delayed Jobs', delete_jobs_path, method: :delete, data: { confirm: 'Are you sure you want to delete all jobs?' }, class: 'btn btn-lg btn-danger' %>
+
+    <div class="g-mt-40 g-mb-40">
+      <%= form_tag run_single_import_url, method: :post, remote: true, id: "run-single-import-button", class: "btn btn-lg btn-primary" do %>
+        <div class="form-group">
+          <%= text_field_tag 'id', '', class: 'form-control', placeholder: 'Enter ID' %>
+        </div>
+        <%= button_tag 'Run Single Import', class: 'btn btn-lg btn-primary', type: 'submit' %>
+      <% end %>
+    </div>
+
     <div class="g-mt-20 g-mb-20 well" style="display: none">
       <div class="progress-status text-primary"></div>
       <br />

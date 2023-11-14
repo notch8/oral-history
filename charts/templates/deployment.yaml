@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "chart.fullname" . }}
+  name: {{ include "chart.fullname" . }}-web
   labels:
     {{- include "chart.labels" . | nindent 4 }}
 spec:
@@ -39,7 +39,7 @@ spec:
             - configMapRef:
                 name: {{ include "chart.fullname" . }}-env
             - secretRef:
-                name: {{ include "chart.fullname" . }}-secrets
+                name: {{ include "chart.fullname" . }}-externalsecret
           ports:
             - name: http
               containerPort: 80

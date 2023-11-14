@@ -21,15 +21,15 @@ solr:
   auth:
     enabled: true
     adminUsername: admin
-    adminPassword: admin
-  coreName: blacklight
-  collection: blacklight-core
+    secretKeys:
+      adminPasswordKey: SOLR_ADMIN_PASSWORD
+      userPasswordKey: SOLR_ADMIN_PASSWORD
+    existingSecret: oral-history-externalsecret
   persistence:
     enabled: true
     storageClass: "vsphere-csi-sc"
     size: 8Gi
     mountPath: /bitnami/solr
-
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
 postgresql:
   enabled: true
@@ -44,7 +44,7 @@ postgresql:
     secretKeys:
       adminPasswordKey: POSTGRES_PASSWORD
       userPasswordKey: POSTGRES_PASSWORD
-    existingSecret: oral-history-secrets
+    existingSecret: oral-history-externalsecret
   service:
     ports:
       postgresql: 5432
@@ -57,7 +57,9 @@ postgresql:
 # TODO: Variable names and values were copied from .env - is this all right?
 web:
   env:
-    SOLR_URL: http://admin:admin@oral-history-public-web-solr:8983/solr/blacklight-core
+    SOLR_ADMIN_USER: admin
+    SOLR_HOST: oral-history-public-web-solr
+    SOLR_PORT: 8983
     POSTGRES_DB: oral_history
     POSTGRES_HOST: postgres
     POSTGRES_USER: postgres
@@ -69,11 +71,21 @@ web:
     REGISTRY_URI: uclalibrary
     # TODO: Real value
     SITE_URI: oralhistory-k8s.library.ucla.edu
-    TAG: dev
+    TAG: staging
     TEST_DB: oral_history_test
 
-# TODO: Add worker service
-# worker:
+worker:
+  replicaCount: 1
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 externalsecrets:
   annotations:
@@ -119,8 +131,8 @@ service:
 
 ingress:
   enabled: "true"
+  ingressClassName: "nginx"
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     cert-manager.io/cluster-issuer: sectigo-acme-clusterissuer
