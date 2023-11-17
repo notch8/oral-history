@@ -24,7 +24,7 @@ solr:
     secretKeys:
       adminPasswordKey: SOLR_ADMIN_PASSWORD
       userPasswordKey: SOLR_ADMIN_PASSWORD
-    existingSecret: oral-history-externalsecret
+    existingSecret: oral-history-secrets
   persistence:
     enabled: true
     storageClass: "vsphere-csi-sc"
@@ -44,7 +44,7 @@ postgresql:
     secretKeys:
       adminPasswordKey: POSTGRES_PASSWORD
       userPasswordKey: POSTGRES_PASSWORD
-    existingSecret: oral-history-externalsecret
+    existingSecret: oral-history-secrets
   service:
     ports:
       postgresql: 5432
