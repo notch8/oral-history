@@ -105,7 +105,7 @@ externalsecrets:
         - secretKey: SECRET_KEY_BASE
           remoteRef:
             key: /systems/prodrke01/oh-public/secret_key_base
-        - secretKey: SOLR_ADMIN_PASSWORD
+        - secretKey: solr-password
           remoteRef:
             key: /systems/prodrke01/oh-public/solr_admin_password
 
