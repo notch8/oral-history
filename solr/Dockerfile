@@ -1,4 +1,4 @@
-FROM solr:8.11
+FROM solr:8.11 as solr
 
 ENV SOLR_HOME=/solr_home \
     SOLR_CONFIG_DIR=/solr_conf
