@@ -7,7 +7,7 @@ end
 
 gem 'rails', '~> 6.1'
 
-gem 'activejob-scheduler', git: 'https://github.com/notch8/activejob-scheduler.git'
+gem 'activejob-scheduler', github: 'notch8/activejob-scheduler', branch: 'master'
 gem "delayed_job_web"
 gem 'blacklight', '~> 7.33.1'
 gem 'blacklight-marc', '~> 7.0.0'
@@ -39,7 +39,7 @@ gem 'puma', '~> 4.3.12'
 gem 'rollbar'
 gem 'rsolr', '>= 1.0'
 gem 'rspec-rails', '~> 3.8', group: [:development, :test]
-gem 'ruby-audio', '~> 1.6.0'
+gem 'ruby-audio', '~> 1.6.1'
 gem 'sass-rails', '>= 6'
 gem 'sentry-raven'
 gem 'solr_wrapper', '>= 0.3', group: [:development, :test]

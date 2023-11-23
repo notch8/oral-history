@@ -5,9 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: uclalibrary/oral-history
+  repository: ghcr.io/scientist-softserv/oral-history
   # changing this tag will cause a deploy via ArgoCD
-  tag: v0.0.2
+  tag: ""
   pullPolicy: Always
 
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/solr
@@ -21,13 +21,10 @@ solr:
   auth:
     enabled: true
     adminUsername: admin
-    secretKeys:
-      adminPasswordKey: SOLR_ADMIN_PASSWORD
-      userPasswordKey: SOLR_ADMIN_PASSWORD
-    existingSecret: oral-history-secrets
+    adminPassword: solr-admin-password
   persistence:
     enabled: true
-    storageClass: "vsphere-csi-sc"
+    storageClass: ""
     size: 8Gi
     mountPath: /bitnami/solr
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
@@ -37,14 +34,10 @@ postgresql:
     repository: bitnami/postgresql
     # This is the image version, not the chart version.
     tag: 12.3.0
-
   auth:
     username: blacklight
     database: blacklight
-    secretKeys:
-      adminPasswordKey: POSTGRES_PASSWORD
-      userPasswordKey: POSTGRES_PASSWORD
-    existingSecret: oral-history-secrets
+    password: postgres-password
   service:
     ports:
       postgresql: 5432
@@ -54,28 +47,17 @@ postgresql:
       enabled: false
       size: 10Gi
 
-# TODO: Variable names and values were copied from .env - is this all right?
-web:
-  env:
-    SOLR_ADMIN_USER: admin
-    SOLR_HOST: oral-history-public-web-solr
-    SOLR_PORT: 8983
-    POSTGRES_DB: oral_history
-    POSTGRES_HOST: postgres
-    POSTGRES_USER: postgres
-    DEPLOY_HOOK: CHANGEME
-    DOCKER_PORTS: 80
-    MAKE_WAVES: false
-    PASSENGER_APP_ENV: production
-    REGISTRY_HOST: index.docker.io/
-    REGISTRY_URI: uclalibrary
-    # TODO: Real value
-    SITE_URI: oralhistory-k8s.library.ucla.edu
-    TAG: staging
-    TEST_DB: oral_history_test
+
+env:
+  secret:
+    SECRET_KEY_BASE: "secret-key-base"
+    NEGATIVE_CAPTCHA_SECRET: "negative-captcha-secret"
 
 worker:
   replicaCount: 1
+  image:
+    repository: ghcr.io/scientist-softserv/oral-history
+    tag: ""
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -87,27 +69,27 @@ worker:
   #   cpu: 100m
   #   memory: 128Mi
 
-externalsecrets:
-  annotations:
-    argocd.argoproj.io/sync-wave: "-3"
-  enabled: true
-  # Reference to ClusterSecretStore name
-  ref: systems-clustersecretstore
-  secrets:
-    application:
-      data:
-        - secretKey: NEGATIVE_CAPTCHA_SECRET
-          remoteRef:
-            key: /systems/prodrke01/oh-public/negative_captcha_secret
-        - secretKey: POSTGRES_PASSWORD
-          remoteRef:
-            key: /systems/prodrke01/oh-public/db_password
-        - secretKey: SECRET_KEY_BASE
-          remoteRef:
-            key: /systems/prodrke01/oh-public/secret_key_base
-        - secretKey: solr-password
-          remoteRef:
-            key: /systems/prodrke01/oh-public/solr_admin_password
+# externalsecrets:
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "-3"
+#   enabled: true
+#   # Reference to ClusterSecretStore name
+#   ref: systems-clustersecretstore
+#   secrets:
+#     application:
+#       data:
+#         - secretKey: NEGATIVE_CAPTCHA_SECRET
+#           remoteRef:
+#             key: /systems/prodrke01/oh-public/negative_captcha_secret
+#         - secretKey: POSTGRES_PASSWORD
+#           remoteRef:
+#             key: /systems/prodrke01/oh-public/db_password
+#         - secretKey: SECRET_KEY_BASE
+#           remoteRef:
+#             key: /systems/prodrke01/oh-public/secret_key_base
+#         - secretKey: solr-admin-password
+#           remoteRef:
+#             key: /systems/prodrke01/oh-public/solr_admin_password
 
 # configure a registry token for access to your container registry, needs read permissions, create secret in Rancher, follow instructions:
 # https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/new-user-guides/kubernetes-resources-setup/kubernetes-and-docker-registries#creating-a-registry
@@ -130,25 +112,14 @@ service:
   port: 80
 
 ingress:
-  enabled: "true"
-  ingressClassName: "nginx"
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
-    cert-manager.io/cluster-issuer: sectigo-acme-clusterissuer
-    kubernetes.io/tls-acme: "true"
-
+  enabled: true
+  annotations: {
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  }
   hosts:
-    # TODO: Set real production name
-    - host: oralhistory-k8s.library.ucla.edu
-      paths:
-        - "/"
-
-  tls:
-    # TODO: Set real production name
-   - secretName: oralhistory-k8s-tls
-     hosts:
-       - oralhistory-k8s.library.ucla.edu
+    - host: "oral-history.localhost"
+      paths: ["/"]
+  tls: []
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

@@ -15,7 +15,6 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/oral-history-env.yaml") . | sha256sum }}
-        checksum/externalsecret: {{ include (print $.Template.BasePath "/oral-history-externalsecret.yaml") . | sha256sum }}
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -38,8 +37,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "chart.fullname" . }}-env
-            - secretRef:
-                name: {{ include "chart.fullname" . }}-secrets
           ports:
             - name: http
               containerPort: 80
