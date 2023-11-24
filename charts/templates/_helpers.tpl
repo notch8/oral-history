@@ -73,6 +73,10 @@ Create the name of the service account to use
 {{- end }}
 {{- end -}}
 
+{{/*
+Set values for solr connection
+*/}}
+
 {{- define "chart.solr.fullname" -}}
 {{- printf "%s-%s" .Release.Name "solr" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
@@ -83,4 +87,24 @@ Create the name of the service account to use
 {{- else }}
 {{- .Values.externalSolrHost }}
 {{- end }}
+{{- end -}}
+
+{{- define "chart.solr.username" -}}
+{{- if .Values.solr.enabled }}
+{{- .Values.solr.auth.adminUsername }}
+{{- else }}
+{{- .Values.externalSolrUser }}
+{{- end }}
+{{- end -}}
+
+{{- define "chart.solr.password" -}}
+{{- if .Values.solr.enabled }}
+{{- .Values.solr.auth.adminPassword }}
+{{- else }}
+{{- .Values.externalSolrPassword }}
+{{- end }}
+{{- end -}}
+
+{{- define "chart.solr.url" -}}
+{{- printf "http://%s:%s@%s:%s/solr/blacklight-core" (include "chart.solr.username" .) (include "chart.solr.password" .) (include "chart.solr.host" .) "8983" -}}
 {{- end -}}

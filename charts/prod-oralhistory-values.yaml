@@ -21,7 +21,7 @@ solr:
   auth:
     enabled: true
     adminUsername: admin
-    adminPassword: solr-admin-password
+    adminPassword: $SOLR_ADMIN_PASSWORD
   persistence:
     enabled: true
     storageClass: ""
@@ -37,7 +37,7 @@ postgresql:
   auth:
     username: blacklight
     database: blacklight
-    password: postgres-password
+    password: $POSTGRES_PASSWORD
   service:
     ports:
       postgresql: 5432
@@ -50,8 +50,8 @@ postgresql:
 
 env:
   secret:
-    SECRET_KEY_BASE: "secret-key-base"
-    NEGATIVE_CAPTCHA_SECRET: "negative-captcha-secret"
+    SECRET_KEY_BASE: $SECRET_KEY_BASE
+    NEGATIVE_CAPTCHA_SECRET: $NEGATIVE_CAPTCHA_SECRET
 
 worker:
   replicaCount: 1

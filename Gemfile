@@ -31,10 +31,12 @@ gem 'libxml-ruby'
 gem 'listen', '~> 3.3', group: [:development]
 gem 'mods'
 gem 'negative_captcha'
+gem "net-http"
 gem 'oai', '>=1.1.0'
 gem 'pg', '~> 1.1'
 gem 'progress_bar'
 gem 'progress_job'
+gem 'psych', '< 4'
 gem 'puma', '~> 4.3.12'
 gem 'rollbar'
 gem 'rsolr', '>= 1.0'
@@ -51,7 +53,7 @@ gem 'tzinfo', '~> 2.0', '>= 2.0.6'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'uglifier', '>= 1.3.0'
 gem 'web-console', '>= 3.7.0', group: [:development]
-gem 'webpacker', '~> 3.1.0'
+gem 'webpacker', '~>3.0'
 gem 'webpacker-react', "~> 0.3.2"
 gem 'whenever', require: false
 gem 'view_component', '2.66'

@@ -1,7 +1,4 @@
-# FROM phusion/passenger-ruby27:2.5.0 as web #ruby-2.7.7
-# FROM phusion/passenger-ruby27:2.5.1 as web #ruby-2.7.8
-# FROM phusion/passenger-ruby32:2.5.0 as web #ruby-3.2.0
-FROM phusion/passenger-ruby32:2.5.0 as web
+FROM phusion/passenger-ruby32:2.6.0 as web
 RUN echo 'Downloading Packages' && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
@@ -49,7 +46,7 @@ ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
   BUNDLE_JOBS=4
 
 COPY --chown=app:app Gemfile* $APP_HOME/
-RUN chmod -R g+w /usr/local/rvm/gems/ruby-3.2.0
+RUN chmod -R g+w /usr/local/rvm/gems/*
 RUN /sbin/setuser app bash -l -c "bundle check || bundle install"
 
 COPY ops/nginx.sh /etc/service/nginx/run
