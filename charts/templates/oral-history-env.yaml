@@ -5,15 +5,16 @@ metadata:
   labels:
     {{- include "chart.labels" . | nindent 4 }}
 data:
-  MAKE_WAVES: "false"
-  PASSENGER_APP_ENV: "production"
+  ADMIN_EMAIL: "{{ .Values.env.secret.ADMIN_EMAIL }}"
+  ADMIN_PASSWORD: "{{ .Values.env.secret.ADMIN_PASSWORD }}"
+  MAKE_WAVES: "{{ .Values.env.configmap.MAKE_WAVES }}"
   NEGATIVE_CAPTCHA_SECRET: "{{ .Values.env.secret.NEGATIVE_CAPTCHA_SECRET }}"
+  PASSENGER_APP_ENV: "production"
   POSTGRES_DB: "{{ .Values.postgresql.auth.database }}"
   POSTGRES_HOST: "{{ template "chart.postgresql.host" . }}"
   POSTGRES_PASSWORD: "{{ .Values.postgresql.auth.password }}"
   POSTGRES_PORT: "{{ .Values.postgresql.service.ports.postgresql }}"
   POSTGRES_USER: "{{ .Values.postgresql.auth.username }}"
-  RAILS_ENV: "production"
   SECRET_KEY_BASE: "{{ .Values.env.secret.SECRET_KEY_BASE }}"
   SOLR_ADMIN_USER: "{{ .Values.solr.auth.adminUsername }}"
   SOLR_ADMIN_PASSWORD: "{{ .Values.solr.auth.adminPassword }}"

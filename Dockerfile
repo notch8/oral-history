@@ -46,7 +46,7 @@ ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
   BUNDLE_JOBS=4
 
 COPY --chown=app:app Gemfile* $APP_HOME/
-RUN chmod -R g+w /usr/local/rvm/gems/*
+RUN chmod -R g+w /usr/local/rvm/gems/ruby-3.2.2
 RUN /sbin/setuser app bash -l -c "bundle check || bundle install"
 
 COPY ops/nginx.sh /etc/service/nginx/run
