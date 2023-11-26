@@ -16,6 +16,7 @@ jobs:
     with:
       platforms: 'linux/amd64'
       webTarget: web
+      workerTarget: worker
 
   build-solr:
     uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.14

@@ -63,3 +63,5 @@ RUN /sbin/setuser app bash -l -c " \
     NODE_ENV=production DB_ADAPTER=nulldb bundle exec rake assets:precompile"
 
 CMD ["/sbin/my_init"]
+
+FROM web as worker
