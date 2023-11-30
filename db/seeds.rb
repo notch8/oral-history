@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 # Set up a default admin user, if we are in a Development environment, otherwise, skip
-if Rails.env.development? || Rails.env.test?
+if Rails.env.development? || Rails.env.test? || Rails.env.production?
   u = User.find_or_create_by(email: ENV['ADMIN_EMAIL'] || 'admin@example.com')
   u.password = ENV['ADMIN_PASSWORD'] || 'password'
   u.save

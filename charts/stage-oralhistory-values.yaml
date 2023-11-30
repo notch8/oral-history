@@ -150,6 +150,12 @@ externalsecrets:
         - secretKey: STAGING_HTTP_BASIC_USERNAME
           remoteRef:
             key: /apps/prodrke01/oh-public/staging_http_basic_username
+        - secretKey: ADMIN_EMAIL
+          remoteRef:
+            key: /apps/prodrke01/oh-public/stage/admin_email
+        - secretKey: ADMIN_PASSWORD
+          remoteRef:
+            key: /apps/prodrke01/oh-public/stage/admin_password
 
 # configure a registry token for access to your container registry, needs read permissions, create secret in Rancher, follow instructions:
 # https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/new-user-guides/kubernetes-resources-setup/kubernetes-and-docker-registries#creating-a-registry
