@@ -40,18 +40,51 @@ spec:
                 name: {{ include "chart.fullname" . }}-env
             - secretRef:
                 name: {{ include "chart.fullname" . }}-secrets
+          env:
+            - name: SOLR_ADMIN_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: SOLR_ADMIN_USER
+            - name: SOLR_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: SOLR_HOST
+            - name: SOLR_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: SOLR_PORT
+            - name: SOLR_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oral-history-secrets
+                  key: SOLR_ADMIN_PASSWORD
+            - name: SOLR_URL
+              value: http://$(SOLR_ADMIN_USER):$(SOLR_ADMIN_PASSWORD)@$(SOLR_HOST):$(SOLR_PORT)/solr/blacklight-core
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          livenessProbe:
+            {{- if .Values.web.env.USE_HTTP_BASIC }}
+            exec:
+              command:
+                - curl
+                - I
+                - -X
+                - GET
+                - -u
+                - "${STAGING_HTTP_BASIC_USERNAME}:${STAGING_HTTP_BASIC_PASSWORD}"
+                - http://localhost/
+            {{- else }}
+            httpGet:
+              path: /
+              port: http
+            {{- end }}
+            initialDelaySeconds: 120
+            periodSeconds: 30
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

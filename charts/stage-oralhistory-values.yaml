@@ -78,7 +78,7 @@ web:
     SOLR_ADMIN_USER: "admin"
 
     # DNS pointer to the Solr Service Name
-    SOLR_HOST: "prod-oral-history-public-web-solr"
+    SOLR_HOST: "stage-oral-history-public-web-solr"
 
     SOLR_PORT: "8983"
 
@@ -87,7 +87,7 @@ web:
     POSTGRES_DB: "oral_history"
 
     # DNS pointer to the Postgres Service Name
-    POSTGRES_HOST: "prod-oral-history-public-web-postgresql"
+    POSTGRES_HOST: "stage-oral-history-public-web-postgresql"
 
     # Rails specific environment variables
     MAKE_WAVES: "true"
@@ -98,10 +98,11 @@ web:
     SMTP_ADDRESS: "smtp.ucla.edu"
     SMTP_DOMAIN: "library.ucla.edu"
     SMTP_FROM: "do-not-reply@library.ucla.edu"
-    SMTP_HOST: "oralhistory.library.ucla.edu"
+    SMTP_HOST: "oralhistory-stage.library.ucla.edu"
     SMTP_HTTP_PROTOCOL: "https"
+    USE_HTTP_BASIC: "true"
 
-    SITE_URI: "oralhistory-k8s.library.ucla.edu"
+    SITE_URI: "oralhistory-k8s-stage.library.ucla.edu"
 
 worker:
   replicaCount: 1
@@ -127,22 +128,28 @@ externalsecrets:
       data:
         - secretKey: ROLLBAR_ACCESS_TOKEN
           remoteRef:
-            key: /apps/prodrke01/oh-public/rollbar_access_token
+            key: /apps/prodrke01/oh-public/stage/rollbar_access_token
         - secretKey: NEGATIVE_CAPTCHA_SECRET
           remoteRef:
-            key: /apps/prodrke01/oh-public/negative_captcha_secret
+            key: /apps/prodrke01/oh-public/stage/negative_captcha_secret
         - secretKey: POSTGRES_PASSWORD
           remoteRef:
-            key: /apps/prodrke01/oh-public/db_password
+            key: /apps/prodrke01/oh-public/stage/db_password
         - secretKey: POSTGRES_USER
           remoteRef:
-            key: /apps/prodrke01/oh-public/db_username
+            key: /apps/prodrke01/oh-public/stage/db_username
         - secretKey: SECRET_KEY_BASE
           remoteRef:
-            key: /apps/prodrke01/oh-public/secret_key_base
+            key: /apps/prodrke01/oh-public/stage/secret_key_base
         - secretKey: SOLR_ADMIN_PASSWORD
           remoteRef:
-            key: /apps/prodrke01/oh-public/solr_admin_password
+            key: /apps/prodrke01/oh-public/stage/solr_admin_password
+        - secretKey: STAGING_HTTP_BASIC_PASSWORD
+          remoteRef:
+            key: /apps/prodrke01/oh-public/staging_http_basic_password
+        - secretKey: STAGING_HTTP_BASIC_USERNAME
+          remoteRef:
+            key: /apps/prodrke01/oh-public/staging_http_basic_username
 
 # configure a registry token for access to your container registry, needs read permissions, create secret in Rancher, follow instructions:
 # https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/new-user-guides/kubernetes-resources-setup/kubernetes-and-docker-registries#creating-a-registry
@@ -172,14 +179,14 @@ ingress:
     kubernetes.io/tls-acme: "true"
   hosts:
     # TODO: Set real production name
-    - host: oralhistory-k8s.library.ucla.edu
+    - host: oralhistory-k8s-stage.library.ucla.edu
       paths:
         - "/"
   tls:
     # TODO: Set real production name
    - secretName: oralhistory-k8s-tls
      hosts:
-       - oralhistory-k8s.library.ucla.edu
+       - oralhistory-k8s-stage.library.ucla.edu
 
 
 resources:

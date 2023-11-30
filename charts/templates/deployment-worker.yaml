@@ -31,6 +31,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          command: ["bin/delayed_job", "run"]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -40,18 +41,33 @@ spec:
                 name: {{ include "chart.fullname" . }}-env
             - secretRef:
                 name: {{ include "chart.fullname" . }}-secrets
+          env:
+            - name: SOLR_ADMIN_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: SOLR_ADMIN_USER
+            - name: SOLR_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: SOLR_HOST
+            - name: SOLR_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: SOLR_PORT
+            - name: SOLR_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oral-history-secrets
+                  key: SOLR_ADMIN_PASSWORD
+            - name: SOLR_URL
+              value: http://$(SOLR_ADMIN_USER):$(SOLR_ADMIN_PASSWORD)@$(SOLR_HOST):$(SOLR_PORT)/solr/blacklight-core
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
