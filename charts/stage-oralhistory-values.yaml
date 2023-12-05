@@ -183,6 +183,8 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: sectigo-acme-clusterissuer
     kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
   hosts:
     # TODO: Set real production name
     - host: oralhistory-k8s-stage.library.ucla.edu
