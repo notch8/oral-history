@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: "0.0.2"
 description: Chart for Oral History Public-Facing App
 name: oralhistory
-version: 1.0.0
+version: 1.0.1
 
 # The `appVersion` is not a required field whereas `version` is required. If
 # you’re making changes to a helm chart template file and/or the default values
