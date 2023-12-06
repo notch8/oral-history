@@ -101,7 +101,7 @@ web:
     SMTP_HOST: "oralhistory.library.ucla.edu"
     SMTP_HTTP_PROTOCOL: "https"
 
-    SITE_URI: "oralhistory-k8s.library.ucla.edu"
+    SITE_URI: "oralhistory.library.ucla.edu"
 
 worker:
   replicaCount: 1
@@ -179,15 +179,13 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
   hosts:
-    # TODO: Set real production name
-    - host: oralhistory-k8s.library.ucla.edu
+    - host: oralhistory.library.ucla.edu
       paths:
         - "/"
   tls:
-    # TODO: Set real production name
-   - secretName: oralhistory-k8s-tls
+   - secretName: oralhistory-tls
      hosts:
-       - oralhistory-k8s.library.ucla.edu
+       - oralhistory.library.ucla.edu
 
 
 resources:
