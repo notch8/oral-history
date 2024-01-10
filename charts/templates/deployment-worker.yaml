@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" . }}-worker
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/oral-history-env.yaml") . | sha256sum }}
+        checksum/externalsecret: {{ include (print $.Template.BasePath "/oral-history-externalsecret.yaml") . | sha256sum }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "chart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "chart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          command: ["bin/delayed_job", "run"]
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "chart.fullname" . }}-env
+            - secretRef:
+                name: {{ include "chart.fullname" . }}-secrets
+          env:
+            - name: SOLR_ADMIN_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: SOLR_ADMIN_USER
+            - name: SOLR_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: SOLR_HOST
+            - name: SOLR_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: SOLR_PORT
+            - name: SOLR_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oral-history-secrets
+                  key: SOLR_ADMIN_PASSWORD
+            - name: SOLR_URL
+              value: http://$(SOLR_ADMIN_USER):$(SOLR_ADMIN_PASSWORD)@$(SOLR_HOST):$(SOLR_PORT)/solr/blacklight-core
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

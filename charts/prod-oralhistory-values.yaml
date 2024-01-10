@@ -6,15 +6,32 @@ replicaCount: 1
 
 image:
   repository: uclalibrary/oral-history
-  # TODO: tag relation to docker images; in future use 1.x.x etc
-  # For now, use latest staging hash
-  tag: eeb68bf3aee48269c618bf93af079b8eb210d3488c334b0ae8eccac39e9e822b
+  # changing this tag will cause a deploy via ArgoCD
+  tag: v0.0.2
   pullPolicy: Always
 
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/solr
 solr:
   # TODO: Solr heap size? docker-compose has SOLR_HEAP=4g
+  replicaCount: 1
+  collectionReplicas: 1
   enabled: true
+
+  javaMem: "-XX:MaxRAMPercentage=80"
+  resources:
+    limits:
+      memory: 4Gi
+    requests:
+      memory: 4Gi
+
+  coreNames: ["blacklight-core"]
+
+  # Disable solr cloud
+  cloudEnabled: false
+  cloudBootstrap: false
+  zookeeper:
+    enabled: false
+
   image:
     repository: bitnami/solr
     # This is the image version, not the chart version.
@@ -22,15 +39,13 @@ solr:
   auth:
     enabled: true
     adminUsername: admin
-    adminPassword: admin
-  coreName: blacklight
-  collection: blacklight-core
+    existingSecret: oral-history-secrets
+    existingSecretPasswordKey: SOLR_ADMIN_PASSWORD
   persistence:
     enabled: true
     storageClass: "vsphere-csi-sc"
-    size: 8Gi
+    size: 20Gi
     mountPath: /bitnami/solr
-
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
 postgresql:
   enabled: true
@@ -38,50 +53,102 @@ postgresql:
     repository: bitnami/postgresql
     # This is the image version, not the chart version.
     tag: 12.3.0
+
   auth:
-    username: blacklight
-    database: blacklight
+    database: oral_history
+    secretKeys:
+      adminPasswordKey: POSTGRES_PASSWORD
+      userPasswordKey: POSTGRES_USER
+    existingSecret: oral-history-secrets
   service:
     ports:
       postgresql: 5432
   primary:
     persistence:
       # TODO: Should enabled be true?
-      enabled: false
-      size: 10Gi
+      enabled: true
+      size: 20Gi
 
 # TODO: Variable names and values were copied from .env - is this all right?
 web:
+  # Due to the current Helm template mechanism, any additional ENVs will have to be added in the oral-history-env ConfigMap template
   env:
-    SOLR_URL: http://solr:8983/solr/blacklight-core
-    POSTGRES_DB: oral_history
-    POSTGRES_HOST: postgres
-    POSTGRES_USER: postgres
-    DEPLOY_HOOK: CHANGEME
-    DOCKER_PORTS: 80
-    MAKE_WAVES: false
-    PASSENGER_APP_ENV: production
-    REGISTRY_HOST: index.docker.io/
-    REGISTRY_URI: uclalibrary
-    # TODO: Real value
-    SITE_URI: oralhistory-k8s.library.ucla.edu
-    TAG: dev
-    TEST_DB: oral_history_test
+    # Solr Environment Variables
+    # The values should be matched with values used in the Solr Dependent Chart
+    SOLR_ADMIN_USER: "admin"
 
-# TODO: Add worker service
-# worker:
+    # DNS pointer to the Solr Service Name
+    SOLR_HOST: "prod-oral-history-public-web-solr"
 
-externalSecrets:
+    SOLR_PORT: "8983"
+
+    # Postgres environment variables
+    # The values should be matched with values used in the Postgre Dependent Chart
+    POSTGRES_DB: "oral_history"
+
+    # DNS pointer to the Postgres Service Name
+    POSTGRES_HOST: "prod-oral-history-public-web-postgresql"
+
+    # Rails specific environment variables
+    MAKE_WAVES: "true"
+    PASSENGER_APP_ENV: "production"
+    RAILS_ENV: "production"
+    RACK_ENV: "production"
+    RAILS_LOG_TO_STDOUT: "true"
+    SMTP_ADDRESS: "smtp.ucla.edu"
+    SMTP_DOMAIN: "library.ucla.edu"
+    SMTP_FROM: "do-not-reply@library.ucla.edu"
+    SMTP_HOST: "oralhistory.library.ucla.edu"
+    SMTP_HTTP_PROTOCOL: "https"
+
+    SITE_URI: "oralhistory.library.ucla.edu"
+
+worker:
+  replicaCount: 1
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+externalsecrets:
   annotations:
     argocd.argoproj.io/sync-wave: "-3"
-  refreshInterval: 10m
-  secretStoreRef:
-    name: systems-clustersecretstore
-    kind: ClusterSecretStore
-  env:
-    negativeCaptchaSecret: /systems/prodrke01/oh-public/negative_captcha_secret
-    databasePassword: /systems/prodrke01/oh-public/db_password
-    solrAdminPassword: /systems/prodrke01/oh-public/solr_admin_password
+  enabled: true
+  # Reference to ClusterSecretStore name
+  ref: apps-clustersecretstore
+  secrets:
+    application:
+      data:
+        - secretKey: ROLLBAR_ACCESS_TOKEN
+          remoteRef:
+            key: /apps/prodrke01/oh-public/rollbar_access_token
+        - secretKey: NEGATIVE_CAPTCHA_SECRET
+          remoteRef:
+            key: /apps/prodrke01/oh-public/negative_captcha_secret
+        - secretKey: POSTGRES_PASSWORD
+          remoteRef:
+            key: /apps/prodrke01/oh-public/db_password
+        - secretKey: POSTGRES_USER
+          remoteRef:
+            key: /apps/prodrke01/oh-public/db_username
+        - secretKey: SECRET_KEY_BASE
+          remoteRef:
+            key: /apps/prodrke01/oh-public/secret_key_base
+        - secretKey: SOLR_ADMIN_PASSWORD
+          remoteRef:
+            key: /apps/prodrke01/oh-public/solr_admin_password
+        - secretKey: ADMIN_EMAIL
+          remoteRef:
+            key: /apps/prodrke01/oh-public/admin_email
+        - secretKey: ADMIN_PASSWORD
+          remoteRef:
+            key: /apps/prodrke01/oh-public/admin_password
 
 # configure a registry token for access to your container registry, needs read permissions, create secret in Rancher, follow instructions:
 # https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/new-user-guides/kubernetes-resources-setup/kubernetes-and-docker-registries#creating-a-registry
@@ -105,36 +172,31 @@ service:
 
 ingress:
   enabled: "true"
+  ingressClassName: "nginx"
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     cert-manager.io/cluster-issuer: sectigo-acme-clusterissuer
     kubernetes.io/tls-acme: "true"
-
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
   hosts:
-    # TODO: Set real production name
-    - host: oralhistory-k8s.library.ucla.edu
+    - host: oralhistory.library.ucla.edu
       paths:
         - "/"
-
   tls:
-    # TODO: Set real production name
-   - secretName: oralhistory-k8s-tls
+   - secretName: oralhistory-tls
      hosts:
-       - oralhistory-k8s.library.ucla.edu
+       - oralhistory.library.ucla.edu
 
-resources: {}
+
+resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  limits:
+    memory: 4Gi
+  requests:
+    memory: 4Gi
 
 autoscaling:
   enabled: false

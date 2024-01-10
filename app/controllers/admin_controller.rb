@@ -9,6 +9,15 @@ class AdminController < ApplicationController
     @job = Delayed::Job.enqueue ImportRecordsJob.new(delete: params[:delete])
   end
 
+  def run_single_import
+    @job = Delayed::Job.enqueue ImportSingleRecordJob.new(id: params[:id])
+  end
+
+  def delete_jobs
+    Delayed::Job.destroy_all
+    redirect_to admin_path, notice: 'All jobs deleted.'
+  end
+
   def logs
     send_file(Rails.root.join('log/indexing.log'))
   end

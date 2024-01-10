@@ -1,0 +1,220 @@
+# Values file for oralhistoryprod
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: uclalibrary/oral-history
+  # changing this tag will cause a deploy via ArgoCD
+  tag: v0.0.2
+  pullPolicy: Always
+
+# Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/solr
+solr:
+  # TODO: Solr heap size? docker-compose has SOLR_HEAP=4g
+  replicaCount: 1
+  collectionReplicas: 1
+  enabled: true
+
+  javaMem: "-XX:MaxRAMPercentage=80"
+  resources:
+    limits:
+      memory: 4Gi
+    requests:
+      memory: 4Gi
+
+  coreNames: ["blacklight-core"]
+
+  # Disable solr cloud
+  cloudEnabled: false
+  cloudBootstrap: false
+  zookeeper:
+    enabled: false
+
+  image:
+    repository: bitnami/solr
+    # This is the image version, not the chart version.
+    tag: 8.11.1
+  auth:
+    enabled: true
+    adminUsername: admin
+    existingSecret: oral-history-secrets
+    existingSecretPasswordKey: SOLR_ADMIN_PASSWORD
+  persistence:
+    enabled: true
+    storageClass: "vsphere-csi-sc"
+    size: 20Gi
+    mountPath: /bitnami/solr
+# Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
+postgresql:
+  enabled: true
+  image:
+    repository: bitnami/postgresql
+    # This is the image version, not the chart version.
+    tag: 12.3.0
+
+  auth:
+    database: oral_history
+    secretKeys:
+      adminPasswordKey: POSTGRES_PASSWORD
+      userPasswordKey: POSTGRES_USER
+    existingSecret: oral-history-secrets
+  service:
+    ports:
+      postgresql: 5432
+  primary:
+    persistence:
+      # TODO: Should enabled be true?
+      enabled: true
+      size: 20Gi
+
+# TODO: Variable names and values were copied from .env - is this all right?
+web:
+  # Due to the current Helm template mechanism, any additional ENVs will have to be added in the oral-history-env ConfigMap template
+  env:
+    # Solr Environment Variables
+    # The values should be matched with values used in the Solr Dependent Chart
+    SOLR_ADMIN_USER: "admin"
+
+    # DNS pointer to the Solr Service Name
+    SOLR_HOST: "test-oral-history-public-web-solr"
+
+    SOLR_PORT: "8983"
+
+    # Postgres environment variables
+    # The values should be matched with values used in the Postgre Dependent Chart
+    POSTGRES_DB: "oral_history"
+
+    # DNS pointer to the Postgres Service Name
+    POSTGRES_HOST: "test-oral-history-public-web-postgresql"
+
+    # Rails specific environment variables
+    MAKE_WAVES: "true"
+    PASSENGER_APP_ENV: "production"
+    RAILS_ENV: "production"
+    RACK_ENV: "production"
+    RAILS_LOG_TO_STDOUT: "true"
+    SMTP_ADDRESS: "smtp.ucla.edu"
+    SMTP_DOMAIN: "library.ucla.edu"
+    SMTP_FROM: "do-not-reply@library.ucla.edu"
+    SMTP_HOST: "oralhistory-test.library.ucla.edu"
+    SMTP_HTTP_PROTOCOL: "https"
+    USE_HTTP_BASIC: "true"
+
+    SITE_URI: "oralhistory-test.library.ucla.edu"
+
+worker:
+  replicaCount: 1
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+externalsecrets:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-3"
+  enabled: true
+  # Reference to ClusterSecretStore name
+  ref: apps-clustersecretstore
+  secrets:
+    application:
+      data:
+        - secretKey: ROLLBAR_ACCESS_TOKEN
+          remoteRef:
+            key: /apps/testrke01/oh-public/rollbar_access_token
+        - secretKey: NEGATIVE_CAPTCHA_SECRET
+          remoteRef:
+            key: /apps/testrke01/oh-public/negative_captcha_secret
+        - secretKey: POSTGRES_PASSWORD
+          remoteRef:
+            key: /apps/testrke01/oh-public/db_password
+        - secretKey: POSTGRES_USER
+          remoteRef:
+            key: /apps/testrke01/oh-public/db_username
+        - secretKey: SECRET_KEY_BASE
+          remoteRef:
+            key: /apps/testrke01/oh-public/secret_key_base
+        - secretKey: SOLR_ADMIN_PASSWORD
+          remoteRef:
+            key: /apps/prodrke01/oh-public/solr_admin_password
+        - secretKey: STAGING_HTTP_BASIC_PASSWORD
+          remoteRef:
+            key: /apps/testrke01/oh-public/staging_http_basic_password
+        - secretKey: STAGING_HTTP_BASIC_USERNAME
+          remoteRef:
+            key: /apps/testrke01/oh-public/staging_http_basic_username
+        - secretKey: ADMIN_EMAIL
+          remoteRef:
+            key: /apps/testrke01/oh-public/admin_email
+        - secretKey: ADMIN_PASSWORD
+          remoteRef:
+            key: /apps/testrke01/oh-public/admin_password
+
+
+# configure a registry token for access to your container registry, needs read permissions, create secret in Rancher, follow instructions:
+# https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/new-user-guides/kubernetes-resources-setup/kubernetes-and-docker-registries#creating-a-registry
+# replace registry-token below with the name of the secret you created in the Rancher UI
+imagePullSecrets: []
+  # - registry-token
+fullnameOverride: "oral-history"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: "true"
+  ingressClassName: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: sectigo-acme-clusterissuer
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+  hosts:
+    - host: oralhistory-test.library.ucla.edu
+      paths:
+        - "/"
+  tls:
+   - secretName: oralhistory-tls
+     hosts:
+       - oralhistory-test.library.ucla.edu
+
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    memory: 4Gi
+  requests:
+    memory: 4Gi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
