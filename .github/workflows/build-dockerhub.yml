@@ -20,11 +20,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set the K8S Environment
+        run: echo "K8S_DEPLOY_ENVIRONMENT=$($GITHUB_WORKSPACE/.github/workflows/get-k8s-environment.sh)" >> "$GITHUB_ENV"
+
       - name: Read chart yaml to get version for docker tag
         id: image-tag
         uses: KJ002/read-yaml@1.6
         with:
-          file: 'charts/prod-oralhistory-values.yaml'
+          file: 'charts/${{ env.K8S_DEPLOY_ENVIRONMENT }}-oralhistory-values.yaml'
           key-path: '["image", "tag"]'
 
       - name: Report image tag
