@@ -243,7 +243,7 @@ class OralHistoryItem
             history.attributes["peaks_t"] << child_doc_json unless history.attributes["peaks_t"].include? child_doc_json
             history.attributes["children_t"] << child_doc_json
 
-        # <mods:relatedItem type="series">
+          # <mods:relatedItem type="series">
           elsif child.name == "relatedItem" && child.attributes['type'] == "series"
             history.attributes["series_facet"] = child.elements['mods:titleInfo/mods:title'].text
             history.attributes["series_t"] = child.elements['mods:titleInfo/mods:title'].text

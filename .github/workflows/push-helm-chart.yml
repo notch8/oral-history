@@ -4,11 +4,10 @@ name: Push Helm Chart to ChartMuseum
 on:
   push:
     paths:
-      - 'charts/stage-oralhistory-values.yaml'
-      # - 'charts/**'
-      # - '!charts/*-*-values.yaml'
-    # branches:
-    #   - main
+      - 'charts/**'
+      - '!charts/*-*-values.yaml'
+    branches:
+      - main
 
 jobs:
   push-to-chart-museum:
