@@ -52,11 +52,7 @@ services:
       - worker
 
   worker:
-    build:
-      context: .
-      target: web
-      cache_from:
-        - "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:latest"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG}"
     env_file:
       - .env
       - .env.development
