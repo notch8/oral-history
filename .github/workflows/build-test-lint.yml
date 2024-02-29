@@ -14,16 +14,13 @@ on:
         description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
         required: false
         default: false
-# We are using version 14 since this project has not been knap-sackerized yet
-env:
-  REGISTRY_HOST: ghcr.io
-  REGISTRY_URI: scientist-softserv/oral-history
 
 jobs:
   build:
     uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.17
     secrets: inherit
     with:
+      repository: ${{ github.repository }}
       platforms: "linux/amd64"
       webTarget: web
       workerTarget: web
@@ -32,11 +29,13 @@ jobs:
     needs: build
     uses: scientist-softserv/actions/.github/workflows/test.yaml@v0.0.17
     with:
+      repository: ${{ github.repository }}
       webTarget: web
       workerTarget: web
   lint:
     needs: build
     uses: scientist-softserv/actions/.github/workflows/lint.yaml@v0.0.17
     with:
+      repository: ${{ github.repository }}
       webTarget: web
       workerTarget: web
