@@ -28,8 +28,8 @@ services:
       context: .
       target: web
       cache_from:
-        - ghcr.io/scientist-softserv/softserv-website/oral-history:latest
-    image: ghcr.io/scientist-softserv/softserv-website/oral-history:${TAG:-latest}
+        - "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:latest"
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG:-latest}"
     env_file:
       - .env
       - .env.development
@@ -52,7 +52,7 @@ services:
       - worker
 
   worker:
-    image: ghcr.io/scientist-softserv/softserv-website/oral-history:${TAG:-latest}
+    image: "${REGISTRY_HOST}${REGISTRY_URI}/oral-history:${TAG:-latest}"
     env_file:
       - .env
       - .env.development
