@@ -5,69 +5,52 @@
 replicaCount: 1
 
 image:
-  repository: uclalibrary/oral-history
+  repository: scientist-softserv/softserv-website/oral-history
   # changing this tag will cause a deploy via ArgoCD
-  tag: v0.0.3
+  # We will set the tag dynamically in GitHub actions
+  # tag: v0.0.3
   pullPolicy: Always
 
-# Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/solr
+externalSolrHost: solr.staging-solr.svc.cluster.local
+externalSolrUser: admin
+externalSolrPassword: $SOLR_ADMIN_PASSWORD
+externalSolrCollection: "oral-history-staging"
+
 solr:
-  # TODO: Solr heap size? docker-compose has SOLR_HEAP=4g
+  enabled: false
   replicaCount: 1
   collectionReplicas: 1
-  enabled: false
-
-  javaMem: "-XX:MaxRAMPercentage=80"
-  resources:
-    limits:
-      memory: 4Gi
-    requests:
-      memory: 4Gi
-
-  coreNames: ["blacklight-core"]
-
-  # Disable solr cloud
-  cloudEnabled: false
-  cloudBootstrap: false
-  zookeeper:
-    enabled: false
-
-  image:
-    repository: bitnami/solr
-    # This is the image version, not the chart version.
-    tag: 8.11.1
   auth:
     enabled: true
-    adminUsername: admin
-    existingSecret: oral-history-secrets
+    existingSecret: oral-history-staging-secrets
     existingSecretPasswordKey: SOLR_ADMIN_PASSWORD
+  coreNames: oral-history-staging
+  collection: oral-history-staging
+  cloudBootstrap: true
+  cloudEnabled: true
   persistence:
     enabled: true
-    storageClass: "vsphere-csi-sc"
-    size: 20Gi
-    mountPath: /bitnami/solr
-# Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
-postgresql:
-  enabled: flase
-  image:
-    repository: bitnami/postgresql
-    # This is the image version, not the chart version.
-    tag: 12.3.0
-
-  auth:
-    database: oral_history
-    secretKeys:
-      adminPasswordKey: POSTGRES_PASSWORD
-      userPasswordKey: POSTGRES_USER
-    existingSecret: oral-history-secrets
-  service:
-    ports:
-      postgresql: 5432
-  primary:
+  zookeeper:
+    enabled: true
     persistence:
-      # TODO: Should enabled be true?
       enabled: true
-      size: 20Gi
+
+postgresql:
+  enabled: false
+  auth:
+    database: oral-history-staging
+    password: $POSTGRES_PASSWORD
+    username: postgres
+  containerPorts:
+    postgresql: 5432
+  primary:
+    service:
+      ports:
+        postgresql: 5432
+  readReplicas:
+    service:
+      ports:
+        postgresql: 5432
 
 # TODO: Variable names and values were copied from .env - is this all right?
 web:
@@ -78,16 +61,16 @@ web:
     SOLR_ADMIN_USER: "admin"
 
     # DNS pointer to the Solr Service Name
-    SOLR_HOST: "stage-oral-history-public-web-solr"
+    SOLR_HOST: "solr.staging-solr.svc.cluster.local"
 
     SOLR_PORT: "8983"
 
     # Postgres environment variables
     # The values should be matched with values used in the Postgre Dependent Chart
-    POSTGRES_DB: "oral_history"
+    POSTGRES_DB: "oral-history-staging"
 
     # DNS pointer to the Postgres Service Name
-    POSTGRES_HOST: "stage-oral-history-public-web-postgresql"
+    POSTGRES_HOST: "pg-postgresql.staging-postgres.svc.cluster.local"
 
     # Rails specific environment variables
     MAKE_WAVES: "true"
@@ -95,14 +78,14 @@ web:
     RAILS_ENV: "production"
     RACK_ENV: "production"
     RAILS_LOG_TO_STDOUT: "true"
-    SMTP_ADDRESS: "smtp.ucla.edu"
-    SMTP_DOMAIN: "library.ucla.edu"
-    SMTP_FROM: "do-not-reply@library.ucla.edu"
-    SMTP_HOST: "oralhistory-stage.library.ucla.edu"
-    SMTP_HTTP_PROTOCOL: "https"
+    # SMTP_ADDRESS: "smtp.ucla.edu"
+    # SMTP_DOMAIN: "library.ucla.edu"
+    # SMTP_FROM: "do-not-reply@library.ucla.edu"
+    # SMTP_HOST: "oralhistory-stage.library.ucla.edu"
+    # SMTP_HTTP_PROTOCOL: "https"
     USE_HTTP_BASIC: "true"
 
-    SITE_URI: "oralhistory-stage.library.ucla.edu"
+    SITE_URI: "oral-history-staging.notch8.cloud"
 
 worker:
   replicaCount: 1
@@ -118,51 +101,46 @@ worker:
   #   memory: 128Mi
 
 externalsecrets:
-  annotations:
-    argocd.argoproj.io/sync-wave: "-3"
   enabled: true
   # Reference to ClusterSecretStore name
-  ref: apps-clustersecretstore
+  ref: 1password-secretstore
   secrets:
     application:
       data:
         - secretKey: ROLLBAR_ACCESS_TOKEN
           remoteRef:
-            key: /apps/prodrke01/oh-public/stage/rollbar_access_token
+            key: op://Software Services Group/oral-history-secrets/staging-env/ROLLBAR_ACCESS_TOKEN
         - secretKey: NEGATIVE_CAPTCHA_SECRET
           remoteRef:
-            key: /apps/prodrke01/oh-public/stage/negative_captcha_secret
+            key: op://Software Services Group/oral-history-secrets/staging-env/NEGATIVE_CAPTCHA_SECRET
         - secretKey: POSTGRES_PASSWORD
           remoteRef:
-            key: /apps/prodrke01/oh-public/stage/db_password
+            key: op://Software Services Group/oral-history-secrets/staging-env/POSTGRES_PASSWORD
         - secretKey: POSTGRES_USER
           remoteRef:
-            key: /apps/prodrke01/oh-public/stage/db_username
+            key: op://Software Services Group/oral-history-secrets/staging-env/POSTGRES_USER
         - secretKey: SECRET_KEY_BASE
           remoteRef:
-            key: /apps/prodrke01/oh-public/stage/secret_key_base
+            key: op://Software Services Group/oral-history-secrets/staging-env/SECRET_KEY_BASE
         - secretKey: SOLR_ADMIN_PASSWORD
           remoteRef:
-            key: /apps/prodrke01/oh-public/stage/solr_admin_password
+            key: op://Software Services Group/oral-history-secrets/staging-env/SOLR_ADMIN_PASSWORD
         - secretKey: STAGING_HTTP_BASIC_PASSWORD
           remoteRef:
-            key: /apps/prodrke01/oh-public/staging_http_basic_password
+            key: op://Software Services Group/oral-history-secrets/staging-env/STAGING_HTTP_BASIC_PASSWORD
         - secretKey: STAGING_HTTP_BASIC_USERNAME
           remoteRef:
-            key: /apps/prodrke01/oh-public/staging_http_basic_username
+            key: op://Software Services Group/oral-history-secrets/staging-env/STAGING_HTTP_BASIC_USERNAME
         - secretKey: ADMIN_EMAIL
           remoteRef:
-            key: /apps/prodrke01/oh-public/stage/admin_email
+            key: op://Software Services Group/oral-history-secrets/staging-env/ADMIN_EMAIL
         - secretKey: ADMIN_PASSWORD
           remoteRef:
-            key: /apps/prodrke01/oh-public/stage/admin_password
+            key: op://Software Services Group/oral-history-secrets/staging-env/ADMIN_PASSWORD
 
-# configure a registry token for access to your container registry, needs read permissions, create secret in Rancher, follow instructions:
-# https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/new-user-guides/kubernetes-resources-setup/kubernetes-and-docker-registries#creating-a-registry
-# replace registry-token below with the name of the secret you created in the Rancher UI
-imagePullSecrets: []
-  # - registry-token
-fullnameOverride: "oral-history"
+imagePullSecrets:
+  - github
+fullnameOverride: "oral-history-staging"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -181,36 +159,25 @@ ingress:
   enabled: "true"
   ingressClassName: "nginx"
   annotations:
-    cert-manager.io/cluster-issuer: sectigo-acme-clusterissuer
+    cert-manager.io/cluster-issuer: nginx
     kubernetes.io/tls-acme: "true"
+    ## add prod issuer??
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
   hosts:
-    - host: oralhistory-stage.library.ucla.edu
+    - host: oral-history-staging.notch8.cloud
       paths:
         - "/"
   tls:
-   - secretName: oralhistory-tls
+   - secretName: oral-history-staging-tls
      hosts:
-       - oralhistory-stage.library.ucla.edu
+       - oral-history-staging.notch8.cloud
 
 
-resources:
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  limits:
-    memory: 4Gi
-  requests:
-    memory: 4Gi
+resources: {}
 
 autoscaling:
   enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
 

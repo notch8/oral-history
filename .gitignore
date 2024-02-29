@@ -22,8 +22,8 @@
 /node_modules
 public/packs/*
 .DS_Store
-.env.*
-.env.*
+# .env.*
+# .env.*
 
 # Ignore local development history
 /.history
