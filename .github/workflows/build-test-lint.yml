@@ -15,6 +15,9 @@ on:
         required: false
         default: false
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   build:
     uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.17
