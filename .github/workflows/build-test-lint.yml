@@ -20,7 +20,6 @@ jobs:
     uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.17
     secrets: inherit
     with:
-      repository: ${{ github.repository }}
       platforms: "linux/amd64"
       webTarget: web
       workerTarget: web
@@ -29,13 +28,11 @@ jobs:
     needs: build
     uses: scientist-softserv/actions/.github/workflows/test.yaml@v0.0.17
     with:
-      repository: ${{ github.repository }}
       webTarget: web
       workerTarget: web
   lint:
     needs: build
     uses: scientist-softserv/actions/.github/workflows/lint.yaml@v0.0.17
     with:
-      repository: ${{ github.repository }}
       webTarget: web
       workerTarget: web

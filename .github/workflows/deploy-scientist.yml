@@ -22,5 +22,3 @@ jobs:
   deploy:
     uses: scientist-softserv/actions/.github/workflows/deploy.yaml@v0.0.17
     secrets: inherit
-    with:
-      repository: ${{ github.repository }}
