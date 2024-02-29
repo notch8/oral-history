@@ -25,17 +25,13 @@ jobs:
     with:
       platforms: "linux/amd64"
       webTarget: web
-      workerTarget: web
-      solrTarget: solr
   test:
     needs: build
     uses: scientist-softserv/actions/.github/workflows/test.yaml@v0.0.17
     with:
       webTarget: web
-      workerTarget: web
   lint:
     needs: build
     uses: scientist-softserv/actions/.github/workflows/lint.yaml@v0.0.17
     with:
       webTarget: web
-      workerTarget: web
