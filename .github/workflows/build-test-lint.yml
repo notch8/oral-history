@@ -15,6 +15,10 @@ on:
         required: false
         default: false
 # We are using version 14 since this project has not been knap-sackerized yet
+env:
+  REGISTRY_HOST: ghcr.io
+  REGISTRY_URI: scientist-softserv/oral-history
+
 jobs:
   build:
     uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.17
