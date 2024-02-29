@@ -1,13 +1,24 @@
 name: Build Oral History Web for Docker Hub
 on:
   push:
-    # branches:
-    #   - main
-  workflow_dispatch:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   build-for-docker-hub:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: >-
+          echo "TAG=${HEAD_TAG::8}" >> ${GITHUB_ENV};
+          echo ${HEAD_TAG::8}
+        env:
+          HEAD_TAG: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+
       - name: Check out code
         uses: actions/checkout@v3
 
@@ -20,19 +31,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Read chart yaml to get version for docker tag
-        id: image-tag
-        uses: KJ002/read-yaml@1.6
+      - name: Retag latest if merge to main action
+        id: meta-web
+        uses: docker/metadata-action@v4.1.1
         with:
-          file: 'charts/prod-oralhistory-values.yaml'
-          key-path: '["image", "tag"]'
-
-      - name: Report image tag
-        run: echo "${{ steps.image-tag.outputs.data }}"
+          images: |
+            name=uclalibrary/oral-history
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: uclalibrary/oral-history:${{ steps.image-tag.outputs.data }}
+          tags: |
+            ${{ steps.meta-web.outputs.tags }}
+            uclalibrary/oral-history:${{ env.TAG }}

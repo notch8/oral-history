@@ -40,7 +40,7 @@
   <% end %>
   <%= link_to "Background Jobs", delayed_job_web_path, class: "btn btn-lg btn-primary" %>
   <%= link_to "Download Logs", admin_logs_path, class: "btn btn-lg btn-primary" %>
-
+  <%= button_to "Destroy All Delayed Jobs", destroy_all_delayed_jobs_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-lg btn-danger' %>
   <div class="g-mt-40 g-mb-40">
     <%= link_to t('blacklight.header_links.logout'), destroy_user_session_path %>
   </div>
