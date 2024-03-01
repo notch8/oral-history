@@ -27,6 +27,8 @@ Rails.application.routes.draw do
   post 'admin/run_single_import', to: 'admin#run_single_import', as: 'run_single_import'
   delete 'admin/delete_jobs', to: 'admin#delete_jobs', as: 'delete_jobs'
 
+  delete 'destroy_all_delayed_jobs', to: 'admin#destroy_all_delayed_jobs'
+
   mount Blacklight::Engine => '/'
   mount BlacklightDynamicSitemap::Engine => '/'
 

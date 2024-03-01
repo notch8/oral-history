@@ -21,4 +21,9 @@ class AdminController < ApplicationController
   def logs
     send_file(Rails.root.join('log/indexing.log'))
   end
+
+  def destroy_all_delayed_jobs
+    Delayed::Job.destroy_all
+    redirect_to root_path, notice: 'All Delayed::Jobs have been destroyed.'
+  end
 end
