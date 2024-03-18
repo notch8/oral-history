@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: uclalibrary/oral-history
   # changing this tag will cause a deploy via ArgoCD
-  tag: v0.0.2
+  tag: 5a3acdd5
   pullPolicy: Always
 
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/solr
