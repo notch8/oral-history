@@ -46,6 +46,11 @@ spec:
             - secretRef:
                 name: {{ include "chart.fullname" . }}-secrets
           env:
+            - name: OAI_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: OAI_BASE_URL
             - name: SOLR_ADMIN_USER
               valueFrom:
                 configMapKeyRef:

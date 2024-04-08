@@ -26,7 +26,8 @@ class OralHistoryItem
 
 
   def self.client(args)
-    url = args[:url] || "https://oh-staff.library.ucla.edu/oai/"
+    domain = ENV['OAI_BASE_URL'] || 'oh-staff.library.ucla.edu'
+    url = args[:url] || "http://#{domain}/oai"
 
     OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
   end
@@ -417,7 +418,8 @@ class OralHistoryItem
   end
 
   def self.total_records(args = {})
-    url = args[:url] || "https://oh-staff.library.ucla.edu/oai/"
+    domain = ENV['OAI_BASE_URL'] || 'oh-staff.library.ucla.edu'
+    url = args[:url] || "http://#{domain}/oai"
 
     OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
   end
