@@ -27,7 +27,7 @@ class OralHistoryItem
 
   def self.client(args)
     domain = ENV['OAI_BASE_URL'] || 'oh-staff.library.ucla.edu'
-    url = args[:url] || "http://#{domain}/oai"
+    url = args[:url] || "https://#{domain}/oai/"
 
     OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
   end
@@ -37,7 +37,17 @@ class OralHistoryItem
   end
 
   def self.get(args)
-    response = client(args).get_record(identifier: args[:identifier] )
+    if args.is_a?(Hash) && args.key?(:identifier)
+      response = client(args).get_record(identifier: args[:identifier] )
+    else
+      response = client(args).fetch(identifier: identifier)
+    end
+  end
+
+  def self.get_record(identifier)
+    oai_client = self.client
+
+    response = oai_client.get_record(identifier: identifier)
   end
 
 
@@ -419,7 +429,7 @@ class OralHistoryItem
 
   def self.total_records(args = {})
     domain = ENV['OAI_BASE_URL'] || 'oh-staff.library.ucla.edu'
-    url = args[:url] || "http://#{domain}/oai"
+    url = args[:url] || "https://#{domain}/oai/"
 
     OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
   end
