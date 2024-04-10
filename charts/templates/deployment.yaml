@@ -29,10 +29,6 @@ spec:
       serviceAccountName: {{ include "chart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      hostAliases:
-        - ip: "172.16.34.40"
-          hostnames:
-          - "oh-staff.library.ucla.edu"
       containers:
         - name: {{ .Chart.Name }}
           securityContext:

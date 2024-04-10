@@ -73,6 +73,11 @@ postgresql:
 web:
   # Due to the current Helm template mechanism, any additional ENVs will have to be added in the oral-history-env ConfigMap template
   env:
+    # The Oral History Applications base domain url for the
+    # dynamic setting of the oai url for multiple environments
+    # Below this is set to the cluster-internal DNS name of the oh-staff service
+    OAI_BASE_URL: "oral-history-staff-ui-oh-staff.oh-staffprod.svc.cluster.local"
+
     # Solr Environment Variables
     # The values should be matched with values used in the Solr Dependent Chart
     SOLR_ADMIN_USER: "admin"
