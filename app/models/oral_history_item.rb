@@ -26,10 +26,14 @@ class OralHistoryItem
 
 
   def self.client(args)
-    domain = ENV['OAI_BASE_URL'] || 'oh-staff.library.ucla.edu'
-    url = args[:url] || "https://#{domain}/oai/"
+    # Fetch the base URL from the environment variable, defaulting to a specific domain with protocol if not set.
+    base_url = ENV['OAI_BASE_URL'] || 'https://oh-staff.library.ucla.edu'
 
-    OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
+    # Construct the full URL with a fallback path if none is provided in args.
+    url = args[:url] || "#{base_url}/oai/"
+
+    # Create a new OAI client with the constructed URL and Faraday configuration.
+    OAI::Client.new(url, http: Faraday.new { |c| c.options.timeout = 300 })
   end
 
   def self.fetch(args)
@@ -428,11 +432,16 @@ class OralHistoryItem
   end
 
   def self.total_records(args = {})
-    domain = ENV['OAI_BASE_URL'] || 'oh-staff.library.ucla.edu'
-    url = args[:url] || "https://#{domain}/oai/"
+    # Fetch the base URL from the environment variable, defaulting to a specific domain with protocol if not set.
+    base_url = ENV['OAI_BASE_URL'] || 'https://oh-staff.library.ucla.edu'
 
-    OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
+    # Construct the full URL with a fallback path if none is provided in args.
+    url = args[:url] || "#{base_url}/oai/"
+
+    # Create a new OAI client with the constructed URL and Faraday configuration.
+    OAI::Client.new(url, http: Faraday.new { |c| c.options.timeout = 300 })
   end
+
 
   def has_peaks?
     self.attributes["peaks_t"].each_with_index do |peak, i|
