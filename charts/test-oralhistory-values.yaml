@@ -76,7 +76,7 @@ web:
     # The Oral History Applications base domain url for the
     # dynamic setting of the oai url for multiple environments
     # Below this is set to the oh-staff URL running in the prodrke01 cluster
-    OAI_BASE_URL: "oh-staff.library.ucla.edu"
+    OAI_BASE_URL: "http://oh-staff.library.ucla.edu"
 
     # Solr Environment Variables
     # The values should be matched with values used in the Solr Dependent Chart

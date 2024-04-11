@@ -26,10 +26,10 @@ class OralHistoryItem
 
 
   def self.client(args)
-    domain = ENV['OAI_BASE_URL'] || 'oh-staff.library.ucla.edu'
-    url = args[:url] || "https://#{domain}/oai/"
+    base_url = ENV['OAI_BASE_URL'] || 'https://oh-staff.library.ucla.edu'
+    url = args[:url] || "#{base_url}/oai/"
 
-    OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
+    OAI::Client.new(url, http: Faraday.new { |c| c.options.timeout = 300 })
   end
 
   def self.fetch(args)
@@ -428,11 +428,12 @@ class OralHistoryItem
   end
 
   def self.total_records(args = {})
-    domain = ENV['OAI_BASE_URL'] || 'oh-staff.library.ucla.edu'
-    url = args[:url] || "https://#{domain}/oai/"
+    base_url = ENV['OAI_BASE_URL'] || 'https://oh-staff.library.ucla.edu'
+    url = args[:url] || "#{base_url}/oai/"
 
-    OAI::Client.new(url, http: Faraday.new {|c| c.options.timeout = 300})
+    OAI::Client.new(url, http: Faraday.new { |c| c.options.timeout = 300 })
   end
+
 
   def has_peaks?
     self.attributes["peaks_t"].each_with_index do |peak, i|
