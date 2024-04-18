@@ -87,7 +87,7 @@ module ApplicationHelper
         else
           result[key] = parsed[0]
         end
-      else 
+      else
         result[key] = parsed[0]
       end
     end
@@ -113,14 +113,18 @@ module ApplicationHelper
   end
 
   def audio_icon options={}
-    "<span class='#{ options[:value][0] == "T" || options[:value][0] == true ? 'font-awesome-headphones' : 'font-awesome-no' }'></span>".html_safe
+    if "#{ options[:value][0] }".html_safe == "true"
+      "<span class='font-awesome-headphones'></span>".html_safe
+    else
+      "<span class='font-awesome-no'></span>".html_safe
+    end
   end
 
   def audio_icon_with_text options={}
-    if options == "false"
-      "<span class='font-awesome-no'></span>&nbsp;no".html_safe
-    else
+    if "#{ options }".html_safe == "true"
       "<span class='font-awesome-headphones'></span>&nbsp;yes".html_safe
+    else
+      "<span class='font-awesome-no'></span>&nbsp;no".html_safe
     end
   end
 
