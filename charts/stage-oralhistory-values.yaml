@@ -95,7 +95,7 @@ web:
     POSTGRES_HOST: "stage-oral-history-public-web-postgresql"
 
     # Rails specific environment variables
-    MAKE_WAVES: "true"
+    MAKE_WAVES: "false"
     PASSENGER_APP_ENV: "production"
     RAILS_ENV: "production"
     RACK_ENV: "production"
