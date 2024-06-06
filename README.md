@@ -1,37 +1,52 @@
 # Docker Development Setup
 
 - Install Docker ([macOS](https://docs.docker.com/docker-for-mac/install/)/[Windows](https://docs.docker.com/docker-for-windows/install/)/[Linux](https://docs.docker.com/engine/install/))
-- `.env` is populated with good defaults.
+
 - Copy `.env` to `.env.development`
-- Build project and start up
+- Run `docker compose up --build`
 
-```bash
-docker compose build
-docker compose up
+## Special Linux instructions
+
+If you are running Linux, some additional steps are required to set up a suitable host environment,
+due to the current implementation in `Dockerfile` and `docker-compose.yml`.
+
+1. A local user/group on your (host) machine must match the `app` user, with uid/gid 9999.
+2. Set the proper permissions inside the `web` container.
+
+This worked, in a Debian (via WSL2) host environment:
+```
+# Become root, or run each of the following via sudo
+sudo bash
+
+# Step 1, from above
+# The group and user can be called anything on the host; this uses oh_public for both
+# Create a group with gid 9999, to match the web container's app user
+groupadd -g 9999 oh_public
+
+# Create a user with uid 9999, also matching web's app user
+# Also create home directory, and set bash shell since we're not animals
+useradd oh_public -u 9999 -g 9999 -d /home/oh_public -m -s /bin/bash -c "For testing OH public build"
+
+# Add the user to the docker group, assuming you have one,
+# since running docker as root on the host is bad
+usermod -a -G docker oh_public
+
+# Step 2, from above
+# Since the web image is built as root, and some things run in it as root,
+# the first run can create some directories inside /home/app/webapp as root
+# instead of as the app user.  This means the app user... can't write to them.
+
+# Start the application and monitor logs.  If you see repeated messages like this:
+
+web_1       | /usr/local/rvm/gems/ruby-2.7.7/gems/bootsnap-1.4.9/lib/bootsnap/compile_cache.rb:29:in `permission_error': bootsnap doesn't have permission to write cache entries in '/home/app/webapp/tmp/cache/bootsnap-compile-cache' (or, less likely, doesn't have permission to read '/usr/local/rvm/gems/ruby-2.7.7/gems/railties-6.1.7.3/lib/rails/commands.rb') (Bootsnap::CompileCache::PermissionError)
+
+# Run the following as root.  This only needs to be done once,
+# after the initial startup (or if you remove the whole application and start over)
+cd /home/oh_public/oral-history # or wherever on the host this application is
+chown -R oh_public:oh_public .
 ```
 
-- Visit 127.0.0.1:8000 in your browser.
-- The first time the application is brought up, some database updates need to be made due to shifting dependencies
-
-- Identify your postgres container and run the following:
-
-```
-docker ps
-# Note container id below
-a320a4fabaac   postgres:15                    "docker-entrypoint.s…"
-# Shell into container
-docker exec -it [container id from above] /bin/bash
-
-/bin/psql --username=postgres
-
-ALTER DATABASE oral_history REFRESH COLLATION VERSION;
-ALTER DATABASE oral_history_test REFRESH COLLATION VERSION;
-ALTER DATABASE postgres REFRESH COLLATION VERSION;
-ALTER DATABASE template0 REFRESH COLLATION VERSION;
-ALTER DATABASE template1 REFRESH COLLATION VERSION;
-```
-
-- Load database and import data
+Load database and import some sample data using the following commands
 
 ```
 docker compose exec web bundle exec rake db:migrate
@@ -39,30 +54,44 @@ docker compose exec web bundle exec rake db:seed
 docker compose exec web bundle exec rake import[100]
 ```
 
-- Sign into the Admin Dashboard
-  Navigate to https://127.0.0.1:8000/users/sign_in
-  Login with default the seeded user and password at db/seeds.rb
-  Note you can add those ENV variable to your .env file to update
-  the values in one place. But deafults are set so make sure you
-  update for produciton environment.
+If you get an error on the final line, and are using the `zsh` shell, you will need to escape the square brackets.
 
-- Common Developer Recipes:
-  Drop into a bash console inside docker container:
-  `docker compose exec container-name bash`
-  Example: `docker compose exec web bash`
-
-  Drop into a sh console inside docker container:
-  `docker compose exec container-name sh`
-  Example: `docker compose exec web sh`
-  Drop into a rails console:
-  `docker compose exec bundle exec rails c`
+```
+docker compose exec web bundle exec rake import\[100\]
+```
 
 **Note:** The `100` in `import[100]` limits the number of assets initially loaded. You may adjust this as desired.
 
-## Development Notes
+At this point you should be able to access the application at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
-When performing an import the system will attempt to download and process the audio files to create the peak files. This is very CPU & time intense.
-**To avoid this** change `MAKE_WAVES` in your `.env` to false (or delete it).
+Sign into the Admin Dashboard
+
+- Navigate to [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+
+The default development username and password are:
+
+- `admin@example.com`
+- `password`
+
+## Common Developer Recipes:
+
+Drop into a bash console inside docker container:
+
+- `docker compose exec container-name bash`
+- Example: `docker compose exec web bash`
+
+Drop into a sh console inside docker container:
+
+- `docker compose exec container-name sh`
+- Example: `docker compose exec web sh`
+
+Drop into a rails console:
+
+- `docker compose exec bundle exec rails c`
+
+Drop into a postgresql console:
+
+- `docker compose exec postgres psql --username=postgres`
 
 # Build and Deploy Process
 
@@ -74,7 +103,7 @@ Optional: Contact DevSupport for Argo account for log access
 
 - Submit a pull and review request. On [**submission** of a pull request](https://github.com/UCLALibrary/oral-history/blob/main/.github/workflows/build-dockerhub.yml), a container image is built and pushed to Docker Hub. Update the pull request and incorporate any change requests required from the review. Any new commits or changes to the pull request will trigger a new container image to be created and pushed to Docker Hub.
 
-- Navigate to Docker Hub and note the image tag, which is the first 8 characters of the hash.
+- Navigate to [Docker Hub](https://hub.docker.com/repository/docker/uclalibrary/oral-history) (login required) and note the image tag, which is the first 8 characters of the hash.
 
 - In the appropriate `charts/[environment]-oralhistory-values.yaml` file, update the `image: tag` value to the tag copied from Docker Hub in the previous step. This should be the final commit before merging the pull request.
 

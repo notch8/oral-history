@@ -74,9 +74,7 @@ class OralHistoryItem
           else
             OralHistoryItem.index_logger.info("ID is nil for #{history.inspect}")
           end
-          if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.should_process_peaks?
-            ProcessPeakJob.perform_later(history.id)
-          end
+          # The ProcessPeakJob logic was previously here and has been removed until full fix is implemented
         rescue => exception
           Rollbar.error('Error processing record', exception)
           OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
@@ -108,9 +106,8 @@ class OralHistoryItem
     record = self.get(identifier: converted_id)&.record
     history = process_record(record)
     history.index_record
-    if ENV['MAKE_WAVES'] && history.attributes["audio_b"] && history.should_process_peaks?
-      ProcessPeakJob.perform_later(history.id)
-    end
+
+    # The ProcessPeakJob logic was previously here and has been removed until full fix is implemented
     return history
   rescue => exception
     Rollbar.error('Error importing record', exception)
