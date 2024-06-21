@@ -416,12 +416,16 @@ class OralHistoryItem
   end
 
   def self.generate_xml_transcript(url)
-    tmpl = Nokogiri::XSLT(File.read('public/convert.xslt'))
-    resp = Net::HTTP.get(URI(url))
+    begin
+      tmpl = Nokogiri::XSLT(File.read('public/convert.xslt'))
+      resp = Net::HTTP.get(URI(url))
 
-    document = Nokogiri::XML(resp)
+      document = Nokogiri::XML(resp)
 
-    tmpl.transform(document).to_xml
+      tmpl.transform(document).to_xml
+    rescue => exception
+      OralHistoryItem.index_logger.error("#{exception.message}\n#{exception.backtrace}")
+    end
   end
 
   def self.total_records(args = {})
