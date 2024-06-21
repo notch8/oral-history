@@ -1,102 +1,123 @@
 # Docker Development Setup
 
-1. Install Docker ([macOS](https://docs.docker.com/docker-for-mac/install/)/[Windows](https://docs.docker.com/docker-for-windows/install/)/[Linux](https://docs.docker.com/engine/install/))
-2. `.env` is populated with good defaults.
-3. Install Dory: https://github.com/FreedomBen/dory
-4. Configure dory: https://github.com/FreedomBen/dory#config-file
-   Add the following to the config-file
-```bash
-- domain: test
-  address: 127.0.0.1
+- Install Docker ([macOS](https://docs.docker.com/docker-for-mac/install/)/[Windows](https://docs.docker.com/docker-for-windows/install/)/[Linux](https://docs.docker.com/engine/install/))
+
+- Copy `.env` to `.env.development`
+- Run `docker compose up --build`
+
+## Special Linux instructions
+
+If you are running Linux, some additional steps are required to set up a suitable host environment,
+due to the current implementation in `Dockerfile` and `docker-compose.yml`.
+
+1. A local user/group on your (host) machine must match the `app` user, with uid/gid 9999.
+2. Set the proper permissions inside the `web` container.
+
+This worked, in a Debian (via WSL2) host environment:
 ```
-5. Run dory:
-```bash
-dory up
+# Become root, or run each of the following via sudo
+sudo bash
+
+# Step 1, from above
+# The group and user can be called anything on the host; this uses oh_public for both
+# Create a group with gid 9999, to match the web container's app user
+groupadd -g 9999 oh_public
+
+# Create a user with uid 9999, also matching web's app user
+# Also create home directory, and set bash shell since we're not animals
+useradd oh_public -u 9999 -g 9999 -d /home/oh_public -m -s /bin/bash -c "For testing OH public build"
+
+# Add the user to the docker group, assuming you have one,
+# since running docker as root on the host is bad
+usermod -a -G docker oh_public
+
+# Step 2, from above
+# Since the web image is built as root, and some things run in it as root,
+# the first run can create some directories inside /home/app/webapp as root
+# instead of as the app user.  This means the app user... can't write to them.
+
+# Start the application and monitor logs.  If you see repeated messages like this:
+
+web_1       | /usr/local/rvm/gems/ruby-2.7.7/gems/bootsnap-1.4.9/lib/bootsnap/compile_cache.rb:29:in `permission_error': bootsnap doesn't have permission to write cache entries in '/home/app/webapp/tmp/cache/bootsnap-compile-cache' (or, less likely, doesn't have permission to read '/usr/local/rvm/gems/ruby-2.7.7/gems/railties-6.1.7.3/lib/rails/commands.rb') (Bootsnap::CompileCache::PermissionError)
+
+# Run the following as root.  This only needs to be done once,
+# after the initial startup (or if you remove the whole application and start over)
+cd /home/oh_public/oral-history # or wherever on the host this application is
+chown -R oh_public:oh_public .
 ```
-6.  Build project and start up
-``` bash
-docker compose build
-docker compose up
-```
-7. Visit http://oralhistory.test in your browser.
-8. Load database and import data
+
+Load database and import some sample data using the following commands
+
 ```
 docker compose exec web bundle exec rake db:migrate
 docker compose exec web bundle exec rake db:seed
 docker compose exec web bundle exec rake import[100]
 ```
-9. Sign into the Admin Dashboard
-Navigate to https://oralhistory.test/users/sign_in
-Login with default the seeded user and password at db/seeds.rb
-Note you can add those ENV variable to your .env file to update
-the values in one place. But deafults are set so make sure you
-update for produciton environment.
 
-10. Common Developer Recipes:
-Drop into a bash console inside docker container: `docker compose exec container-name bash`. Example: `docker compose exec web bash`
-Drop into a sh console inside docker container: `docker compose exec container-name sh`. Example: `docker compose exec web sh`
-Drop into a rails console: `docker compose exec bundle exec rails c`
+If you get an error on the final line, and are using the `zsh` shell, you will need to escape the square brackets.
+
+```
+docker compose exec web bundle exec rake import\[100\]
+```
 
 **Note:** The `100` in `import[100]` limits the number of assets initially loaded. You may adjust this as desired.
 
-## Development Notes
-When performing an import the system will attempt to download and process the audio files to create the peak files. This is very CPU & time intense.
-**To avoid this** change `MAKE_WAVES` in your `.env` to false (or delete it).
+At this point you should be able to access the application at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
----
+Sign into the Admin Dashboard
 
-# Automated Build and Deploy
+- Navigate to [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
 
-## Testing/Staging
+The default development username and password are:
 
-Any push to GitHub of a branch with "test" will build, tag with :test, publish to Docker Hub and push to testing.
+- `admin@example.com`
+- `password`
 
-Any push to GitHub of a branch other than master, main, or test will build, tag with :staging, publish to Docker Hub and push to staging.
+## Common Developer Recipes:
 
-## Production
+Drop into a bash console inside docker container:
 
-Any push to GitHub of the master or main branch will build, tag with :lastest, and publish to Docker Hub. It is up to Apps team or DevSupport to push to production.
+- `docker compose exec container-name bash`
+- Example: `docker compose exec web bash`
 
-# Manually Deploy a new release
+Drop into a sh console inside docker container:
 
-## Docker tags
+- `docker compose exec container-name sh`
+- Example: `docker compose exec web sh`
 
-There are three common tags in use for Oral History:
-- `latest`: Tag Jenkins deploys to production
-- `staging`: Tag Jenkins deploys to test
-- `date`: (in ISO 8601 format) Allows forcible rollback to a previous version
+Drop into a rails console:
 
-## Building
+- `docker compose exec bundle exec rails c`
 
-To build and apply the Docker tags:
+Drop into a postgresql console:
 
-``` bash
-docker build \
-  -t uclalibrary/oral-history:staging \
-  -t uclalibrary/oral-history:latest \
-  -t uclalibrary/oral-history:"$(date +%Y.%m.%d)" \
-  .
-```
+- `docker compose exec postgres psql --username=postgres`
 
-## Pushing to Dockerhub
+# Build and Deploy Process
 
-Docker can only push one tag at a time. It is recommended to push all three
-tags.
+Optional: Contact DevSupport for Argo account for log access
 
-``` bash
-for tag in staging latest "$(date +%Y.%m.%d)"; do
-  docker push uclalibrary/oral-history:"$tag";
-done
-```
+### Application Only Changes
 
-Deployment is handled by Jenkins.
+- Create a branch and make changes to the application code.
 
-## Manual deployment to test
+- Submit a pull and review request. On [**submission** of a pull request](https://github.com/UCLALibrary/oral-history/blob/main/.github/workflows/build-dockerhub.yml), a container image is built and pushed to Docker Hub. Update the pull request and incorporate any change requests required from the review. Any new commits or changes to the pull request will trigger a new container image to be created and pushed to Docker Hub.
 
-In Jenkins, select `docker_swarm_deploy` job. Use `Build with Parameters`. Select `oralhistory_test` from the `TERRA_ENV` dropdown. Start the build.
+- Navigate to [Docker Hub](https://hub.docker.com/repository/docker/uclalibrary/oral-history) (login required) and note the image tag, which is the first 8 characters of the hash.
 
-## Production Notes:
+- In the appropriate `charts/[environment]-oralhistory-values.yaml` file, update the `image: tag` value to the tag copied from Docker Hub in the previous step. This should be the final commit before merging the pull request.
 
-Regarding `docker-compose.production.yml`: The delayed_job container is for scaling out processing of peaks for all of the audio files.
-However, the web container always has one worker.
-Stopping the delayed_job container will not stop jobs from being run.
+- Update the pull request to reflect the final commit added for the new image created.
+  Because a pull request will be updated, another container image build will be triggered -- using this process, the deployed image is always at least one "behind" the most recently submitted pull request.
+
+On merging and pushing this change to `main`, the new `image: tag` value will trigger a new deployment. This process is automatic when updating `[stage,test]-oralhistory-values.yaml`.
+
+For production, `prod-oralhistory-values.yaml` should be updated and DevSupport notified, and is not automatically deployed.
+
+### Chart Changes
+
+If there are changes to files under `templates/`, extra steps are required to propagate the chart changes.
+
+- The `version` field must be incremented in `charts/Chart.yaml`
+- Submit a pull request to the [gitops_kubernetes](https://github.com/UCLALibrary/gitops_kubernetes) repository.
+- The pull request should increment the `sources : targetRevision` value under the appropriate environment section in the `apps\apps-team-prod-environment-values.yaml` file.
