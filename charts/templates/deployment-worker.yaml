@@ -64,6 +64,11 @@ spec:
                   key: SOLR_ADMIN_PASSWORD
             - name: SOLR_URL
               value: http://$(SOLR_ADMIN_USER):$(SOLR_ADMIN_PASSWORD)@$(SOLR_HOST):$(SOLR_PORT)/solr/blacklight-core
+            - name: MAKE_WAVES
+              valueFrom:
+                configMapKeyRef:
+                  name: oral-history-env
+                  key: MAKE_WAVES
           ports:
             - name: http
               containerPort: 80
