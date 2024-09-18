@@ -32,6 +32,17 @@ solr:
   zookeeper:
     enabled: false
 
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    hostname: "oralhistory-test-solr.library.ucla.edu"
+    path: "/"
+    annotations:
+      cert-manager.io/cluster-issuer: sectigo-acme-clusterissuer
+      kubernetes.io/tls-acme: "true"
+      nginx.ingress.kubernetes.io/whitelist-source-range: "164.67.48.211/32"
+    tls: true
+
   image:
     repository: bitnami/solr
     # This is the image version, not the chart version.
