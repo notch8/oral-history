@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: uclalibrary/oral-history
   # changing this tag will cause a deploy via ArgoCD
-  tag: f5547a55
+  tag: 0b1e464c
   pullPolicy: Always
 
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/solr
@@ -173,11 +173,11 @@ externalsecrets:
           remoteRef:
             key: /apps/testrke01/oh-public/admin_password
 
-
 # configure a registry token for access to your container registry, needs read permissions, create secret in Rancher, follow instructions:
 # https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/new-user-guides/kubernetes-resources-setup/kubernetes-and-docker-registries#creating-a-registry
 # replace registry-token below with the name of the secret you created in the Rancher UI
-imagePullSecrets: []
+imagePullSecrets:
+  []
   # - registry-token
 fullnameOverride: "oral-history"
 
@@ -207,10 +207,9 @@ ingress:
       paths:
         - "/"
   tls:
-   - secretName: oralhistory-tls
-     hosts:
-       - oralhistory-test.library.ucla.edu
-
+    - secretName: oralhistory-tls
+      hosts:
+        - oralhistory-test.library.ucla.edu
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
