@@ -1,0 +1,4 @@
+<!-- app/views/delayed_jobs/destroy_all.html.erb -->
+<h1>Destroy All Delayed Jobs</h1>
+<p>Are you sure you want to destroy all Delayed Jobs?</p>
+<%= button_to 'Destroy All', destroy_all_delayed_jobs_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>

@@ -1,0 +1,34 @@
+<% # main container for facets/limits menu -%>
+<% if has_facet_values?  %>
+<div id="facets" class="facets sidenav facets-toggleable-md">
+  <div class="top-panel-heading panel-heading facets-header">
+    <h2 class='facets-heading'>
+      <%= t('blacklight.search.facets.title') %>
+    </h2>
+
+    <button
+      class="navbar-toggler navbar-toggler-right"
+      type="button" data-toggle="collapse"
+      data-target="#facet-panel-collapse"
+      aria-controls="facet-panel-collapse"
+      aria-expanded="false"
+      aria-label="Toggle facets">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+  </div>
+
+  <div id="facet-panel-collapse" class="panel-group facets-collapse collapse">
+    <%= render_facet_partials %>
+  </div>
+
+  <div class="card facet_limit facet-limit">
+    <div class="collapsed collapse-toggle panel-heading" data-toggle="collapse">
+      <h3 class="card-header p-0 panel-title">
+        <%= button_to facet_field_label("browse by interviewees").titleize, "/interviewee", :"data-no-turbolink" => true, class: "btn btn-block p-2 text-left" %>
+      </h3>
+    </div>
+  </div>
+</div>
+
+<% end %>

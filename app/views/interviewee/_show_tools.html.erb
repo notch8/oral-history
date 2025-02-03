@@ -1,0 +1,33 @@
+<%-
+  # Compare with render_document_functions_partial helper, and
+  # _document_functions partial. BL actually has two groups
+  # of document-related tools. "document functions" by default
+  # contains Bookmark functionality shown on both results and
+  # item view. While "document tools" contains external export type
+  # functions by default only on detail.
+
+-%>
+<% if show_doc_actions? %>
+  <div id="accordion-tools" class="u-accordion u-accordion-color-primary u-accordion-brd-primary" role="tablist" aria-multiselectable="true">
+
+  <div class="panel panel-default show-tools u-accordion__header g-pa-0" role="tab">
+    <a class="d-block g-color-main g-text-underline--none--hover collapsed" href="#accordion-tools-body-0" data-toggle="collapse" data-parent="#accordion-tools" aria-expanded="false"  aria-controls="accordion-tools-body-0">
+      <div class="panel-heading">
+        <span class="u-accordion__control-icon g-ml-10">
+          <i class="fa fa-angle-right"></i>
+          <i class="fa fa-angle-down"></i>
+        </span>
+        <%= t('blacklight.tools.title') %>
+      </div>
+    </a>
+    <div id="accordion-tools-body-0" class="collapse panel-body" role="tabpanel" aria-labelledby="accordion-tools-heading-0">
+      <ul class="nav">
+        <%= render_show_doc_actions @document do |config, inner| %>
+          <li class="<%= config.key %>">
+            <%= inner %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

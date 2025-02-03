@@ -1,0 +1,19 @@
+{
+  "name": "oral_history",
+  "private": true,
+  "dependencies": {
+    "@babel/runtime": "^7.22.15",
+    "@clappr/core": "^0.6.1",
+    "babel-preset-react": "^6.24.1",
+    "clappr": "^0.3.13",
+    "clappr-playback-rate-plugin": "^0.6.0",
+    "coffeescript": "1.12.7",
+    "hls.js": "^0.10.1",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-hls-player": "^0.1.6",
+    "wavesurfer.js": "^2.0.6",
+    "xslt": "^0.9.1"
+  }
+}
