@@ -7,7 +7,8 @@ replicaCount: 1
 image:
   repository: uclalibrary/oral-history
   # changing this tag will cause a deploy via ArgoCD
-  # Make sure to add quotes. Seems like helm template will convert integers to scientific notation in the checksum
+  # Make sure to add quotes. Seems like helm template 
+  # will convert integers to scientific notation in the checksum
   tag: "81115371"
   pullPolicy: Always
 

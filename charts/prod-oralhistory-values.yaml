@@ -7,7 +7,9 @@ replicaCount: 1
 image:
   repository: uclalibrary/oral-history
   # changing this tag will cause a deploy via ArgoCD
-  tag: e55a6c5d
+  # Make sure to add quotes. Seems like helm template 
+  # will convert integers to scientific notation in the checksum
+  tag: "81115371"
   pullPolicy: Always
 
 # Chart documentation: https://github.com/bitnami/charts/tree/main/bitnami/solr
