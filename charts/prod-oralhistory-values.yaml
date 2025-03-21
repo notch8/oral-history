@@ -81,7 +81,7 @@ postgresql:
     persistence:
       # TODO: Should enabled be true?
       enabled: true
-      size: 20Gi
+      size: 40Gi
 
 # TODO: Variable names and values were copied from .env - is this all right?
 web:
