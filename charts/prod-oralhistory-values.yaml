@@ -79,9 +79,10 @@ postgresql:
       postgresql: 5432
   primary:
     persistence:
+      existingClaim: "postgres-pvc-manualcreate"
       # TODO: Should enabled be true?
       enabled: true
-      size: 40Gi
+      size: 50Gi
 
 # TODO: Variable names and values were copied from .env - is this all right?
 web:
