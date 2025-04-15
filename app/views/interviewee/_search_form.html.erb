@@ -1,26 +1,20 @@
-<%= form_tag search_action_url, method: :get, class: 'search-query-form', role: 'search', 'aria-label' => t('blacklight.search.form.submit') do %>
+<%# OVERRIDE: Blacklight v7.33.1 to add Full-Text/Interviewee Search bar %>
+<%# CUSTOM OVERRIDE: Blacklight v7.33.1 - to add Full-Text/Interviewee Search bar, SEE GOTCHA BELOW %>
+<%# EXACT DUPLICATES of app/views/catalog/_search_form.html.erb for custom theming %>
+<%# LOCATED at app/views/full_text/_search_form.html.erb & app/views/interviewee/_search_form.html.erb %>
+<%# MEANING IF YOU UPDATE THIS PARTIAL you also have to copy paste it into those partials too %>
+<%= form_tag search_action_url, method: :get, class: 'search-query-form clearfix navbar-form', role: 'search' do %>
   <%= render_hash_as_hidden_fields(search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>
-  <% if search_fields.length > 1 %>
-    <label for="search_field" class="sr-only"><%= t('blacklight.search.form.search_field.label') %></label>
-  <% end %>
   <div class="input-group">
-    <% if search_fields.length > 1 %>
-        <%= select_tag(:search_field,
-                       options_for_select(search_fields, h(params[:search_field])),
-                       title: t('blacklight.search.form.search_field.title'),
-                       id: "search_field",
-                       class: "custom-select search-field") %>
-    <% elsif search_fields.length == 1 %>
-      <%= hidden_field_tag :search_field, search_fields.first.last %>
-    <% end %>
-
-    <label for="q" class="sr-only"><%= t('blacklight.search.form.search.label') %></label>
+  <label for="q" class="sr-only"><%= t('blacklight.search.form.search.label') %></label>
     <%= text_field_tag :q, params[:q], placeholder: t('blacklight.search.form.search.placeholder'), class: "search-q q form-control rounded-#{search_fields.length > 1 ? '0' : 'left'}", id: "q", autocomplete: presenter.autocomplete_enabled? ? "off" : "", autofocus: presenter.autofocus?, data: { autocomplete_enabled: presenter.autocomplete_enabled?, autocomplete_path: search_action_path(action: :suggest) }  %>
-
-    <span class="input-group-append">
+    <span class="input-group-addon for-search-field">
+      <label for="search_field" class="sr-only"><%= t('blacklight.search.form.search_field.label') %></label>
+    </span>
+    <span class="input-group-btn input-group-append">
       <button type="submit" class="btn btn-primary search-btn" id="search">
-        <span class="submit-search-text"><%= t('blacklight.search.form.submit') %></span>
-        <%= blacklight_icon :search, aria_hidden: true %>
+        <span class="submit-search-text">Search </span>
+        <span class="font-awesome-search"></span>
       </button>
     </span>
   </div>

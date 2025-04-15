@@ -1,4 +1,5 @@
-$(document).ready(function() {
+$(document).ready('turbo:load', function() {
+  console.log("full_text.js loaded");
   $(".spinner").hide();
   
   $(document).ajaxStart(function(){

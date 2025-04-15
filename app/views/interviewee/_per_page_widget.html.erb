@@ -1,8 +1,10 @@
+<%# OVERRIDE: Blacklight v6.23.0 - to add custom search_context for interviewee search results, and custom theming %>
+<%# EXACT DUPLICATES app/views/full_text/_per_page_widget.html.erb & app/views/interviewee/_per_page_widget.html.erb %>
 <% if show_sort_and_per_page? and !blacklight_config.per_page.blank? %>
 
   <span class="sr-only"><%= t('blacklight.search.per_page.title') %></span>
 <div id="per_page-dropdown" class="per-page-dropdown btn-group">
-  <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+  <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
     <%= t(:'blacklight.search.per_page.button_label_html', :count => current_per_page) %> <span class="caret"></span>
   </button>
   <div class="dropdown-menu" role="menu">

@@ -1,3 +1,4 @@
+<%# CUSTOM: Custom partial for downloading transcripts %>
 <div class="container">
   <div class="col-sm-12">
     <div id="accordion-04" class="u-accordion" role="tablist" aria-multiselectable="true">
@@ -8,7 +9,7 @@
             <% parsed_links = link_parser(document['links_t'])%>
             <% if allowed_links_present?(parsed_links) %>
               <div id="accordion-04-heading-01" class="u-accordion__header accordion-color-primary download-accordion" role="tab">
-                <a class="d-flex collapsed u-link-v5 g-color-main g-color-primary--hover g-font-size-16" href="#accordion-04-body-01" data-toggle="collapse" data-parent="#accordion-04" aria-expanded="false" aria-controls="accordion-04-body-01">
+                <a class="d-flex collapsed u-link-v5 g-color-main g-color-primary--hover g-font-size-16" href="#accordion-04-body-01" data-bs-toggle="collapse" data-parent="#accordion-04" aria-expanded="false" aria-controls="accordion-04-body-01">
                   <button class="btn btn-xs u-btn-outline-primary">
                     <i class="fa fa-download"></i>
                     Available Downloads

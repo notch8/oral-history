@@ -411,14 +411,14 @@ footer {
   margin-top:30px;
 }
 
-.border-right {
+.border-end {
   padding-right: 1.5rem;
   padding-left: 0;
+  border-right: none !important;
 }
 
-.border-left {
+.border-start {
   border-left: 1px solid #a2a2a2 !important;
-
 }
 
 a.footer-link {
@@ -426,6 +426,7 @@ a.footer-link {
   font-weight: bold;
   line-height: 2.25;
   font-size: 12px;
+  text-decoration: none;
 }
 
 a.admin-footer-link {
@@ -455,9 +456,6 @@ a.admin-footer-link:hover {
   margin-bottom: 50px;
 }
 
-.padding-left-50 {
-  padding-left: 50px;
-}
 
 .lead {
   font-size: 21px !important;
@@ -466,9 +464,6 @@ a.admin-footer-link:hover {
 /* SEARCH RESULTS PAGE */
 
 /* SIDEBAR FACETS */
-// #sidebar {
-//   padding-left: 50px;
-// }
 
 //facet question mark for tool-tip modal pop-up
 .font-awesome-question-circle:after {

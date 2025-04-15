@@ -1,6 +1,14 @@
 class AdminController < ApplicationController
-  before_action :authenticate_user!
+  include Blacklight::Catalog
 
+  before_action :authenticate_user!
+  
+  configure_blacklight do |config|
+    # Adding the same Blacklight navigation actions as in CatalogController
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
+  end
+  
   def index
     @job_running = OralHistoryItem.check_for_tmp_file
   end

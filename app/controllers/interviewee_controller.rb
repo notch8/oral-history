@@ -63,7 +63,6 @@ class IntervieweeController < ApplicationController
     config.add_show_tools_partial(:citation)
     config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
     config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
-
   end
 
 

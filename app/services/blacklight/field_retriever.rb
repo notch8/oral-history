@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# OVERRIDE: Blacklight 7.33.1
+# OVERRIDE: Blacklight v7.33.1
 # Adds client need for highlighting
 
 module Blacklight

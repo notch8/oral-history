@@ -5,8 +5,9 @@ class CatalogController < ApplicationController
   include Blacklight::Marc::Catalog
   include Blacklight::DefaultComponentConfiguration
   before_action :setup_negative_captcha, only: [:email]
-
+  
   configure_blacklight do |config|
+    config.full_width_layout = true
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
     #
@@ -54,6 +55,8 @@ class CatalogController < ApplicationController
       :"hl.simple.post" => "</span>",
       :"hl.alternateField" => "dd"
     }
+
+    # config.index.document_component = FullTextViewComponent
 
     # solr field configuration for search results/index views
     config.index.title_field = 'title_display'
