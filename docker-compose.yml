@@ -61,7 +61,7 @@ services:
       - .env.development
     volumes:
       - .:/home/app/webapp
-    command: ["sh", "-c", "bundle exec rails db:migrate && ops/worker.sh"]
+    command: ["sh", "-c", "bundle exec rails db:migrate db:seed && ops/worker.sh"]
     depends_on:
       - postgres
       - solr

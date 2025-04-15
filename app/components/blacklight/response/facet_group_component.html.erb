@@ -1,3 +1,4 @@
+<%# OVERRIDE: Blacklight v8.6.0 - to add the interviewee facet button to %>
 <% # main container for facets/limits menu -%>
 <%= content_tag :div, id: @id,  class: 'facets sidenav facets-toggleable-md' do %>
   <div class="facets-header">
@@ -25,3 +26,15 @@
     <%= body %>
   </div>
 <% end %>
+
+<div class="card facet_limit facet-limit">
+  <div class="collapsed collapse-toggle panel-heading">
+    <h3 class="card-header p-0 panel-title">
+      <button class="btn w-100 btn-block p-2 text-start text-left"
+        type="button"
+        onclick="window.location.href='/interviewee'">
+          Browse By Interviewees
+      </button>
+    </h3>
+  </div>
+</div>

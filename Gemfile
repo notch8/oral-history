@@ -12,7 +12,6 @@ gem "tzinfo-data", platforms: %i[ jruby ]
 gem "bootsnap", require: false
 gem "blacklight", '8.6.0'
 gem "twitter-typeahead-rails", "0.11.1.pre.corejavascript"
-gem "sassc-rails", "~> 2.1"
 gem "jquery-rails"
 
 group :development, :test do

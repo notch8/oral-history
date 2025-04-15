@@ -1,3 +1,4 @@
+<%# OVERRIDE: Blacklight v8.6.0 - to update the options_for_select with full_text and interviewee %>
 <search>
   <%= form_with url: @url, local: true, method: @method, class: @classes.join(' '), scope: @prefix, role: 'search', **@form_options do |f| %>
     <%= render Blacklight::HiddenSearchStateComponent.new(params: @params) %>
@@ -9,17 +10,6 @@
     <% end %>
     <div class="input-group">
       <%= prepend %>
-
-      <% if search_fields.length > 1 %>
-        <%= f.select(:search_field,
-                    options_for_select(search_fields, h(@search_field)),
-                    {},
-                    title: scoped_t('search_field.title'),
-                    class: "custom-select form-select search-field") %>
-      <% elsif search_fields.length == 1 %>
-        <%= f.hidden_field :search_field, value: search_fields.first.last %>
-      <% end %>
-
       <%= f.label @query_param, scoped_t('search.label'), class: 'sr-only visually-hidden' %>
       <% if autocomplete_path.present? %>
         <auto-complete src="<%= autocomplete_path %>" for="autocomplete-popup" class="search-autocomplete-wrapper">
@@ -29,6 +19,11 @@
       <% else %>
         <%= f.search_field @query_param, value: @q, placeholder: scoped_t('search.placeholder'), class: "search-q q form-control rounded-#{search_fields.length > 1 ? '0' : 'left'}", autofocus: @autofocus, aria: { label: scoped_t('search.label') }  %>
       <% end %>
+
+      <div class="input-group-addon bg-light">
+        <%= f.select(:search_params, options_for_select(["Full Text", "Interview Information"], params[:search_params]),
+        {}, class: "custom-select form-select ml-2") %>
+      </div>
 
       <%= append %>
       <%= search_button || render(Blacklight::SearchButtonComponent.new(id: "#{@prefix}search", text: scoped_t('submit'))) %>

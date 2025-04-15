@@ -10,3 +10,14 @@ Rails.application.config.assets.version = "1.0"
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
 # Rails.application.config.assets.precompile += %w[ admin.js admin.css ]
+Rails.application.config.assets.precompile += %w( clappr/*.js vendor/*.js main/*.js )
+# Rails.application.config.assets.precompile += %w(
+#   clappr/*.js
+#   clappr/*.map
+#   clappr/*.swf
+#   clappr/*.cur
+#   vendor/*.js
+#   vendor/jquery-migrate/*.js
+#   vendor/jquery.easing/js/*.js
+#   main/*.js
+# )

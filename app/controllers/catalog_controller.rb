@@ -5,8 +5,9 @@ class CatalogController < ApplicationController
   include Blacklight::Marc::Catalog
   # include Blacklight::DefaultComponentConfiguration
   before_action :setup_negative_captcha, only: [:email]
-
+  
   configure_blacklight do |config|
+    config.full_width_layout = true
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
     #
@@ -16,7 +17,7 @@ class CatalogController < ApplicationController
     ## Model that maps search index responses to the blacklight response model
     # config.response_model = Blacklight::Solr::Response
 
-    config.bootstrap_version = 5
+    config.bootstrap_version = 4
     
     ## Default parameters to send to solr for all search-like requests. See also SearchBuilder#processed_parameters
     config.default_solr_params = {
@@ -52,11 +53,17 @@ class CatalogController < ApplicationController
       hl_alternateField: "dd"
     }
 
+    # config.index.document_component = FullTextViewComponent
+
     # solr field configuration for search results/index views
     config.index.title_field = 'title_display'
     config.index.display_type_field = 'format'
     #config.index.thumbnail_field = 'thumbnail_path_ss'
 
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
+
+    
     config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
     # config.index.search_bar_component = MyApp::SearchBarComponent
     # solr field configuration for document/show views

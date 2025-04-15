@@ -1,7 +1,11 @@
-<%= render 'show_main_content' %>
-
-<% content_for(:sidebar) do %>
-  <% Blacklight.deprecation.silence do %>
-    <%= render_document_sidebar_partial @document %>
-  <% end %>
+<%# OVERRIDE: Blacklight v8.6.0 - Moved sidebar outside content_for, adjusted layout, updated applied filters alignment, and custom theming %>
+<div class="container">
+  <%= render_document_sidebar_partial @document %>
+  <% if current_search_session %>
+    <div id="appliedParams" class="clearfix constraints-container pull-right">
+      <%= render 'start_over' %>
+      <%= link_back_to_catalog class: 'btn' if @search_context %>
+    </div>
 <% end %>
+<%= render 'show_main_content' %>
+</div>

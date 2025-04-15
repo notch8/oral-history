@@ -1,26 +1,29 @@
-<% @page_title = t('blacklight.search_history.page_title', :application_name => application_name) %>
+<%# OVERRIDE: Blacklight v8.6.0 - for custom theming %>
+<div class="container">
+  <% @page_title = t('blacklight.search_history.page_title', :application_name => application_name) %>
 
-<div id="content" class="col-md-12">
-<h1 class='page-heading'><%= t('blacklight.search_history.title') %></h1>
-<% if @searches.blank? %>
-  <h2 class='section-heading'><%= t('blacklight.search_history.no_history') %></h2>
-<% else %>
-  <%= link_to t('blacklight.search_history.clear.action_title'),
-              blacklight.clear_search_history_path,
-              method: :delete, # for rails-ujs
-              data: {
-                confirm: t('blacklight.search_history.clear.action_confirm'), # for rails-ujs
-                turbo_confirm: t('blacklight.search_history.clear.action_confirm'),
-                turbo_method: :delete
-              },
-              class: 'btn btn-danger float-md-right float-md-end' %>
-  <h2 class='section-heading'><%= t('blacklight.search_history.recent') %></h2>
-  <table class="table table-striped search-history">
-    <% @searches.each_with_index do |search,index| %>
-    <tr id="document_<%= index + 1 %>">
-      <td class="query"><%= link_to_previous_search(search_state.reset(search.query_params).to_hash) %></td>
-    </tr>
-  <% end %>
-  </table>
+  <div id="content" class="col-md-12">
+  <h2 class='page-heading'><%= t('blacklight.search_history.title') %></h2>
+  <% if @searches.blank? %>
+    <h3 class='section-heading'><%= t('blacklight.search_history.no_history') %></h3>
+  <% else %>
+    <%= link_to t('blacklight.search_history.clear.action_title'), 
+                  blacklight.clear_search_history_path, 
+                  method: :delete, 
+                  data: {
+                    confirm: t('blacklight.search_history.clear.action_confirm'), # for rails-ujs
+                    turbo_confirm: t('blacklight.search_history.clear.action_confirm'),
+                    turbo_method: :delete
+                  },
+                  class: 'btn btn-danger float-md-right float-md-end' %>
+    <h3 class='section-heading'><%= t('blacklight.search_history.recent') %></h3>
+    <table class="table table-striped search-history">
+      <% @searches.each_with_index do |search,index| %>
+        <tr id="document_<%= index + 1 %>">
+          <td class="query"><%= link_to_previous_search(search_state.reset(search.query_params).to_hash) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
 <% end %>
 </div>

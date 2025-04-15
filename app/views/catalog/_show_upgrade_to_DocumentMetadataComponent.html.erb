@@ -1,3 +1,5 @@
+<% # TODO: Need to update this once we convert to Blacklight v8 method for transcript react_component('FileView'for highlighting and react_component('MediaPlayer' %>
+<% # OVERRIDE: Blacklight v6.23.0 from /catalog/_show.html.erb - Added React components for media and transcript display, introduced accordion UI for child documents, customized Solr field rendering %>
 <%= content_for(:head) do %>
   <%= javascript_pack_tag "media_player" %>
 <% end %>
@@ -87,9 +89,12 @@
                   <% end %>
 
                 </a>
-
-                <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: parsed_peaks ? parsed_peaks[i]["peaks"] : '', transcript: highlighted_parsed_transcripts ? highlighted_parsed_transcripts[i]["highlighted_transcript"] : '' ) %>
-              </h5>
+                <% begin %>
+                  <%= react_component('PlayButton', id: child["id_t"].gsub('/', '-'), src: child["url_t"], peaks: parsed_peaks ? parsed_peaks[i]["peaks"] : '', transcript: highlighted_parsed_transcripts ? highlighted_parsed_transcripts[i]["highlighted_transcript"] : '' ) %>
+                <% rescue %>
+                  <!-- Error rendering PlayButton component -->
+                <% end %>
+                </h5>
             </div>
             <div id="accordion-10-body-<%= child['order_i'] %>" class="collapse" role="tabpanel" aria-labelledby="accordion-10-heading-<%= child['order_i'] %>">
               <div class="u-accordion__body g-color-gray-dark-v5 g-pa-15-0">

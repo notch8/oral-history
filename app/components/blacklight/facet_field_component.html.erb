@@ -3,9 +3,7 @@
     <button
       type="button"
       class="btn w-100 d-block btn-block p-2 text-start text-left collapse-toggle <%= "collapsed" if @facet_field.collapsed? %>"
-      data-toggle="collapse"
       data-bs-toggle="collapse"
-      data-target="#<%= html_id %>"
       data-bs-target="#<%= html_id %>"
       aria-expanded="<%= @facet_field.collapsed? ? 'false' : 'true' %>"
       arial-controls="<%= html_id %>"

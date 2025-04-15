@@ -1,18 +1,1 @@
-<%= render(Blacklight::FacetFieldComponent.new(facet_field: facet_field_presenter(facet_field, nil))) do |component| %>
-  <% component.with(:label) do %>
-
-      <% if facet_field_label(facet_field.key) == 'Series' %>
-          <%= facet_field_label(facet_field.key) %>
-          <span class="font-awesome-question-circle series-tooltip">
-            <span class="series-tooltip-text">A series is a group of interviews that were designed and conducted as a whole. They document a specific phenomenon or community, were usually completed within a limited time period, and were often conducted by the same interviewer.</span>
-          </span>
-
-        <% else %>
-          <%= facet_field_label(facet_field.key) %>
-
-        <% end %>
-  <% end %>
-  <% component.with(:body) do %>
-    <%= yield %>
-  <% end %>
-<% end %>
+remove me
