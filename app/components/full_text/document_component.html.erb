@@ -1,0 +1,45 @@
+<%= content_tag @component,
+  id: @id,
+  data: {
+    'document-id': @document.id.to_s.parameterize,
+    'document-counter': @counter,
+  },
+  itemscope: true,
+  itemtype: @document.itemtype,
+  class: classes.flatten.join(' ') do %>
+  
+  <%= header %>
+
+  <% if body.present? %>
+    <%= body %>
+  <% else %>
+    <div class="document-main-section">
+      <%= title %>
+      <%= embed %>
+      <%= content %>
+      <%= metadata %>
+      <% metadata_sections.each do |section| %>
+        <%= section %>
+      <% end %>
+      <% partials.each do |partial| %>
+        <%= partial %>
+      <% end %>
+
+      <% if respond_to?(:highlight_snippets) && highlight_snippets.any? %>
+        <div class="highlight-results">
+          <h4>Transcript Highlights</h4>
+          <ul>
+            <% highlight_snippets.each_with_index do |hl, idx| %>
+              <li><%= hl.html_safe %></li>
+              <% break if idx >= 4 %>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+
+    <%= thumbnail %>
+  <% end %>
+
+  <%= footer %>
+<% end %>

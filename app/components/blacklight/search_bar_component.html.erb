@@ -1,28 +1,29 @@
-<%# OVERRIDE: Blacklight v8.6.0 - to update the options_for_select with full_text and interviewee %>
+<%# OVERRIDE: Blacklight v8.6.0 - dynamic form action based on selected search field %>
 <search>
-  <%= form_with url: @url, local: true, method: @method, class: @classes.join(' '), scope: @prefix, role: 'search', **@form_options do |f| %>
+  <% selected_field = params[:search_field].presence || 'full_text' %>
+
+  <%= form_with url: "#", method: :get, local: true, id: 'dynamic-search-form', class: @classes.join(' '), scope: @prefix, role: 'search', **@form_options do |f| %>
     <%= render Blacklight::HiddenSearchStateComponent.new(params: @params) %>
+
     <% if search_fields.length > 1 %>
       <%= f.label :search_field, scoped_t('search_field.label'), class: 'sr-only visually-hidden' %>
     <% end %>
+
     <% before_input_groups.each do |input_group| %>
       <%= input_group %>
     <% end %>
+
     <div class="input-group">
       <%= prepend %>
       <%= f.label @query_param, scoped_t('search.label'), class: 'sr-only visually-hidden' %>
-      <% if autocomplete_path.present? %>
-        <auto-complete src="<%= autocomplete_path %>" for="autocomplete-popup" class="search-autocomplete-wrapper">
-          <%= f.search_field @query_param, value: @q, placeholder: scoped_t('search.placeholder'), class: "search-q q form-control rounded-#{search_fields.length > 1 ? '0' : 'left'}", autofocus: @autofocus, aria: { label: scoped_t('search.label'), autocomplete: 'list', controls: 'autocomplete-popup' }  %>
-          <ul id="autocomplete-popup" class="dropdown-menu" role="listbox" aria-label="<%= scoped_t('search.label') %>" hidden></ul>
-        </auto-complete>
-      <% else %>
-        <%= f.search_field @query_param, value: @q, placeholder: scoped_t('search.placeholder'), class: "search-q q form-control rounded-#{search_fields.length > 1 ? '0' : 'left'}", autofocus: @autofocus, aria: { label: scoped_t('search.label') }  %>
-      <% end %>
+      <%= f.search_field @query_param, value: @q, placeholder: scoped_t('search.placeholder'), class: "search-q q form-control rounded-#{search_fields.length > 1 ? '0' : 'left'}", autofocus: @autofocus %>
 
       <div class="input-group-addon bg-light">
-        <%= f.select(:search_params, options_for_select(["Full Text", "Interview Information"], params[:search_params]),
-        {}, class: "custom-select form-select ml-2") %>
+        <%= f.select :search_field,
+        options_for_select([['Full Text', 'full_text'], ['Interview Information', 'interview']], selected_field),
+          {},
+          class: "custom-select form-select search-field",
+          id: "search_field_select" %>
       </div>
 
       <%= append %>
@@ -31,6 +32,6 @@
   <% end %>
 
   <% if advanced_search_enabled? %>
-    <%= link_to t('blacklight.advanced_search.more_options'), @advanced_search_url, class: 'advanced_search btn btn-secondary'%>
+    <%= link_to t('blacklight.advanced_search.more_options'), @advanced_search_url, class: 'advanced_search btn btn-secondary' %>
   <% end %>
 </search>

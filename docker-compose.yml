@@ -9,6 +9,12 @@ services:
       - "5432"
     volumes:
       - 'postgres:/var/lib/postgresql/data'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   solr:
     build: ./solr
@@ -20,6 +26,12 @@ services:
       - SOLR_CONFIG_DIR=/solr_conf
     volumes:
       - solr:/solr_home
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://solr:8983/solr/blacklight-core/admin/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   web:
     build:
@@ -36,7 +48,6 @@ services:
     # Keep the stdin open, so we can attach to our app container's process
     # and do things such as byebug, etc:
     stdin_open: true
-    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
     tty: true
     ports:
       - "${DOCKER_PORTS}"
@@ -45,9 +56,19 @@ services:
       - VIRTUAL_HOST=oralhistory.test
       - VIRTUAL_PORT=80
     depends_on:
-      - postgres
-      - solr
-      - worker
+      postgres:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+      worker:
+        condition: service_started
+    command: >
+      bash -lc "
+        wait-for-it.sh postgres:5432 &&
+        wait-for-it.sh solr:8983 &&
+        cd /home/app/webapp &&
+        passenger start --port 80
+      "
 
   worker:
     build:
@@ -62,8 +83,19 @@ services:
       - .:/home/app/webapp
     command: bin/delayed_job run
     depends_on:
-      - postgres
-      - solr
+      postgres:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+    command: >
+      bash -lc "
+        wait-for-it.sh postgres:5432 &&
+        wait-for-it.sh solr:8983 &&
+        cd /home/app/webapp &&
+        RAILS_ENV=development bundle exec rails db:migrate &&
+        RAILS_ENV=development bundle exec rails db:seed &&
+        ./ops/worker.sh
+      "
 
 volumes:
   postgres:

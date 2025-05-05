@@ -60,6 +60,17 @@ module Blacklight
       blacklight_config.advanced_search.enabled
     end
 
+    def url
+      case @search_field
+      when "interview"
+        "/"
+      when "full_text"
+        "/full_text"
+      else
+        "/"
+      end
+    end
+    
     private
 
     def blacklight_config

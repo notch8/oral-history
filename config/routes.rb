@@ -21,9 +21,17 @@ Rails.application.routes.draw do
   get 'pages/bibliography', to: 'pages#bibliography', as: 'bibliography'
 
   get '/admin', to: 'admin#index', as: 'admin'
-  get '/admin/logs', to: 'admin#logs', as: 'admin_logs'
-
-  post 'admin/run_import', to: 'admin#run_import', as: 'run_import'
+  get '/admin/importer_log', to: 'admin#importer_log'
+  get '/admin/worker_log', to: 'admin#worker_log'
+  get '/admin/development_log', to: 'admin#development_log'
+  get '/admin/download_all_logs', to: 'admin#download_all_logs'
+  post '/admin/clear_all_logs', to: 'admin#clear_all_logs'
+  get 'admin/importer_running', to: 'admin#importer_running'
+  get 'admin/single_import_progress', to: 'admin#single_import_progress'
+  get 'admin/full_import_progress/:job_id', to: 'admin#full_import_progress', as: 'full_import_progress'
+  get 'admin/full_import_progress', to: 'admin#latest_full_import_progress'
+  get 'admin/single_import_progress/:id', to: 'admin#single_import_progress'
+  post 'admin/run_full_import', to: 'admin#run_full_import', as: 'run_full_import'
   post 'admin/run_single_import', to: 'admin#run_single_import', as: 'run_single_import'
   delete 'admin/delete_jobs', to: 'admin#delete_jobs', as: 'delete_jobs'
 

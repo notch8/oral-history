@@ -1,4 +1,4 @@
-console.log("footer.js loaded");
+console.log("✅ footer.js loaded");
 
 // import "./vendor/tether.min.js";
 // import "./vendor/hs.core.js";

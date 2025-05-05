@@ -1,10 +1,8 @@
-class ImportSingleRecordJob < ProgressJob::Base
-  def initialize(args = {})
-    @id = args[:id]
-  end
-
+# app/jobs/import_single_record_job.rb
+class ImportSingleRecordJob < Struct.new(:id)
   def perform
-    update_stage('Importing Record')
-    OralHistoryItem.import_single(@id)
+    OralHistoryItem.index_logger.info("🟢 Running import for record ID: #{id}")
+    OralHistoryItem.import_single(id)
+    OralHistoryItem.index_logger.info("✅ Import completed successfully")
   end
 end

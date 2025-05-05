@@ -1,17 +1,18 @@
-console.log("Application.js loaded");
+console.log("✅ application.js loaded");
 
-// import "jquery";
 import "@hotwired/turbo-rails";
 import "@hotwired/stimulus";
 import "@hotwired/stimulus-loading";
 import "@github/auto-complete-element";
-// import "@popperjs/core";
 import "@rails/actioncable";
 
-import "./timestamp_links";
 import "./full_text";
 import "./footer";
+import "./logging";
 import "./main/search";
+import "./progress_bar_full";
+import "./progress_bar_single";
+import "./timestamp_links";
 
 import { createPopper } from "@popperjs/core";  // Popper must be imported first
 import bootstrap from "bootstrap";

@@ -5,7 +5,7 @@ class CatalogController < ApplicationController
   include Blacklight::Marc::Catalog
   include Blacklight::DefaultComponentConfiguration
   before_action :setup_negative_captcha, only: [:email]
-  
+
   configure_blacklight do |config|
     config.full_width_layout = true
     ## Class for sending and receiving requests from a search index
@@ -56,12 +56,28 @@ class CatalogController < ApplicationController
       :"hl.alternateField" => "dd"
     }
 
-    # config.index.document_component = FullTextViewComponent
-
     # solr field configuration for search results/index views
     config.index.title_field = 'title_display'
     config.index.display_type_field = 'format'
     #config.index.thumbnail_field = 'thumbnail_path_ss'
+    config.index.document_actions.delete(:bookmark)
+    config.show.document_actions.delete(:bookmark)
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
+    config.add_show_tools_partial(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
+    config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
+
+
+    config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+
+    config.add_results_collection_tool(:sort_widget)
+    config.add_results_collection_tool(:per_page_widget)
+    config.add_results_collection_tool(:view_type_group)
+
+    config.add_show_tools_partial(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_show_tools_partial(:email, callback: :email_action, validator: :validate_email_params)
+    config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :validate_sms_params)
+    config.add_show_tools_partial(:citation)
 
     # solr field configuration for document/show views
     #config.show.title_field = 'title_display'
@@ -247,7 +263,6 @@ class CatalogController < ApplicationController
     # config.autocomplete_path = 'suggest'
 
     config.add_field_configuration_to_solr_request!
-
   end
 
   # Override to add highlighing to show - from Blacklight 6.23

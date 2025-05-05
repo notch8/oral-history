@@ -1,7 +1,12 @@
 module ApplicationHelper
-  def split_multiple(options={})
-    render 'shared/multiple', value: options[:value].uniq
+  include Blacklight::UrlHelperBehavior
+
+  def split_multiple(options = {})
+    value = Array.wrap(options[:value])
+    value = value.map(&:to_s).uniq
+    render 'shared/multiple', value: value
   end
+
 
   def from_helper(attr, document)
     if document._source.present? && document._source[attr].present?
@@ -133,6 +138,4 @@ module ApplicationHelper
     thumbnail_url = URI.extract(thumbnail.flatten.first).first if thumbnail && thumbnail.any?
     image = thumbnail_url.present? ? thumbnail_url : "/avatar.jpg"
   end
-
-
 end

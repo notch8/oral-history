@@ -457,8 +457,6 @@
     <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
     <!-- default, catch all search field -->
 
-    "contributor_txt"=>["Sargent, Alvan J."], "creator_txt"=>["Parker, John E."]}
-
     <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
 
     <!-- these display fields are NOT multi-valued -->
@@ -590,7 +588,7 @@
   <!-- subject spell check; should match fields for subject request handler -->
   <copyField source="subject_topic_facet" dest="subject_spell"/>
   <copyField source="description_facet" dest="description_spell"/>
-  <copyField source="lanugage_t" dest="language_spell"/>
+  <copyField source="language_t" dest="language_spell"/>
   <copyField source="subject_t" dest="subject_spell"/>
   <copyField source="subject_addl_t" dest="subject_spell"/>
 
@@ -611,7 +609,9 @@
 
   <!-- for suggestions -->
   <!-- <copyField source="*_t" dest="suggest"/> -->
-  <copyField source="*_facet" dest="suggest"/>
+  <field name="suggest" type="textSuggest" indexed="true" stored="false" multiValued="true"/>
+
+  <!-- <copyField source="*_facet" dest="suggest"/> -->
 
   <!-- Above, multiple source fields are copied to the [text] field.
 	  Another way to map multiple source fields to the same

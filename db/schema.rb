@@ -28,9 +28,9 @@ ActiveRecord::Schema.define(version: 2019_02_26_005909) do
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
-    t.integer "priority", default: 0, null: false
-    t.integer "attempts", default: 0, null: false
-    t.text "handler", null: false
+    t.integer "priority", default: 0
+    t.integer "attempts", default: 0
+    t.text "handler"
     t.text "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
