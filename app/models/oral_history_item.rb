@@ -266,6 +266,7 @@ class OralHistoryItem
 
           # <mods:location>
           elsif child.name == 'location'
+            # byebug
             child.elements.each do |f|
               oh_item.attributes['links_t'] << [f.text, f.attributes['displayLabel']].to_json
               order = child.elements['mods:part'].present? ? child.elements['mods:part'].attributes['order'] : 1
@@ -317,9 +318,17 @@ class OralHistoryItem
     self.attributes[:id] = value
   end
 
+  # def to_solr
+  #   attributes.except("hashed_id_ssi")
+  # end
+
+  # def to_solr
+  #   attributes.except("hashed_id_ssi").merge("id" => id)
+  # end
   def to_solr
-    attributes.except("hashed_id_ssi")
+    attributes.stringify_keys.except("hashed_id_ssi")
   end
+
 
   def index_record
     SolrService.add(self.to_solr)

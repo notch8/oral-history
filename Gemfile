@@ -13,6 +13,7 @@ gem "bootsnap", require: false
 gem "blacklight", '8.6.0'
 gem "twitter-typeahead-rails", "0.11.1.pre.corejavascript"
 gem "jquery-rails"
+gem 'faraday', '< 2.0'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

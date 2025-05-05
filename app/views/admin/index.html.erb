@@ -18,6 +18,16 @@
     <div class="align-self-end">
       <%= form_with url: run_full_import_url, method: :post, id: "run-full-import-form", local: false do %>
         <%= button_tag 'Run Full Import', class: 'btn btn-lg btn-primary', type: 'submit' %>
+
+        <div class="form-check mt-3 d-flex align-items-center gap-2">
+          <%= check_box_tag :delete, true, false, class: 'form-check-input', id: 'delete-checkbox' %>
+          <%= label_tag :delete, 'With Fresh Index', class: 'form-check-label mb-0' %>
+          <span class="font-awesome-question-circle series-tooltip">
+            <span class="series-tooltip-text">
+              If checked, this clears all previously indexed Solr records before starting a fresh full import.
+            </span>
+          </span>
+        </div>
       <% end %>
     </div>
   </div>

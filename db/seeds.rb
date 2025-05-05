@@ -25,4 +25,25 @@ if Rails.env.development? || Rails.env.test? || Rails.env.production?
 # OralHistoryItem.import_single('')
 # OralHistoryItem.import_single('')
 # OralHistoryItem.import_single('')
+
+# IndexPdfTranscriptJob.perform_now(
+#   '21198-zz002k6p4j',
+#   'https://static.library.ucla.edu/oralhistory/pdf/submasters/21198-zz002k6p4j-5-submaster.pdf'
+# )
+
+# IndexPdfTranscriptJob.perform_now(
+#   '21198-zz002kqf5d',
+#   'https://static.library.ucla.edu/oralhistory/pdf/submasters/21198-zz002kqf5d-1-submaster.pdf'
+# )
+
+# IndexPdfTranscriptJob.perform_now(
+#   '21198-zz0008zfqb',
+#   'https://static.library.ucla.edu/oralhistory/pdf/submasters/21198-zz0008zfqb-1-submaster.pdf'
+# )
+
+# IndexPdfTranscriptJob.perform_now(
+#   '21198-zz002dx5z2',
+#   'https://static.library.ucla.edu/oralhistory/pdf/submasters/21198-zz002dx5z2-16-submaster.pdf'
+# )
+
 end
