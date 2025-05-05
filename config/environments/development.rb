@@ -3,7 +3,7 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   config.action_controller.action_on_unpermitted_parameters = :log
   config.hosts.clear
-  config.action_dispatch.show_exceptions = false
+  config.action_dispatch.show_exceptions = true
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -46,7 +46,7 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
-  # Print deprecation notices to the Rails logger.
+  # Print deprecation notices to the OralHistoryItem.index_logger.
   config.active_support.deprecation = :log
 
   # Raise exceptions for disallowed deprecations.

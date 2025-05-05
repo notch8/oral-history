@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-# note that while this is mostly restful routing, the #update and #destroy actions
+
+# NOTE: that while this is mostly restful routing, the #update and #destroy actions
 # take the Solr document ID as the :id, NOT the id of the actual Bookmark action.
 module Blacklight::Bookmarks
   extend ActiveSupport::Concern
@@ -10,16 +11,17 @@ module Blacklight::Bookmarks
     include Blacklight::Configurable
     include Blacklight::TokenBasedUser
 
-    copy_blacklight_config_from(CatalogController)
-
+    copy_blacklight_config_from(::CatalogController)
     skip_before_action :verify_authenticity_token
     before_action :verify_user
 
+    blacklight_config.track_search_session.storage = false
     blacklight_config.http_method = Blacklight::Engine.config.blacklight.bookmarks_http_method
     blacklight_config.add_results_collection_tool(:clear_bookmarks_widget)
-
+    blacklight_config.full_width_layout = true
     blacklight_config.show.document_actions[:bookmark].if = false if blacklight_config.show.document_actions[:bookmark]
     blacklight_config.show.document_actions[:sms].if = false if blacklight_config.show.document_actions[:sms]
+    blacklight_config.search_builder_class = Blacklight::BookmarksSearchBuilder
   end
 
   def action_documents
@@ -38,14 +40,17 @@ module Blacklight::Bookmarks
     search_catalog_url(*args)
   end
 
+  # @return [Hash] a hash of context information to pass through to the search service
+  def search_service_context
+    { bookmarks: @bookmarks }
+  end
+
   def index
     @bookmarks = token_or_current_or_guest_user.bookmarks
-    bookmark_ids = @bookmarks.collect { |b| b.document_id.to_s }
-
     @response = search_service.search_results
 
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.rss  { render layout: false }
       format.atom { render layout: false }
 
@@ -58,8 +63,9 @@ module Blacklight::Bookmarks
     create
   end
 
-  # creating multiple bookmarks at once, by posting with keys
-  # such as bookmarks[n][document_id], bookmarks[n][title].
+  # For adding a single bookmark, suggest use PUT to /bookmarks/:document_id instead (triggering the #update method).
+  # This method, accessed via POST to /bookmarks, can be used for creating multiple bookmarks at once, by posting
+  # with keys such as bookmarks[n][document_id], bookmarks[n][title].
   # It can also be used for creating a single bookmark by including keys
   # bookmark[title] and bookmark[document_id], but in that case #update
   # is simpler.
@@ -80,12 +86,12 @@ module Blacklight::Bookmarks
     end
 
     if request.xhr?
-      success ? render(json: { bookmarks: { count: current_or_guest_user.bookmarks.count }}) : render(plain: "", status: "500")
+      success ? render(json: { bookmarks: { count: current_or_guest_user.bookmarks.count } }) : render(json: current_or_guest_user.errors.full_messages, status: :internal_server_error)
     else
       if @bookmarks.any? && success
-        flash[:notice] = I18n.t('blacklight.bookmarks.add.success', :count => @bookmarks.length)
+        flash[:notice] = I18n.t('blacklight.bookmarks.add.success', count: @bookmarks.length)
       elsif @bookmarks.any?
-        flash[:error] = I18n.t('blacklight.bookmarks.add.failure', :count => @bookmarks.length)
+        flash[:error] = I18n.t('blacklight.bookmarks.add.failure', count: @bookmarks.length)
       end
 
       redirect_back fallback_location: bookmarks_path
@@ -114,7 +120,7 @@ module Blacklight::Bookmarks
         redirect_back fallback_location: bookmarks_path, notice: I18n.t('blacklight.bookmarks.remove.success')
       end
     elsif request.xhr?
-      head 500 # ajaxy request needs no redirect and should not have flash set
+      head :internal_server_error # ajaxy request needs no redirect and should not have flash set
     else
       redirect_back fallback_location: bookmarks_path, flash: { error: I18n.t('blacklight.bookmarks.remove.failure') }
     end
@@ -132,7 +138,7 @@ module Blacklight::Bookmarks
   private
 
   def verify_user
-    unless current_or_guest_user || (action == "index" and token_or_current_or_guest_user)
+    unless current_or_guest_user || (action == "index" && token_or_current_or_guest_user)
       flash[:notice] = I18n.t('blacklight.bookmarks.need_login')
       raise Blacklight::Exceptions::AccessDenied
     end

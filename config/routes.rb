@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  # Devise authentication for users
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
+
   # Authenticate users for DelayedJobWeb
   authenticated :user do
     mount DelayedJobWeb, at: '/delayed_job'
@@ -16,9 +21,17 @@ Rails.application.routes.draw do
 
   # Admin routes
   get '/admin', to: 'admin#index', as: 'admin'
-  get '/admin/logs', to: 'admin#logs', as: 'admin_logs'
-
-  post 'admin/run_import', to: 'admin#run_import', as: 'run_import'
+  get '/admin/importer_log', to: 'admin#importer_log'
+  get '/admin/worker_log', to: 'admin#worker_log'
+  get '/admin/development_log', to: 'admin#development_log'
+  get '/admin/download_all_logs', to: 'admin#download_all_logs'
+  post '/admin/clear_all_logs', to: 'admin#clear_all_logs'
+  get 'admin/importer_running', to: 'admin#importer_running'
+  get 'admin/single_import_progress', to: 'admin#single_import_progress'
+  get 'admin/full_import_progress/:job_id', to: 'admin#full_import_progress', as: 'full_import_progress'
+  get 'admin/full_import_progress', to: 'admin#latest_full_import_progress'
+  get 'admin/single_import_progress/:id', to: 'admin#single_import_progress'
+  post 'admin/run_full_import', to: 'admin#run_full_import', as: 'run_full_import'
   post 'admin/run_single_import', to: 'admin#run_single_import', as: 'run_single_import'
   delete 'admin/delete_jobs', to: 'admin#delete_jobs', as: 'delete_jobs'
   delete 'destroy_all_delayed_jobs', to: 'admin#destroy_all_delayed_jobs'
@@ -32,6 +45,13 @@ Rails.application.routes.draw do
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
   concern :marc_viewable, Blacklight::Marc::Routes::MarcViewable.new
+
+  # Search History
+  resources :search_history, only: [:index, :destroy] do
+    collection do
+      delete 'clear'
+    end
+  end
 
   # Custom searchable resources
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
@@ -59,9 +79,6 @@ Rails.application.routes.draw do
       delete 'clear'
     end
   end
-
-  # Devise authentication for users
-  devise_for :users
 
   # Health Check (for load balancers, uptime monitoring)
   get "up" => "rails/health#show", as: :rails_health_check

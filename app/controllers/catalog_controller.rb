@@ -5,7 +5,7 @@ class CatalogController < ApplicationController
   include Blacklight::Marc::Catalog
   # include Blacklight::DefaultComponentConfiguration
   before_action :setup_negative_captcha, only: [:email]
-  
+
   configure_blacklight do |config|
     config.full_width_layout = true
     ## Class for sending and receiving requests from a search index
@@ -18,7 +18,7 @@ class CatalogController < ApplicationController
     # config.response_model = Blacklight::Solr::Response
 
     config.bootstrap_version = 4
-    
+
     ## Default parameters to send to solr for all search-like requests. See also SearchBuilder#processed_parameters
     config.default_solr_params = {
       rows: 10,
@@ -53,18 +53,34 @@ class CatalogController < ApplicationController
       hl_alternateField: "dd"
     }
 
-    # config.index.document_component = FullTextViewComponent
-
     # solr field configuration for search results/index views
     config.index.title_field = 'title_display'
     config.index.display_type_field = 'format'
     #config.index.thumbnail_field = 'thumbnail_path_ss'
+    config.index.document_actions.delete(:bookmark)
+    config.show.document_actions.delete(:bookmark)
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
+    config.add_show_tools_partial(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
+    config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
+
+
+    config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+
+    config.add_results_collection_tool(:sort_widget)
+    config.add_results_collection_tool(:per_page_widget)
+    config.add_results_collection_tool(:view_type_group)
+
+    config.add_show_tools_partial(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_show_tools_partial(:email, callback: :email_action, validator: :validate_email_params)
+    config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :validate_sms_params)
+    config.add_show_tools_partial(:citation)
 
     config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
     config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
 
-    
-    config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
+
+    config.index.document_component = Blacklight::DocumentComponent
     # config.index.search_bar_component = MyApp::SearchBarComponent
     # solr field configuration for document/show views
     #config.show.title_field = 'title_display'
@@ -250,7 +266,6 @@ class CatalogController < ApplicationController
     # config.autocomplete_path = 'suggest'
 
     config.add_field_configuration_to_solr_request!
-
   end
 
   # Override to add highlighing to show - from Blacklight 6.23
@@ -258,29 +273,34 @@ class CatalogController < ApplicationController
   # TODO: update highlighting on show page
 
   def show
-    # Explicitly permit id
     permitted_params = params.permit(:id)
-  
-    # Fetch document using new Blacklight 8 method
-    @document = search_service.fetch(permitted_params[:id])
-  
-    # Fetch highlighting
-    highlight_document = search_service.fetch([permitted_params[:id]], {
-      :"hl.q" => current_search_session.try(:query_params).try(:[], "q"),
-      :df => blacklight_config.try(:default_document_solr_params).try(:[], :"hl.fl")
-    })
-  
-    # Ensure highlighting is properly assigned
-    if highlight_document.respond_to?(:response)
-      @document.response['highlighting'] = highlight_document.response['highlighting']
+    id = permitted_params[:id]
+
+    # Fetch the document
+    @document = search_service.fetch(id)
+
+    # Try to get highlight data separately, safely
+    begin
+      highlight_response = search_service.fetch([id], {
+        :"hl.q" => current_search_session&.query_params&.[]("q"),
+        :df => blacklight_config.default_document_solr_params&.[](:'hl.fl')
+      })
+
+      highlight_data = highlight_response.response['highlighting']
+      if highlight_data && highlight_data[id]
+        OralHistoryItem.index_logger.debug "🟡 Highlighting for #{id}: #{highlight_data[id].inspect}"
+        @document.response['highlighting'] = highlight_data
+      end
+    rescue => e
+      OralHistoryItem.index_logger.warn "🟡 Highlighting fetch failed: #{e.message}"
     end
-  
+
     respond_to do |format|
       format.html { @search_context = setup_next_and_previous_documents }
       format.json
       additional_export_formats(@document, format)
     end
-  end  
+  end
 
   # override from blacklight 6.12 to handle captcha
   def email

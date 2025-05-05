@@ -26,7 +26,7 @@
     <%= body %>
   </div>
 <% end %>
-
+<% unless request.path == '/interviewee' %>
 <div class="card facet_limit facet-limit">
   <div class="collapsed collapse-toggle panel-heading">
     <h3 class="card-header p-0 panel-title">
@@ -38,3 +38,4 @@
     </h3>
   </div>
 </div>
+<% end %>

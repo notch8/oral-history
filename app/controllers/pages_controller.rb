@@ -4,6 +4,7 @@ class PagesController < ApplicationController
   include Blacklight::Marc::Catalog
 
   configure_blacklight do |config|
+    config.full_width_layout = true
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
     #

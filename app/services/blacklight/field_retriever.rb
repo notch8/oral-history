@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-# OVERRIDE: Blacklight v7.33.1
-# Adds client need for highlighting
 
 module Blacklight
   class FieldRetriever
@@ -24,17 +22,19 @@ module Blacklight
 
     # @return [Array]
     def fetch
-      Array.wrap(
-        if field_config.highlight && document.has_highlight_field?(field_config.field)
-          retrieve_highlight
-        elsif field_config.accessor
-          retieve_using_accessor
-        elsif field_config.values
-          retrieve_values
-        else
-          retrieve_simple
-        end
-      )
+      if field_config.highlight
+        value = retrieve_highlight
+      end
+      if value.blank?
+        value = if field_config.accessor
+                  retieve_using_accessor
+                elsif field_config.values
+                  retrieve_values
+                else
+                  retrieve_simple
+                end
+      end
+      Array.wrap(value)
     end
 
     private
@@ -69,16 +69,7 @@ module Blacklight
     end
 
     def retrieve_values
-      field_config.values.call(field_config, document)
-
-      values_method = field_config.values
-
-      if values_method.respond_to?(:arity) && values_method.arity.abs == 2
-        Deprecation.warn(self, ":values parameter for field #{field_config.key} only accepts 2 arguments; should accept 3")
-        values_method.call(field_config, document)
-      else
-        values_method.call(field_config, document, view_context)
-      end
+      field_config.values.call(field_config, document, view_context)
     end
   end
 end

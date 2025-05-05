@@ -1,5 +1,5 @@
 # Use Phusion Passenger Ruby 3.2.7 image
-FROM phusion/passenger-ruby32:3.0.7 AS web
+FROM phusion/passenger-ruby32:3.1.3 AS web
 
 # Install system dependencies
 RUN echo 'Downloading Packages' && \
@@ -17,9 +17,9 @@ RUN echo 'Downloading Packages' && \
       libsasl2-dev \
       libsndfile1-dev \
       libvips \
+      netcat-openbsd \
       postgresql-client \
       pv \
-      python2 \
       tzdata \
       unzip \
       yarn \
@@ -69,6 +69,11 @@ RUN rm -f /etc/service/nginx/down
 
 COPY ops/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 COPY ops/env.conf /etc/nginx/main.d/env.conf
+COPY ops/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+COPY ops/worker.sh /usr/local/bin/worker.sh
+
+RUN chmod +x /usr/local/bin/wait-for-it.sh
+RUN chmod +x /usr/local/bin/worker.sh
 
 # Copy the application code
 COPY --chown=app:app . $APP_HOME

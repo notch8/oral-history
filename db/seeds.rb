@@ -11,13 +11,13 @@ if Rails.env.development? || Rails.env.test? || Rails.env.production?
   u.password = ENV['ADMIN_PASSWORD'] || 'testing123'
   u.password_confirmation = ENV['ADMIN_PASSWORD']
   u.save
-OralHistoryItem.import_single('21198-zz0009049n')
-OralHistoryItem.import_single('21198-zz002kf3rs')
-OralHistoryItem.import_single('21198-zz002knbn9')
-OralHistoryItem.import_single('21198-zz000900nw')
-OralHistoryItem.import_single('21198-zz002dx5z2')
-OralHistoryItem.import_single('21198-zz002ddfz6')
-# OralHistoryItem.import_single('')
+# OralHistoryItem.import_single('21198-zz0009049n')
+# OralHistoryItem.import_single('21198-zz002kf3rs')
+# OralHistoryItem.import_single('21198-zz002knbn9')
+# OralHistoryItem.import_single('21198-zz000900nw')
+# OralHistoryItem.import_single('21198-zz002dx5z2')
+# OralHistoryItem.import_single('21198-zz002ddfz6')
+# OralHistoryItem.import_single('21198-zz002kd5r9')
 # OralHistoryItem.import_single('')
 # OralHistoryItem.import_single('')
 # OralHistoryItem.import_single('')

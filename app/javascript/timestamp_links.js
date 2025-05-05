@@ -1,5 +1,5 @@
 $(document).on('turbo:load', function() {
-  console.log("new timestamp_links.js loaded");
+  console.log("timestamp_links.js loaded");
   $('body').on('click', '.audio-timestamp-link', function(e) {
     var event = new CustomEvent(
       'jump_to_audio_time',

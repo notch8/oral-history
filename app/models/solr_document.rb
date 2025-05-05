@@ -10,11 +10,11 @@ class SolrDocument
   end
 
   field_semantics.merge!(
-    :title => "title_display",
-    :author => "author_display",
-    :interviewee => "interviewee_display",
-    :language => "language_facet",
-    :format => "format"
+    title: "title_display",
+    author: "author_display",
+    interviewee: "interviewee_display",
+    language: "language_facet",
+    format: "format"
   )
 
   # self.unique_key = 'id'
@@ -33,7 +33,9 @@ class SolrDocument
   #  # SMS uses the semantic field mappings below to generate the body of an SMS email.
   #  SolrDocument.use_extension(Blacklight::Document::Sms) 
 
-
+  def to_param
+    id
+  end
   # DublinCore uses the semantic field mappings below to assemble an OAI-compliant Dublin Core document
   # Semantic mappings of solr stored fields. Fields may be multi or
   # single valued. See Blacklight::Document::SemanticFields#field_semantics
