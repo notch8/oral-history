@@ -1,33 +1,31 @@
 require 'shellwords'
+
 class IndexPdfTranscriptJob < ApplicationJob
   queue_as :default
 
-  def perform(id, pdf_text)
+  def perform(id, pdf_url)
     puts "Processing pdf: #{id}"
-    #find history
     item = OralHistoryItem.find_or_new(id)
-    # make call to solr for extraction
-    tmp_file = Tempfile.new
 
-    tmp_file.binmode
-    escaped_pdf_text = Shellwords.escape(pdf_text)
-    cmd = "curl -o #{tmp_file.path} #{escaped_pdf_text}"
-    system(cmd)
+    Tempfile.create(['transcript', '.pdf']) do |tmp_file|
+      tmp_file.binmode
+      escaped_url = Shellwords.escape(pdf_url)
+      system("curl -fsSL -o #{tmp_file.path} #{escaped_url}")
 
-    if tmp_file.size > 0
-      result = SolrService.extract(path: tmp_file.path)
-      transcript = result['file'].to_s.strip
+      if tmp_file.size.positive?
+        result = SolrService.extract(path: tmp_file.path)
+        transcript = result['file'].to_s.strip
 
-      # put transcript into these fields
-      item.attributes['transcripts_t'] ||= []
-      item.attributes['transcripts_t'] << transcript
-      item.attributes['transcripts_json_t'] ||= []
-      item.attributes['transcripts_json_t'] << {
-        'transcript_t': transcript
-      }.to_json
+        item.attributes['transcripts_t'] ||= []
+        item.attributes['transcripts_t'] << transcript
 
-      # index the record in Solr
-      item.index_record
+        item.attributes['transcripts_json_t'] ||= []
+        item.attributes['transcripts_json_t'] << { 'transcript_t': transcript }.to_json
+
+        item.index_record
+      else
+        Rails.logger.error("Failed to download PDF for #{id}: file was empty or download failed.")
+      end
     end
   end
 end

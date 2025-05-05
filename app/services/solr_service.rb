@@ -1,3 +1,7 @@
+require 'faraday'
+require 'json'
+require 'multipart/post'
+
 class SolrService
   @@connection = false
 
@@ -17,29 +21,36 @@ class SolrService
   end
 
   def self.extract(params)
-    connect unless @@connection
+    connect unless defined?(@@connection) && @@connection
     path = params.delete(:path)
 
-    params['extractOnly'] = true
-    params['extractFormat'] = 'text'
+    puts "📤 Uploading PDF: #{path}"
+    puts "📡 Posting to Solr at: #{Blacklight.connection_config[:url]}/update/extract"
 
-    conn = Faraday.new(url: Blacklight.connection_config[:url]) do |faraday| # TODO @@connection.uri
-      faraday.request :multipart #make sure this is set before url_encoded
+    conn = Faraday.new(url: Blacklight.connection_config[:url]) do |faraday|
+      faraday.request :multipart
       faraday.request :url_encoded
       faraday.adapter Faraday.default_adapter
     end
 
-    file = Faraday::UploadIO.new(path, 'application/octet-stream')
+    file = Faraday::UploadIO.new(path, 'application/pdf')
 
-    payload = {
-      'file' => file,
-      'extractOnly' => true,
-      'extractFormat' => 'text',
-      'wt' => 'json'
-    }
+    response = conn.post('update/extract') do |req|
+      req.body = {
+        file: file,
+        extractOnly: true,
+        extractFormat: 'text',
+        wt: 'json'
+      }
+    end
 
-    raw_response = conn.post('update/extract', payload).body
-    JSON.parse(raw_response) if raw_response.present?
+    safe_body = response.body.to_s.force_encoding('UTF-8').encode('UTF-8', invalid: :replace, undef: :replace, replace: '?')
+
+    puts "🟢 Solr Response Status: #{response.status}"
+    puts "🟢 Solr Response Preview (first 500 chars):"
+    puts safe_body[0..500] + '...'
+
+    response.success? ? JSON.parse(safe_body) : nil
   end
 
   def self.delete_by_id(id)
@@ -69,20 +80,16 @@ class SolrService
     res = @@connection.get 'select', params: { start: cursor, rows: page_size }
     remaining_records = res["response"]["numFound"].to_i
 
-    # first page
     res["response"]["docs"].each do |ref|
       yield(ref) if block_given?
-
       remaining_records -= 1
     end
-
 
     while remaining_records > 0
       res = @@connection.get 'select', params: { start: cursor, rows: page_size }
 
       res["response"]["docs"].each do |ref|
         yield(ref) if block_given?
-
         remaining_records -= 1
       end
 
@@ -91,7 +98,8 @@ class SolrService
   end
 
   def self.total_record_count
-    res = @@connection.get 'select', params: { start: cursor, rows: page_size }
-    remaining_records = res["response"]["numFound"].to_i
+    connect unless @@connection
+    res = @@connection.get 'select', params: { rows: 0 }
+    res["response"]["numFound"].to_i
   end
 end

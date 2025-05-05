@@ -493,6 +493,54 @@
     <field name="series_sort" type="alphaOnlySort" indexed="true" stored="true" multiValued="false" />
     <field name="interviewee_sort" type="alphaOnlySort" indexed="true" stored="true" multiValued="false" />
 
+    <!-- Full-text transcript content for search and display -->
+    <field name="transcripts_t" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- JSON-encoded transcript metadata, including order and URLs -->
+    <field name="transcripts_json_t" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Title and subtitle fields -->
+    <field name="title_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="subtitle_t" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Interview participants -->
+    <field name="author_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="interviewee_t" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Language and subject info -->
+    <field name="language_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="subject_t" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Abstracts and descriptive text -->
+    <field name="abstract_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="interview_abstract_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="description_t" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Nested interview children and audio peak data -->
+    <field name="children_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="peaks_t" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Notes and custom metadata fields -->
+    <field name="admin_note_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="biographical_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="person_present_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="place_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="supporting_documents_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="interviewer_history_t" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="process_interview_t" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- URLs and digital object links -->
+    <field name="links_t" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Series metadata -->
+    <field name="series_t" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Sortable language string -->
+    <field name="language_sort" type="alphaOnlySort" indexed="true" stored="false" multiValued="false"/>
+
+    <!-- Optional hashed ID -->
+    <field name="hashed_id_ssi" type="string" stored="true" indexed="true" multiValued="false" docValues="true"/>
+
 
     <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
         will be used if the name matches any of the patterns.
