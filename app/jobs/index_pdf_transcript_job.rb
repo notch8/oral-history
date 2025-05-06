@@ -20,7 +20,7 @@ class IndexPdfTranscriptJob < ApplicationJob
         item.attributes['transcripts_t'] << transcript
 
         item.attributes['transcripts_json_t'] ||= []
-        item.attributes['transcripts_json_t'] << { 'transcript_t': transcript }.to_json
+        item.attributes['transcripts_json_t'] << { 'transcripts_t': transcript }.to_json
 
         item.index_record
       else

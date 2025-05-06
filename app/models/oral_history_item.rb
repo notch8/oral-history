@@ -182,7 +182,7 @@ class OralHistoryItem
               time_log_url = child.elements['mods:location/mods:url[@usage="timed log"]'].text
               transcript = self.generate_xml_transcript(time_log_url)
               oh_item.attributes["transcripts_json_t"] << {
-                "transcript_t": transcript,
+                "transcripts_t": transcript,
                 "order_i": order
               }.to_json
               oh_item.attributes["transcripts_t"] ||= [] if has_xml_transcripts == false
