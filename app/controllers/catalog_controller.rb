@@ -7,6 +7,7 @@ class CatalogController < ApplicationController
   before_action :setup_negative_captcha, only: [:email]
 
   configure_blacklight do |config|
+    config.full_width_layout = true
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
     #
@@ -16,14 +17,16 @@ class CatalogController < ApplicationController
     ## Model that maps search index responses to the blacklight response model
     # config.response_model = Blacklight::Solr::Response
 
+    config.bootstrap_version = 4
+
     ## Default parameters to send to solr for all search-like requests. See also SearchBuilder#processed_parameters
     config.default_solr_params = {
       rows: 10,
-      :"hl" => true,
-      :"hl.fl" => "abstract_t, biographical_t, subject_t, description_t, audio_b, extent_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t",
-      :"hl.simple.pre" => "<span class='label label-warning'>",
-      :"hl.simple.post" => "</span>",
-      :"hl.fragsize" => 100,#The fragsize is set to 100 so when the index_filter method is run on the abstract_t and description_t and they have search terms within that will be highlighted, it only considers 100 fragzise limit. We then use .truncate at 150 characters allowing the hl.simple.pre and hl.simple.post to insert less than the remaining 50 characters differance between 100 fragsize and 150 chars till truncate so that the classes added on hl.simple.pre and hl.simple.post will not get truncated.
+      hl: true,
+      hl_fl: "abstract_t,biographical_t,subject_t,description_t,audio_b,extent_t,language_t,author_t,interviewee_t,title_t,subtitle_t,series_t",
+      hl_simple_pre: "<span class='label label-warning'>",
+      hl_simple_post: "</span>",
+      hl_fragsize: 100,#The fragsize is set to 100 so when the index_filter method is run on the abstract_t and description_t and they have search terms within that will be highlighted, it only considers 100 fragzise limit. We then use .truncate at 150 characters allowing the hl.simple.pre and hl.simple.post to insert less than the remaining 50 characters differance between 100 fragsize and 150 chars till truncate so that the classes added on hl.simple.pre and hl.simple.post will not get truncated.
     }
     # The fragsize is set to 100 so when the index_filter method is run on the abstract_t and
     # description_t and they have search terms within that will be highlighted, it only considers 100 fragzise limit.
@@ -41,25 +44,44 @@ class CatalogController < ApplicationController
     ## parameters included in the Blacklight-jetty document requestHandler.
     #
     config.default_document_solr_params = {
-     #  qt: 'document',
-     ## These are hard-coded in the blacklight 'document' requestHandler
-     # fl: '*',
-     # rows: 1,
-     # q: '{!term f=id v=$id}'
-      :"hl" => true,
-      :"hl.fragsize" => 0,
-      :"hl.preserveMulti" => true,
-      :"hl.fl" => "biographical_t, subject_t, description_t, person_present_t, place_t, supporting_documents_t, interviewer_history_t, process_interview_t, audio_b, extent_t, rights_t, language_t, author_t, interviewee_t, title_t, subtitle_t, series_t, links_t, abstract_t admin_note_t",
-      :"hl.simple.pre" => "<span class='label label-warning'>",
-      :"hl.simple.post" => "</span>",
-      :"hl.alternateField" => "dd"
+      hl: true,
+      hl_fragsize: 0,
+      hl_preserveMulti: true,
+      hl_fl: "biographical_t,subject_t,description_t,person_present_t,place_t,supporting_documents_t,interviewer_history_t,process_interview_t,audio_b,extent_t,rights_t,language_t,author_t,interviewee_t,title_t,subtitle_t,series_t,links_t,abstract_t,admin_note_t",
+      hl_simple_pre: "<span class='label label-warning'>",
+      hl_simple_post: "</span>",
+      hl_alternateField: "dd"
     }
 
     # solr field configuration for search results/index views
     config.index.title_field = 'title_display'
     config.index.display_type_field = 'format'
     #config.index.thumbnail_field = 'thumbnail_path_ss'
+    config.index.document_actions.delete(:bookmark)
+    config.show.document_actions.delete(:bookmark)
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
+    config.add_show_tools_partial(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
+    config.add_results_document_tool(:bookmark, component: Blacklight::Document::BookmarkComponent, if: :render_bookmarks_control?)
 
+
+    config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+
+    config.add_results_collection_tool(:sort_widget)
+    config.add_results_collection_tool(:per_page_widget)
+    config.add_results_collection_tool(:view_type_group)
+
+    config.add_show_tools_partial(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_show_tools_partial(:email, callback: :email_action, validator: :validate_email_params)
+    config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :validate_sms_params)
+    config.add_show_tools_partial(:citation)
+
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
+
+
+    config.index.document_component = Blacklight::DocumentComponent
+    # config.index.search_bar_component = MyApp::SearchBarComponent
     # solr field configuration for document/show views
     #config.show.title_field = 'title_display'
     #config.show.display_type_field = 'format'
@@ -244,7 +266,6 @@ class CatalogController < ApplicationController
     # config.autocomplete_path = 'suggest'
 
     config.add_field_configuration_to_solr_request!
-
   end
 
   # Override to add highlighing to show - from Blacklight 6.23
@@ -252,19 +273,27 @@ class CatalogController < ApplicationController
   # TODO: update highlighting on show page
 
   def show
-    deprecated_response, @document = search_service.fetch(params[:id])
+    permitted_params = params.permit(:id)
+    id = permitted_params[:id]
 
-    @response = ActiveSupport::Deprecation::DeprecatedObjectProxy.new(deprecated_response, 'The @response instance variable is deprecated; use @document.response instead.')
+    # Fetch the document
+    @document = search_service.fetch(id)
 
-    # We can not get highlight on get query, and are not getting child documents on select query
-    # so we make a second call to solr in order to get the highlight. not super efficient, but effective
-    highlight_response, highlight_document = search_service.fetch([params[:id]], {
-      :"hl.q" => current_search_session.try(:query_params).try(:[], "q"),
-      :df => blacklight_config.try(:default_document_solr_params).try(:[], :"hl.fl")
-    })
+    # Try to get highlight data separately, safely
+    begin
+      highlight_response = search_service.fetch([id], {
+        :"hl.q" => current_search_session&.query_params&.[]("q"),
+        :df => blacklight_config.default_document_solr_params&.[](:'hl.fl')
+      })
 
-    @response['highlighting'] = highlight_response['highlighting']
-    @document.response['highlighting'] = highlight_response['highlighting']
+      highlight_data = highlight_response.response['highlighting']
+      if highlight_data && highlight_data[id]
+        OralHistoryItem.index_logger.debug "🟡 Highlighting for #{id}: #{highlight_data[id].inspect}"
+        @document.response['highlighting'] = highlight_data
+      end
+    rescue => e
+      OralHistoryItem.index_logger.warn "🟡 Highlighting fetch failed: #{e.message}"
+    end
 
     respond_to do |format|
       format.html { @search_context = setup_next_and_previous_documents }

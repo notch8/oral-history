@@ -1,0 +1,23 @@
+<%# OVERRIDE: Blacklight v8.6.0- Replaced default search sidebar with UCLA COHR promotional content and custom theming %>
+<% content_for(:head) do %>
+  <meta name="blacklight-search-storage" content="<%= blacklight_config.track_search_session.storage %>">
+<% end %>
+
+<div class="container">
+  <div class="u-heading-v2-5--bottom g-brd-primary ">  
+    <h2 class="u-heading-v2__title text-uppercase g-font-weight-300 mb-0 g-mt-40">Browse Interviewees by Last Name</h2>
+  </div>
+  
+  <div id="sidebar" class="<%= sidebar_classes %>">
+    <% content_for(:sidebar) do %>
+      <% conf = blacklight_config.view_config(document_index_view_type) %>
+      <%= render conf.sidebar_component.new(blacklight_config: blacklight_config,
+                                            response: @response,
+                                            view_config: conf) %>
+    <% end %>
+  </div>
+
+  <div id="content" class="<%= main_content_classes %>">
+    <%= render 'search_results' %>
+  </div>
+</div>

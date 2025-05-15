@@ -1,0 +1,18 @@
+//@import 'bootstrap-sprockets';
+
+@import 'bootstrap';
+
+@import 'blacklight/blacklight';
+@import 'blacklight_marc';
+@import 'unify-core';
+@import 'unify-globals';
+@import 'unify';
+@import 'uucustom';
+
+/* ensures glyphicon still displays correctly */
+.glyphicon {
+  font-family: inherit;
+}
+.glyphicon:before{
+  font-family:'Glyphicons Halflings';
+}

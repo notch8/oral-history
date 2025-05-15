@@ -1,0 +1,18 @@
+<% # OVERRIDE Blacklight 8.6.0 for client themeing %>
+<nav id="header-navbar" class="navbar custom-toggler navbar-expand-md navbar-static-top g-bg-blue" aria-label="<%= aria_label %>">
+  <div class="container">
+    <div class="navbar-header">
+
+      <%= render partial: '/logo' %>
+
+      <a class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#user-util-collapse" aria-controls="user-util-collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="custom-toggler navbar-toggler-icon"></span>
+      </a>
+
+    </div>
+
+    <div class="collapse navbar-collapse justify-content-md-end" id="user-util-collapse">
+      <%= render 'shared/user_util_links' %>
+    </div>
+  </div>
+</nav>

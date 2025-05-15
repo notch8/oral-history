@@ -1,0 +1,148 @@
+<div class="container import">
+  <div class="u-heading-v2-5--bottom g-brd-primary">
+    <h2 class="u-heading-v2__title text-uppercase g-font-weight-300 mb-0 g-mt-40">Manage Library</h2>
+  </div>
+
+  <h4 class="g-mt-40 g-mb-40">Manually trigger records importer</h4>
+
+  <div class="d-flex gap-3 flex-wrap g-mt-40 g-mb-40">
+    <div>
+      <%= form_tag run_single_import_url, method: :post, id: "run-single-import-button", class: "btn btn-lg btn-primary", local: false do %>
+        <div class="form-group">
+          <%= text_field_tag 'id', '', class: 'form-control', placeholder: 'Enter ID' %>
+        </div>
+        <%= button_tag 'Run Single Import', class: 'btn btn-lg btn-primary', type: 'submit' %>
+      <% end %>
+    </div>
+
+    <div class="align-self-end">
+      <%= form_with url: run_full_import_url, method: :post, id: "run-full-import-form", local: false do %>
+        <%= button_tag 'Run Full Import', class: 'btn btn-lg btn-primary', type: 'submit' %>
+
+        <div class="form-check mt-3 d-flex align-items-center gap-2">
+          <%= check_box_tag :delete, true, false, class: 'form-check-input', id: 'delete-checkbox' %>
+          <%= label_tag :delete, 'With Fresh Index', class: 'form-check-label mb-0' %>
+          <span class="font-awesome-question-circle series-tooltip">
+            <span class="series-tooltip-text">
+              If checked, this clears all previously indexed Solr records before starting a fresh full import.
+            </span>
+          </span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="g-mt-20 g-mb-20 well" style="display: none">
+    <div class="sr-only progress-status text-primary"></div>
+    <h4 class="g-mt-40 g-mb-40">Import Progress</h4>
+    <div class="progress" style="height: 20px;">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar">0%</div>
+    </div>
+  </div>
+
+  <div id="import-notice" class="alert" style="display: none; margin-bottom: 10px;"></div>
+  <div id="flashes"></div>
+
+  <h4 class="g-mt-40 g-mb-40">Background Jobs</h4>
+
+  <div class="d-flex gap-3 flex-wrap my-4">
+    <%= link_to delayed_job_web_path, class: "btn btn-lg btn-primary", target: "_blank" do %>
+      <i class="fa fa-tachometer"></i> Jobs Dashboard
+    <% end %>
+
+    <%= button_to destroy_all_delayed_jobs_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-lg btn-danger' do %>
+      <i class="fa fa-trash"></i> Delete All Jobs
+    <% end %>
+  </div>
+
+  <h4 class="g-mt-40 g-mb-40">Logs</h4>
+
+  <div class="card g-mt-20 g-mb-20">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <ul class="nav nav-tabs nav-justified full-width-tab-mobile custom-tabs mb-0" id="logTabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active hero-links u-link-v5 g-color-main g-color-primary--hover g-font-size-20"
+              id="development-tab"
+              data-bs-toggle="tab"
+              href="#development-log"
+              role="tab"
+              aria-controls="development-log"
+              aria-selected="true">
+              Development Log
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hero-links u-link-v5 g-color-main g-color-primary--hover g-font-size-20"
+              id="worker-tab"
+              data-bs-toggle="tab"
+              href="#worker-log"
+              role="tab"
+              aria-controls="worker-log"
+              aria-selected="false">
+              Worker Log
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hero-links u-link-v5 g-color-main g-color-primary--hover g-font-size-20"
+              id="importer-tab"
+              data-bs-toggle="tab"
+              href="#importer-log"
+              role="tab"
+              aria-controls="importer-log"
+              aria-selected="false">
+              Importer Log
+            </a>
+          </li>
+        </ul>
+        <%= button_to "/admin/clear_all_logs", method: :post, class: "btn btn-lg btn-warning ms-3", data: { confirm: 'Are you sure you want to clear all logs?' } do %>
+          <i class="fa fa-trash"></i> Clear All Logs
+        <% end %>
+      </div>
+
+    </div>
+
+    <div class="tab-content" id="logTabsContent" style="border: 1px solid #ddd; padding: 10px; height: 350px; overflow-y: scroll; font-family: monospace; font-size: 14px; background: #f8f9fa;">
+
+      <div class="tab-pane fade show active position-relative" id="development-log" role="tabpanel" aria-labelledby="development-tab">
+        <div id="development-log-content">Loading Development log...</div>
+
+        <div class="text-end g-mt-10">
+          <% if Rails.env.development? %>
+            <%= link_to "/admin/development_log", class: "btn btn-success btn-sm", download: true do %>
+              <i class="fa fa-download"></i> Download
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="tab-pane fade position-relative" id="worker-log" role="tabpanel" aria-labelledby="worker-tab">
+        <div id="worker-log-content">Loading Worker log...</div>
+
+        <div class="text-end g-mt-10">
+          <%= link_to "/admin/worker_log", class: "btn btn-success btn-sm", download: true do %>
+            <i class="fa fa-download"></i> Download
+          <% end %>
+        </div>
+      </div>
+
+      <div class="tab-pane fade position-relative" id="importer-log" role="tabpanel" aria-labelledby="importer-tab">
+        <div id="importer-log-content">Loading Importer log...</div>
+
+        <div class="text-end g-mt-10">
+          <%= link_to "/admin/importer_log", class: "btn btn-success btn-sm", download: true do %>
+            <i class="fa fa-download"></i> Download
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+    <%= link_to "/admin/download_all_logs", class: "btn btn-lg btn-success mt-3", download: true do %>
+      <i class="fa fa-download"></i> Download All Logs
+    <% end %>
+  </div>
+
+  <div class="g-mt-40 g-mb-40">
+    <%= link_to t('blacklight.header_links.logout'), destroy_user_session_path, class: "btn btn-lg btn-primary" %>
+  </div>
+</div>

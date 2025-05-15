@@ -27,21 +27,20 @@ ActiveRecord::Schema[7.2].define(version: 2019_02_26_005909) do
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
-    t.integer "priority", default: 0, null: false
-    t.integer "attempts", default: 0, null: false
-    t.text "handler", null: false
+    t.integer "priority", default: 0
+    t.integer "attempts", default: 0
+    t.text "handler"
     t.text "last_error"
     t.datetime "run_at", precision: nil
     t.datetime "locked_at", precision: nil
     t.datetime "failed_at", precision: nil
     t.string "locked_by"
     t.string "queue"
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
-    t.string "progress_stage"
-    t.integer "progress_current", default: 0
-    t.integer "progress_max", default: 0
-    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.integer "progress_max", default: 0, null: false
+    t.integer "progress_current", default: 0, null: false
+    t.string "progress_stage", default: "Queued", null: false
   end
 
   create_table "searches", id: :serial, force: :cascade do |t|

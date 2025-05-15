@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# `/sbin/setuser memcache` runs the given command as the user `memcache`.
-# If you omit that part, the command will be run as root.
+# Ensure log directory exists and is writable
+mkdir -p /home/app/webapp/log
+chown app:app /home/app/webapp/log
 
-exec /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && ./bin/delayed_job run >>/var/log/worker.log 2>&1'
+# Run delayed_job properly
+cd /home/app/webapp
+exec /sbin/setuser app bundle exec rake jobs:work RAILS_ENV=development >> /home/app/webapp/log/worker.log 2>&1

@@ -10,13 +10,10 @@ gem "stimulus-rails"
 gem "jbuilder"
 gem "tzinfo-data", platforms: %i[ jruby ]
 gem "bootsnap", require: false
-gem 'blacklight', '8.6.0'
-# gem "solr_wrapper", ">= 0.3", group: [:development, :test]
-# gem "rsolr", ">= 1.0", "< 3"
-# gem "bootstrap", "~> 5.1"
+gem "blacklight", '8.6.0'
 gem "twitter-typeahead-rails", "0.11.1.pre.corejavascript"
-gem "sassc-rails", "~> 2.1"
 gem "jquery-rails"
+gem 'faraday', '< 2.0'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -58,8 +55,7 @@ gem "sentry-raven"
 gem "tzinfo", '~> 2.0', '>= 2.0.6'
 gem "uglifier", '>= 1.3.0'
 gem "turbolinks", '~> 5'
-# gem "view_component", '2.66'
-gem 'view_component', '~> 2.74'
+gem "view_component", '~> 2.74'
 gem "whenever", require: false
 
 # Webpacker is removed in Rails 7, replaced by jsbundling-rails and importmap
@@ -72,3 +68,4 @@ group :development, :test do
 end
 gem "rsolr", ">= 1.0", "< 3"
 gem "bootstrap", "~> 5.3"
+gem "sassc-rails", "~> 2.1"

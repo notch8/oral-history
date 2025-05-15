@@ -1,9 +1,49 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 #
-# Example:
+# Examples:
 #
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
+#   Character.create(name: 'Luke', movie: movies.first)
+# Set up a default admin user, if we are in a Development environment, otherwise, skip
+if Rails.env.development? || Rails.env.test? || Rails.env.production?
+  u = User.find_or_create_by(email: ENV['ADMIN_EMAIL'] || 'admin@example.com')
+  u.password = ENV['ADMIN_PASSWORD'] || 'testing123'
+  u.password_confirmation = ENV['ADMIN_PASSWORD']
+  u.save
+# OralHistoryItem.import_single('21198-zz0009049n')
+# OralHistoryItem.import_single('21198-zz002kf3rs')
+# OralHistoryItem.import_single('21198-zz002knbn9')
+# OralHistoryItem.import_single('21198-zz000900nw')
+# OralHistoryItem.import_single('21198-zz002dx5z2')
+# OralHistoryItem.import_single('21198-zz002ddfz6')
+# OralHistoryItem.import_single('21198-zz002kd5r9')
+# OralHistoryItem.import_single('')
+# OralHistoryItem.import_single('')
+# OralHistoryItem.import_single('')
+# OralHistoryItem.import_single('')
+# OralHistoryItem.import_single('')
+# OralHistoryItem.import_single('')
+# OralHistoryItem.import_single('')
+
+# IndexPdfTranscriptJob.perform_now(
+#   '21198-zz002k6p4j',
+#   'https://static.library.ucla.edu/oralhistory/pdf/submasters/21198-zz002k6p4j-5-submaster.pdf'
+# )
+
+# IndexPdfTranscriptJob.perform_now(
+#   '21198-zz002kqf5d',
+#   'https://static.library.ucla.edu/oralhistory/pdf/submasters/21198-zz002kqf5d-1-submaster.pdf'
+# )
+
+# IndexPdfTranscriptJob.perform_now(
+#   '21198-zz0008zfqb',
+#   'https://static.library.ucla.edu/oralhistory/pdf/submasters/21198-zz0008zfqb-1-submaster.pdf'
+# )
+
+# IndexPdfTranscriptJob.perform_now(
+#   '21198-zz002dx5z2',
+#   'https://static.library.ucla.edu/oralhistory/pdf/submasters/21198-zz002dx5z2-16-submaster.pdf'
+# )
+
+end
