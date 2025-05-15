@@ -98,15 +98,23 @@ class FullTextController < ApplicationController
       respond_to do |format|
         format.html do
           if params[:partial]
-            render_document_index(
-              documents: @response.documents,
-              document_component: FullText::DocumentComponent,
-              configuration: blacklight_config
-            )
+            render_document_index_with_view_component(@response.documents)
           else
             render :index
           end
         end
+
+        # format.html do
+        #   if params[:partial]
+        #     render_document_index(
+        #       documents: @response.documents,
+        #       document_component: FullText::DocumentComponent,
+        #       configuration: blacklight_config
+        #     )
+        #   else
+        #     render :index
+        #   end
+        # end
         format.rss  { render layout: false }
         format.atom { render layout: false }
         format.json do

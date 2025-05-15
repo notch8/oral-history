@@ -1,12 +1,24 @@
-<div class="card show-tools">
-  <div class="card-header">
-    <h2 class="mb-0 h6"><%= t('blacklight.tools.title') %></h2>
+<div class="accordion" id="accordion-tools">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="accordion-tools-heading-0">
+      <button class="accordion-button collapsed" type="button"
+              data-bs-toggle="collapse" data-bs-target="#accordion-tools-body-0"
+              aria-expanded="false" aria-controls="accordion-tools-body-0">
+        <%= t('blacklight.tools.title') %>
+      </button>
+    </h2>
+    <div id="accordion-tools-body-0" class="accordion-collapse collapse"
+         aria-labelledby="accordion-tools-heading-0"
+         data-bs-parent="#accordion-tools">
+      <div class="accordion-body">
+        <%= render Blacklight::Document::ActionsComponent.new(document: document,
+                                                              tag: 'ul',
+                                                              classes: 'list-group list-group-flush',
+                                                              wrapping_tag: 'li',
+                                                              wrapping_classes: 'list-group-item list-group-item-action',
+                                                              actions: actions,
+                                                              url_opts: Blacklight::Parameters.sanitize(params.to_unsafe_h)) %>
+      </div>
+    </div>
   </div>
-  <%= render Blacklight::Document::ActionsComponent.new(document: document,
-                                                        tag: 'ul',
-                                                        classes: 'list-group list-group-flush',
-                                                        wrapping_tag: 'li',
-                                                        wrapping_classes: 'list-group-item list-group-item-action',
-                                                        actions: actions,
-                                                        url_opts: Blacklight::Parameters.sanitize(params.to_unsafe_h)) %>
 </div>
